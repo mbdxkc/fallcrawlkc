@@ -11,6 +11,11 @@ No tickets, no wristbands, no set route.
 
 ## Status: pre-launch, not indexed
 
+Client first look 15 September: positive on the build. The site is still missing
+its venue list and running an unverified Instagram handle, so that covers the
+shape, not the content.
+
+
 `index.html` carries `noindex, nofollow` and `robots.txt` disallows everything.
 **Both come off before the QR ships.** Live today: no domain, no venue list, and an
 unverified Instagram handle.
