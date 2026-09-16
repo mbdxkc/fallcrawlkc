@@ -52,11 +52,15 @@ window.FALL_CRAWL = {
     //   doing: 'Spiced old fashioned, $8 all night', live: true },
   ],
 
-  /* ---- Suggested crawls. Optional routes, not official. ---- */
+  /* ---- Suggested crawls. Optional routes, not official. -------------------
+     HIDDEN while the routes are being worked out. An empty list removes the
+     whole section AND its header link, so nothing half-finished shows.
+     To bring it back: delete the // in front of the three lines below.
+  ------------------------------------------------------------------------- */
   routes: [
-    { name: 'The Chill Crawl', blurb: 'Three stops, no rush, somewhere to sit at each one.' },
-    { name: 'All Day',         blurb: 'Start when doors open and work east. Pace yourself.' },
-    { name: 'Late Night',      blurb: 'Show up after dark for the places that get loud.' },
+    // { name: 'The Chill Crawl', blurb: 'Three stops, no rush, somewhere to sit at each one.' },
+    // { name: 'All Day',         blurb: 'Start when doors open and work east. Pace yourself.' },
+    // { name: 'Late Night',      blurb: 'Show up after dark for the places that get loud.' },
   ],
 
   /* ---- Partners ---- */
