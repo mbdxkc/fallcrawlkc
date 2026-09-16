@@ -40,6 +40,15 @@ window.FALL_CRAWL = {
     // { network: 'facebook', handle: 'fallcrawlkc' },
   ],
 
+  /* ---- Text-to-ride link, top right after the social icons ---------------
+     EZ Pedicabs. Tapping it opens a new text message to them.
+     Clear the phone to remove the link entirely.
+  ------------------------------------------------------------------------- */
+  ride: {
+    label: 'Text to ride',
+    phone: '8162268444',
+  },
+
   /* ---- Participating spots -------------------------------------------------
      name      what it is called
      street    address, short form. Used for the map link

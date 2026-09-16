@@ -173,6 +173,27 @@ a:hover, a:focus-visible { color: var(--orange); }
 .social:hover, .social:focus-visible { color: var(--orange); }
 .social svg { display: block; }
 
+/* text-to-ride sits with the socials; label always, number once there is room */
+.ride {
+  display: inline-flex;
+  align-items: baseline;
+  gap: .4rem;
+  margin-left: .35rem;
+  padding: .3rem .6rem;
+  border: 1px solid var(--orange);
+  border-radius: 2px;
+  color: var(--ink);
+  font-size: .72rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  white-space: nowrap;
+  transition: background-color .2s ease, color .2s ease;
+}
+.ride:hover, .ride:focus-visible { background: var(--orange); color: #fff; }
+.ride-num { display: none; font-weight: 400; letter-spacing: .04em; }
+
 /* ---------- hero logo ---------- */
 .logo { width: min(100%, 34rem); margin: 0 auto clamp(1rem, 4vw, 1.75rem); }
 
@@ -329,6 +350,7 @@ a.partner-name { display: inline-block; text-decoration: none; }
   }
   .bar-title { justify-self: center; font-size: .95rem; }
   .bar-nav ul { overflow-x: visible; }
+  .ride-num { display: inline; }
   .venue-list, .partner-list { grid-template-columns: repeat(2, 1fr); }
   .route-list { grid-template-columns: repeat(3, 1fr); }
   .band { padding-left: clamp(2rem, 7vw, 5rem); padding-right: clamp(2rem, 7vw, 5rem); }
@@ -344,6 +366,6 @@ a.partner-name { display: inline-block; text-decoration: none; }
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .cta, .social { transition: none; }
+  .cta, .social, .ride { transition: none; }
   .cta:hover, .cta:focus-visible { transform: none; }
 }

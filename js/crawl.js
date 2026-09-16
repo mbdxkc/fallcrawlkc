@@ -216,6 +216,31 @@
     });
   }
 
+  /* ---- header: text-to-ride, after the social icons ----------------------
+     sms: rather than tel:, because the partner's own instruction is "just
+     text or call" and texting is what works mid-crawl in a loud bar.
+     The number is hidden below 768px: the bar already carries the title and
+     the icons on that line, and the href holds the number either way.
+  ---------------------------------------------------------------------- */
+  function ride() {
+    var r = DATA.ride || {};
+    var host = document.getElementById('bar-social');
+    if (!host || !r.phone) return;
+
+    var d = String(r.phone).replace(/\D/g, '');
+    if (d.length !== 10) return;
+    var pretty = '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
+
+    var li = document.createElement('li');
+    var a  = el('a', 'ride');
+    a.href = 'sms:+1' + d;
+    a.setAttribute('aria-label', (r.label || 'Text to ride') + ' at ' + pretty);
+    a.appendChild(el('span', 'ride-label', r.label || 'Text to ride'));
+    a.appendChild(el('span', 'ride-num', pretty));
+    li.appendChild(a);
+    host.appendChild(li);
+  }
+
   /* ---- header: links left ----------------------------------------------
      Built AFTER the sections render, so a section that removed itself for
      being empty cannot leave a link pointing at nothing.
@@ -252,7 +277,7 @@
   function init() {
     basics(); title();
     venues(); routes(); partners();
-    nav(); socials();
+    nav(); socials(); ride();
   }
 
   if (document.readyState === 'loading') {
