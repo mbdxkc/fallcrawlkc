@@ -289,6 +289,18 @@ a.partner-name { display: inline-block; text-decoration: none; }
 .venue-street:hover { color: var(--orange); }
 .venue-doing, .route p, .partner p { margin: .5rem 0 0; color: var(--muted); }
 
+.partner-phone {
+  display: inline-block;
+  margin-top: .6rem;
+  margin-right: .9rem;
+  color: var(--ink);
+  font-size: .95rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+}
+.partner-phone:hover, .partner-phone:focus-visible { color: var(--orange); }
+
 .ig-link { display: inline-block; margin-top: .6rem; font-size: .9rem; text-decoration: none; color: var(--orange); }
 .ig-link:hover { text-decoration: underline; }
 

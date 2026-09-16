@@ -155,6 +155,18 @@
       if (p.url) { head.href = p.url; head.target = '_blank'; head.rel = 'noopener'; }
       li.appendChild(head);
       if (p.blurb) li.appendChild(el('p', null, p.blurb));
+
+      // tap-to-call rather than text on a page people read on a phone
+      if (p.phone) {
+        var d = String(p.phone).replace(/\D/g, '');
+        if (d.length === 10) {
+          var t = el('a', 'partner-phone',
+            '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6));
+          t.href = 'tel:+1' + d;
+          li.appendChild(t);
+        }
+      }
+
       var ig = insta(p.insta);
       if (ig) li.appendChild(ig);
       ul.appendChild(li);

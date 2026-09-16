@@ -63,8 +63,20 @@ window.FALL_CRAWL = {
     // { name: 'Late Night',      blurb: 'Show up after dark for the places that get loud.' },
   ],
 
-  /* ---- Partners ---- */
+  /* ---- Partners -----------------------------------------------------------
+     name    who they are
+     blurb   one line about what they do for the crawl
+     url     their website, full address with https://. Leave '' for none
+     phone   digits only, 10 of them. Becomes a tap-to-call link
+     insta   their Instagram handle, no @. Leave '' for none
+  ------------------------------------------------------------------------- */
   partners: [
-    { name: 'EZ Pedicabs', blurb: 'Getting you between stops.', url: '', insta: '' },
+    {
+      name:  'EZ Pedicabs',
+      blurb: 'No app. Just text or call. You can schedule ahead too!',
+      url:   'https://ezpedicabs.com',
+      phone: '8162268444',
+      insta: '',
+    },
   ],
 };
