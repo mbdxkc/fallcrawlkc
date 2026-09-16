@@ -1,98 +1,202 @@
 <!doctype html>
 <html lang="en">
   <head>
-  <!--
-  ============================================================================
-  project title
-  ============================================================================
-  @project    project name
-  @version    0.0
-  @author     author <email>
-  @date       year-mo-dy
-  @file       .html
-  @desc       page description
-  @license    (c) 
-  @requires   - /js/header.js, /js/footer.js, /js/page-transition.js
-              - /style.css
-  @a11y       - skip link, semantic html, wcag 2.1 aa compliant
-  ============================================================================
-  project v0.0 | page
-  ============================================================================
-  -->
-
-    <!-- core meta -->
+    <!-- charset sits ABOVE the file header on purpose. The spec wants it inside
+         the first 1024 bytes and the header block below is longer than that.
+         Do not tidy it down among the other meta tags. -->
     <meta charset="utf-8" />
+    <!--
+    ============================================================================
+
+      EAST CROSSROADS FALL CRAWL
+      Single-page event site
+
+    ============================================================================
+      PROJECT
+    ============================================================================
+
+      @project      fallcrawlkc
+      @file         index.html
+      @version      1.0.0
+      @updated      2026-09-15
+      @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
+      @url          https://mbdxkc.github.io/fallcrawlkc/
+      @repository   https://github.com/mbdxkc/fallcrawlkc
+
+    ============================================================================
+      AUTHORSHIP
+    ============================================================================
+
+      @author       Valdez Campos <dez@mediabrilliance.io>
+      @studio       mediaBrilliance - https://www.mediabrilliance.io
+      @contact      dez@mediabrilliance.io
+
+    ============================================================================
+      LICENSE
+    ============================================================================
+
+      Copyright (c) 2026 mediaBrilliance. All rights reserved.
+      Proprietary. See LICENSE at the repository root.
+
+    ============================================================================
+      IMPLEMENTATION NOTES
+    ============================================================================
+
+      @desc         One page, one QR destination. Everything that changes week
+                    to week lives in data/crawl.js so the client edits it from
+                    GitHub's web editor without touching this file.
+      @paths        Relative, not root-absolute. A GitHub Pages project site is
+                    served from /fallcrawlkc/, where /images/... resolves outside
+                    the project and 404s. Relative works at both a subpath and a
+                    custom domain, so the hosting decision stops mattering.
+      @seo          NOINDEX while in development, see the block below the
+                    viewport tag. canonical, og:url and og:image point at the
+                    Pages URL because
+                    fallcrawlkc.com is NOT REGISTERED yet. Pointing them at a
+                    domain with no DNS is worse than leaving them off. One
+                    find-and-replace when the domain resolves.
+      @a11y         Skip link, semantic landmarks, one h1. Brand orange #C84008
+                    measures 4.19:1 on black: it clears 3:1 for large text and
+                    fails 4.5:1 for body copy, so it is display and accent only.
+      @fonts        No webfont. The display face in the artwork is not licensed
+                    here, so the lockup ships as artwork and live type uses a
+                    system stack.
+
+    ============================================================================
+      Fall Crawl v1.0.0  ·  index.html  ·  mediaBrilliance
+    ============================================================================
+    -->
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>page title</title>
-    <meta name="description" content="page description" />
-    <link rel="canonical" href="https://example.com/" />
+    <!-- ===================================================================
+         PRE-LAUNCH. Remove this meta and robots.txt Disallow before the
+         QR ships. Live now: no domain, no venue list, unverified handle.
+         =================================================================== -->
+    <meta name="robots" content="noindex, nofollow" />
 
-    <!-- social / previews -->
-    <meta property="og:title" content="site name" />
-    <meta property="og:description" content="site description" />
+    <title>East Crossroads Fall Crawl - Saturday, October 24, 2026 - Kansas City</title>
+    <meta name="description" content="A build-your-own-adventure bar crawl through the East Crossroads, Kansas City. Saturday before Halloween, Oct. 24, 2026. Wine, cocktails, costumes. 21+." />
+    <link rel="canonical" href="https://mbdxkc.github.io/fallcrawlkc/" />
+
+    <meta property="og:title" content="East Crossroads Fall Crawl - 10.24.26" />
+    <meta property="og:description" content="No tickets. No wristbands. No set route. A build-your-own-adventure bar crawl through the East Crossroads, the Saturday before Halloween." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://example.com/" />
-    <meta property="og:image" content="/og.png" />
+    <meta property="og:url" content="https://mbdxkc.github.io/fallcrawlkc/" />
+    <meta property="og:image" content="https://mbdxkc.github.io/fallcrawlkc/images/logo.png" />
+    <meta property="og:image:alt" content="East Crossroads Fall Crawl logo: a skeleton raising a cocktail over the Kansas City skyline." />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="site name" />
-    <meta name="twitter:description" content="site description" />
-    <meta name="twitter:image" content="/og.png" />
+    <meta name="twitter:title" content="East Crossroads Fall Crawl - 10.24.26" />
+    <meta name="twitter:description" content="No tickets. No wristbands. No set route. A build-your-own-adventure bar crawl through the East Crossroads." />
+    <meta name="twitter:image" content="https://mbdxkc.github.io/fallcrawlkc/images/logo.png" />
 
-    <!-- icons -->
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#000000" />
 
-    <!-- fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200..1000&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="style.css" />
 
-    <!-- styles -->
-    <link rel="stylesheet" href="/style.css" />
-
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "East Crossroads Fall Crawl",
+      "description": "A build-your-own-adventure bar crawl through the East Crossroads in Kansas City. No tickets, no wristbands, no set route.",
+      "startDate": "2026-10-24",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "image": "https://mbdxkc.github.io/fallcrawlkc/images/logo.png",
+      "location": {
+        "@type": "Place",
+        "name": "East Crossroads",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kansas City",
+          "addressRegion": "MO",
+          "addressCountry": "US"
+        }
+      },
+      "typicalAgeRange": "21-",
+      "isAccessibleForFree": true
+    }
+    </script>
   </head>
 
   <body>
-    <!-- =====================================================
-         page transition + skip link
-         ===================================================== -->
-    <div id="page-transition" aria-hidden="true"></div>
-    <a class="skip-link" href="#main_container">skip to main content</a>
+    <a class="skip-link" href="#main">Skip to main content</a>
 
-    <!-- =====================================================
-         header (injected by JS)
-         ===================================================== -->
-    <header id="site-header" class="site-header" role="banner"></header>
+    <header class="site-header">
+      <nav class="bar-nav" id="bar-nav" aria-label="Sections"></nav>
+      <p class="bar-title" data-title>East Crossroads Fall Crawl</p>
+      <ul class="bar-social" id="bar-social"></ul>
+    </header>
 
-    <!-- mobile menu -->
-    <div class="mobile-menu" aria-label="mobile navigation">
-    <!-- mobile nav links -->
-    </div>
+    <main id="main">
 
-    <!-- =====================================================
-         main
-         ===================================================== -->
-    <main id="main_container" class="container" role="main">
-      <!-- page content -->
+      <!-- ===== hero ===== -->
+      <section class="hero">
+        <img class="logo" src="images/logo.png" width="1000" height="489"
+             fetchpriority="high" decoding="sync"
+             alt="East Crossroads Fall Crawl: a skeleton raising a cocktail over the Kansas City skyline." />
+        <p class="date-big" data-date-short>10.24.26</p>
+        <h1>Saturday before Halloween</h1>
+        <p class="date-full" data-date>Saturday, October 24, 2026</p>
+        <p class="hours" data-hours></p>
+
+        <p class="pitch">No tickets. No wristbands. No set route.<br />
+          <span>A build-your-own-adventure type of bar crawl.</span></p>
+
+        <a class="cta" data-ig href="https://www.instagram.com/" target="_blank" rel="noopener">
+          Follow along on Instagram
+          <span class="cta-handle" data-ig-handle></span>
+        </a>
+
+        <ul class="facts">
+          <li>Wine &amp; cocktails</li>
+          <li>Costumes encouraged</li>
+          <li>21+</li>
+        </ul>
+      </section>
+
+      <!-- ===== map ===== -->
+      <section class="band" id="map">
+        <h2>Where</h2>
+        <p class="lede">The East Crossroads, Kansas City. Main Street over to Cherry, Truman Road down to 19th.</p>
+        <img class="map-img" src="images/map.png" width="1400" height="1367" loading="lazy" decoding="async"
+             alt="Hand-drawn map of the East Crossroads showing participating spots between Main Street and Cherry Street, Truman Road and 19th Street." />
+        <p class="note">Teaser map. The full version with every name lands closer to the date.</p>
+      </section>
+
+      <!-- ===== what's happening ===== -->
+      <section class="band" id="spots">
+        <h2>What&rsquo;s happening</h2>
+        <p class="lede">Every spot runs its own night: cocktail features, activations, entertainment.</p>
+        <ul class="venue-list" id="venue-list"></ul>
+      </section>
+
+      <!-- ===== suggested crawls ===== -->
+      <section class="band" id="routes">
+        <h2>Suggested crawls</h2>
+        <p class="lede">There is no official route. If you want one anyway, start here.</p>
+        <ul class="route-list" id="route-list"></ul>
+      </section>
+
+      <!-- ===== partners ===== -->
+      <section class="band" id="partners">
+        <h2>Partners</h2>
+        <ul class="partner-list" id="partner-list"></ul>
+      </section>
+
     </main>
 
-    <!-- =====================================================
-         footer injected by js
-         ===================================================== -->
-    <footer id="site-footer" class="footer" role="contentinfo"></footer>
+    <footer class="site-footer">
+      <p class="legal">Must be 21+ to purchase or consume alcohol. No purchase required to
+        participate. Participating businesses operate independently and are responsible for
+        their own events, offers, service and premises.</p>
+      <p class="drink"><strong>Please drink responsibly.</strong></p>
+      <p class="credit">Site by <a href="https://www.mediabrilliance.io" target="_blank" rel="noopener">mediaBrilliance</a></p>
+    </footer>
 
-    <!-- =====================================================
-         scripts
-         ===================================================== -->
-    <script src="/js/page-transition.js" defer></script>
-    <script src="/js/utils.js" defer></script>
-    <script src="/js/header.js" defer></script>
-    <script src="/js/footer.js" defer></script>
-
+    <script src="data/crawl.js"></script>
+    <script src="js/crawl.js" defer></script>
   </body>
 </html>

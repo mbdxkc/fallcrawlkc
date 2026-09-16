@@ -1,0 +1,3 @@
+# PRE-LAUNCH. Replace both lines with "Allow: /" before the QR ships.
+User-agent: *
+Disallow: /

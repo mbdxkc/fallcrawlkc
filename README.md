@@ -1,16 +1,40 @@
-# base_site
+# East Crossroads Fall Crawl
 
-Starter template for mediaBrilliance client sites. Static HTML, hand-rolled CSS, vanilla JS.
+Single-page event site. Static HTML, hand-rolled CSS, vanilla JS, no build step.
+
+**Saturday, October 24, 2026** — the Saturday before Halloween. East Crossroads, Kansas City.
+No tickets, no wristbands, no set route.
 
 **by mediaBrilliance.io**
 
 ---
 
-## What it is
+## Status: pre-launch, not indexed
 
-The skeleton every new client build starts from. Ships with placeholder copy on purpose: `<title>page title</title>`, `content="page description"`, `content="site name"`. Filling those in is step one, and their presence in a deployed page is the tell that a step was skipped.
+`index.html` carries `noindex, nofollow` and `robots.txt` disallows everything.
+**Both come off before the QR ships.** Live today: no domain, no venue list, and an
+unverified Instagram handle.
 
-No framework, no build step, no dependencies. A client site should still render in ten years.
+---
+
+## Editing the content
+
+Everything that changes week to week lives in **`data/crawl.js`**. Nothing else needs
+touching, and the client edits it from GitHub's web editor:
+
+1. Open `data/crawl.js` on GitHub
+2. Pencil icon, top right
+3. Change the text between the quote marks
+4. Commit changes
+
+That file holds the date, the Instagram handle, the social icons, the venue list,
+the suggested crawls and the partners. Instructions are written at the top of it in
+plain language.
+
+An empty list removes its whole section from the page rather than rendering an empty
+heading, so nothing half-finished can reach a visitor. The header links are built
+*after* the sections render, so a section that removes itself never leaves a dead
+anchor behind.
 
 ---
 
@@ -18,53 +42,57 @@ No framework, no build step, no dependencies. A client site should still render 
 
 ```
 /
-├── index.html          # Single page, header + footer includes
-├── style.css           # 1,069 lines, mobile-first
-└── js/
-    ├── header.js       # Injects the shared site header
-    ├── footer.js       # Injects the shared site footer
-    ├── page-transition.js  # Fade between pages
-    └── utils.js        # Shared helpers
+├── index.html        # the page
+├── style.css         # 339 lines, mobile-first
+├── robots.txt        # disallow while pre-launch
+├── data/
+│   └── crawl.js      # THE ONLY FILE THE CLIENT EDITS
+├── js/
+│   └── crawl.js      # renders every list from data/crawl.js
+└── images/
+    ├── logo.png      # lockup, cropped from the pitch board
+    └── map.png       # teaser map, positions only, no names yet
 ```
 
-Header and footer are injected by JS rather than duplicated per page, so a nav change is one edit rather than one per file.
+The four scripts the base template ships (`header.js`, `footer.js`,
+`page-transition.js`, `utils.js`) were removed. All four serve a multi-page nav that
+does not exist here, so each would have been a request rendering nothing.
 
 ---
 
-## Conventions
+## Decisions worth knowing
 
-Inherited from `mBcode/CLAUDE.md`:
+**Brand orange is `#C84008`**, sampled from the logo artwork rather than picked. It
+measures **4.19:1 on black**: clears 3:1 for large text, fails 4.5:1 for body copy.
+It is restricted to display type, rules and hover. Body copy uses `#F8F8F8`.
 
-- **Mobile-first.** Breakpoints at 480, 768 and 900 px
-- **`clamp()` for fluid sizing**, CSS variables for color
-- **`prefers-reduced-motion`** respected on every transition
-- **JSDoc headers** on JS files, a constants object for config
-- **Event delegation** for anything dynamic
+**No webfont.** The display face in the artwork is not licensed here, so the lockup
+ships as artwork and live type uses a system stack.
 
----
+**Paths are relative, not root-absolute.** A GitHub Pages project site is served from
+`/fallcrawlkc/`, where `/images/...` resolves outside the project and 404s.
 
-## Performance targets
+**`canonical`, `og:url` and `og:image` point at the Pages URL**, not at
+`fallcrawlkc.com`, because that domain is **not registered**. Pointing head tags at a
+domain with no DNS is worse than leaving them off. One find-and-replace when it
+resolves.
 
-| Metric | Target |
-|--------|--------|
-| Performance | 90+ |
-| Accessibility | 100 |
-| Best Practices | 100 |
-| SEO | 100 |
-
-Images ship as WebP at 80 percent quality, lazy-loaded below the fold. The LCP image carries `fetchpriority="high"`.
+**`<meta charset>` sits above the file header comment.** The header runs past the
+spec's 1024-byte limit for the charset declaration.
 
 ---
 
-## Starting a client build
+## Open before launch
 
-1. Copy the tree, rename, `git init`
-2. Replace every placeholder: title, description, site name, OG tags
-3. Add `sitemap.xml` with `www.` URLs and a `robots.txt`
-4. Add Schema.org JSON-LD, Open Graph and Twitter Card meta
-5. Set up 301 redirects for any URL the previous site exposed
-
-Sites derived from this template: MuNiKC, Cafe Corazón, theEmbers.
+- [ ] Register `fallcrawlkc.com`, then swap the six absolute URLs and add `CNAME`
+- [ ] Confirm the Instagram handle. `fallcrawlkc` in `data/crawl.js` is a **guess**
+      from the repo name, not verified. It is the page's primary call to action
+- [ ] Add venues to `data/crawl.js`. The Spots section is absent until then
+- [ ] Replace `images/map.png` with the full map once names are locked
+- [ ] Remove `noindex` and the `robots.txt` disallow
+- [ ] Decide the QR destination. The pedicab promo's QR currently points at
+      Instagram, not this site
+- [ ] Client asset fix: the pedicab promo reads "WINE & COCKAILS"
 
 ---
 
