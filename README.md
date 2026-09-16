@@ -89,9 +89,10 @@ spec's 1024-byte limit for the charset declaration.
 
 ## Open before launch
 
-- [ ] Register `fallcrawlkc.com`, then swap the six absolute URLs and add `CNAME`
-- [ ] Confirm the Instagram handle. `fallcrawlkc` in `data/crawl.js` is a **guess**
-      from the repo name, not verified. It is the page's primary call to action
+- [ ] Point `fallcrawlkc.com` at the site, then swap the six absolute URLs and add `CNAME`.
+      Registered 2026-09-14, nameservers at Squarespace, currently a "Coming Soon" page.
+      Held there deliberately until the content is in. Change the Squarespace A records to
+      GitHub Pages (185.199.108-111.153) **first**, then add `CNAME` — never the reverse
 - [ ] Add venues to `data/crawl.js`. The Spots section is absent until then
 - [ ] Replace `images/map.png` with the full map once names are locked
 - [ ] Remove `noindex` and the `robots.txt` disallow
