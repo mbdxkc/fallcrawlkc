@@ -260,14 +260,18 @@ a:hover, a:focus-visible { color: var(--orange); }
 
 /* Body copy inside a band, measure-limited like .lede so paragraphs do not
    run the full width of a desktop screen. */
-.prose { max-width: var(--measure); }
+.prose { max-width: var(--measure); margin-inline: auto; }
 .prose p { margin: 0 0 1rem; }
 .prose p:last-child { margin-bottom: 0; }
 
 /* ---------- bands ---------- */
+/* Centred on the page. The hero above is centred, and a column hugging the
+   left edge underneath it reads as a different page once the screen is wide
+   enough to show the gap. */
 .band {
   padding: clamp(2rem, 8vw, 3.5rem) var(--pad);
   border-top: 1px solid var(--rule);
+  text-align: center;
 }
 
 .band h2 {
@@ -278,17 +282,42 @@ a:hover, a:focus-visible { color: var(--orange); }
   letter-spacing: .01em;
 }
 
-.lede { margin: .5rem 0 clamp(1.25rem, 5vw, 2rem); color: var(--muted); max-width: var(--measure); }
+.lede {
+  margin: .5rem auto clamp(1.25rem, 5vw, 2rem);
+  color: var(--muted);
+  max-width: var(--measure);
+}
 .note { margin: .85rem 0 0; color: var(--muted); font-size: .85rem; font-style: italic; }
 
 .map-img { border: 1px solid var(--rule); }
 
 /* ---------- lists ---------- */
-.venue-list, .route-list, .partner-list { margin: 0; padding: 0; list-style: none; }
-.venue-list, .partner-list { display: grid; gap: clamp(1rem, 4vw, 1.5rem); }
-.route-list { display: grid; gap: clamp(1rem, 4vw, 1.5rem); }
+/* The cards keep their own left alignment inside a centred band: each one
+   carries a 3px orange rule down its left edge, and centred text in a
+   left-accented box reads as a mistake.
+
+   Flex, not grid. A grid's `1fr` tracks always fill, so an explicit two or
+   three column grid holding a single partner left it sitting in the first
+   column, well off centre, and no amount of `justify-content` moves it -
+   the track is full width whether or not anything is in it. Flex lays out
+   only the items that exist, so one card centres, two share a row, and a
+   full list wraps on its own. */
+.venue-list, .route-list, .partner-list {
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  max-width: 62rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(1rem, 4vw, 1.5rem);
+  text-align: left;
+}
 
 .venue, .route, .partner {
+  /* Grows to share a row, never wider than a comfortable measure. */
+  flex: 1 1 19rem;
+  max-width: 24rem;
   padding: clamp(.9rem, 3.5vw, 1.25rem);
   border: 1px solid var(--rule);
   border-left: 3px solid var(--orange);
@@ -344,8 +373,6 @@ a.partner-name { display: inline-block; text-decoration: none; }
   }
   .bar-title { justify-self: center; font-size: .95rem; }
   .bar-nav ul { overflow-x: visible; }
-  .venue-list, .partner-list { grid-template-columns: repeat(2, 1fr); }
-  .route-list { grid-template-columns: repeat(3, 1fr); }
   .band { padding-left: clamp(2rem, 7vw, 5rem); padding-right: clamp(2rem, 7vw, 5rem); }
   .map-img { max-width: 46rem; margin-inline: auto; }
 }
@@ -353,7 +380,6 @@ a.partner-name { display: inline-block; text-decoration: none; }
 /* ---------- 900 ---------- */
 @media (min-width: 900px) {
   .band, .site-footer, .hero, .site-header { padding-left: max(var(--pad), calc((100% - 62rem) / 2)); padding-right: max(var(--pad), calc((100% - 62rem) / 2)); }
-  .venue-list { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* ---------- reduced motion ---------- */
