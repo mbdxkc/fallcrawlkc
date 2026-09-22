@@ -66,6 +66,23 @@ anchor behind.
     └── map.png       # teaser map, positions only, no names yet
 ```
 
+### Where the artwork comes from
+
+Client assets live in `mediaBrilliance/FallCrawlKC/`. Provenance, so nobody
+re-derives it:
+
+| Site file | Source | Checked |
+|---|---|---|
+| `images/icons.png` | `Fall Crawl Icons.pdf` (22 Sep) | Re-rendered 22 Sep and byte-identical to the file on the site |
+| `images/logo.png` | `Fall Crawl The Pitch.png` | Cropped lockup |
+| `images/map.png` | `Fall Crawl Map 1 Teaser.png` | Processed, not the raw file (1400x1367 against her 1326x1300) |
+
+**`Instagram logo.png` is deliberately unused.** Rendered beside the inline SVG
+the site already draws, at the 20px both appear at, the two are
+indistinguishable. Swapping would cost the `currentColor` tint the header hover
+depends on, add a request, and put a black rectangle on the orange button, since
+her file has no alpha channel. The SVG is the same mark for none of that.
+
 `icons.png` is rendered from the client's `Fall Crawl Icons.pdf` at 2194px wide
 with its black background knocked out, so it sits on the page colour instead of
 on a black rectangle of its own. The words are baked into the artwork, so the
