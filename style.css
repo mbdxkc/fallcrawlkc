@@ -104,8 +104,12 @@ a:hover, a:focus-visible { color: var(--orange); }
   top: 0;
   z-index: 5;
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-template-areas: 'title title social' 'nav nav nav';
+  /* Narrow screens stack: title on row one with the icon overlaid at its
+     right, nav on row two ranged left. The icon SHARES the title's cell
+     rather than taking a column of its own, because a column for the icon
+     has a minimum width and the empty column opposite does not, so the two
+     never balance and the title sat 22px left of centre at 320px. */
+  grid-template-columns: 1fr;
   align-items: center;
   gap: .35rem .75rem;
   padding: .6rem var(--pad);
@@ -120,8 +124,11 @@ a.bar-title { text-decoration: none; }
 a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
 
 .bar-title {
-  grid-area: title;
+  grid-row: 1;
+  grid-column: 1;
+  min-width: 0;
   margin: 0;
+  text-align: center;
   font-size: clamp(.82rem, 3.2vw, .95rem);
   font-weight: 700;
   text-transform: uppercase;
@@ -131,7 +138,10 @@ a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
   text-overflow: ellipsis;
 }
 
-.bar-nav { grid-area: nav; min-width: 0; }
+.bar-nav { grid-row: 2; grid-column: 1; min-width: 0; }
+/* Ranged left. It still scrolls sideways if the links ever outgrow a
+   narrow screen, which is what the overflow below is for. */
+.bar-nav ul { justify-content: flex-start; }
 .bar-nav ul {
   display: flex;
   gap: clamp(.75rem, 3.5vw, 1.5rem);
@@ -158,7 +168,9 @@ a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
 .bar-nav a[aria-current='page'] { color: var(--ink); }
 
 .bar-social {
-  grid-area: social;
+  grid-row: 1;
+  grid-column: 1;
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: .4rem;
@@ -374,12 +386,19 @@ a.partner-name { display: inline-block; text-decoration: none; }
 
 /* ---------- 768 ---------- */
 @media (min-width: 768px) {
+  /* One row once there is room: nav left, title centred, icon right.
+     The outer columns are BOTH 1fr, so they stay equal whatever the nav
+     and the icon actually measure, and the title in the middle centres
+     against the header rather than against whatever space they leave. */
   .site-header {
-    grid-template-areas: 'nav title social';
+    grid-template-columns: 1fr auto 1fr;
     gap: 1rem;
     padding: .7rem var(--pad);
   }
-  .bar-title { justify-self: center; font-size: .95rem; }
+  .bar-nav    { grid-row: 1; grid-column: 1; justify-self: start; }
+  .bar-title  { grid-row: 1; grid-column: 2; }
+  .bar-social { grid-row: 1; grid-column: 3; justify-self: end; }
+  .bar-title { font-size: .95rem; }
   .bar-nav ul { overflow-x: visible; }
   .band { padding-left: clamp(2rem, 7vw, 5rem); padding-right: clamp(2rem, 7vw, 5rem); }
   .map-img { max-width: 46rem; margin-inline: auto; }
