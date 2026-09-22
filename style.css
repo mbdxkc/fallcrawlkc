@@ -153,6 +153,9 @@ a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
   white-space: nowrap;
 }
 .bar-nav a:hover, .bar-nav a:focus-visible { color: var(--orange); }
+/* Home, on the page it points at. Marked so it does not read as a link
+   that does nothing. */
+.bar-nav a[aria-current='page'] { color: var(--ink); }
 
 .bar-social {
   grid-area: social;

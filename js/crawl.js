@@ -269,6 +269,9 @@
      way back. The tests below MUST match the ones the renderers use, or
      the header offers a link to a section that removed itself. */
   var NAV = [
+    /* Home is not a section, it is the crawl page itself, so it carries no
+       anchor and is the one entry that shows unconditionally. */
+    { id: null,       label: 'Home',     on: function () { return true; } },
     { id: 'map',      label: 'Where',    on: function () { return true; } },
     { id: 'spots',    label: 'Spots',    on: function () {
         return (DATA.venues || []).filter(function (v) {
@@ -288,6 +291,7 @@
     // anywhere else the links have to reach back across to it.
     var onCrawl = !!document.querySelector('.hero');
     var live = NAV.filter(function (n) {
+      if (!n.id) return true;                       // Home, always
       return onCrawl ? !!document.getElementById(n.id) : n.on();
     });
     if (!live.length) { host.parentNode.removeChild(host); return; }
@@ -297,7 +301,15 @@
     live.forEach(function (n) {
       var li = document.createElement('li');
       var a  = el('a', null, n.label);
-      a.href = prefix + '#' + n.id;
+      if (n.id) {
+        a.href = prefix + '#' + n.id;
+      } else {
+        // './' rather than '#', so the label means the same thing on every
+        // page. On the crawl page it is where you already are, and saying
+        // so is what stops it reading as a link that does nothing.
+        a.href = './';
+        if (onCrawl) a.setAttribute('aria-current', 'page');
+      }
       li.appendChild(a);
       ul.appendChild(li);
     });
