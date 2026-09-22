@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- charset sits ABOVE the file header on purpose. The spec wants it inside
+         the first 1024 bytes and the header block below is longer than that.
+         Do not tidy it down among the other meta tags. -->
+    <meta charset="utf-8" />
+    <!--
+    ============================================================================
+
+      EAST CROSSROADS FALL CRAWL
+      Privacy
+
+    ============================================================================
+
+      @project      fallcrawlkc
+      @file         privacy.html
+      @updated      2026-09-22
+      @client       East Crossroads Fall Crawl, Kansas City, MO
+      @repository   https://github.com/mbdxkc/fallcrawlkc
+
+      @author       Valdez Campos <dez@mediabrilliance.io>
+      @studio       mediaBrilliance - https://www.mediabrilliance.io
+
+      Copyright (c) 2026 mediaBrilliance. All rights reserved.
+
+    ============================================================================
+      IMPLEMENTATION NOTES
+    ============================================================================
+
+      @desc         Every claim on this page is a fact about the build, not
+                    boilerplate. The site loads no analytics, no cookies, no
+                    storage, no forms and no third-party fonts or scripts -
+                    checked across index.html, style.css and js/crawl.js. If
+                    any of that changes, THIS PAGE CHANGES IN THE SAME COMMIT,
+                    or it becomes a false statement about data handling.
+
+      @scripts      data/crawl.js and js/crawl.js load here only so the header
+                    bar matches the rest of the site. No section ids exist on
+                    this page, so the renderer removes the section nav itself.
+
+    ============================================================================
+    -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Comes off with the one on index.html when the QR ships. -->
+    <meta name="robots" content="noindex, nofollow" />
+
+    <title>Privacy - East Crossroads Fall Crawl</title>
+    <meta name="description" content="The East Crossroads Fall Crawl site collects nothing: no cookies, no analytics, no forms." />
+    <link rel="canonical" href="https://mbdxkc.github.io/fallcrawlkc/privacy.html" />
+    <meta name="theme-color" content="#000000" />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="site-header">
+      <nav class="bar-nav" id="bar-nav" aria-label="Sections"></nav>
+      <p class="bar-title" data-title>East Crossroads Fall Crawl</p>
+      <ul class="bar-social" id="bar-social"></ul>
+    </header>
+
+    <main id="main">
+      <section class="band legal-page">
+        <h1 class="legal-title">Privacy</h1>
+        <div class="prose">
+          <p class="lede">This site does not collect anything about you.</p>
+
+          <h2>What we do not do</h2>
+          <p>No cookies. No analytics. No tracking pixels. No advertising
+            tags. Nothing is written to your device, and no fonts or scripts
+            are loaded from another company.</p>
+          <p>There are no forms. There is nothing to sign up for and nowhere
+            to enter your name, email or phone number.</p>
+
+          <h2>Hosting</h2>
+          <p>The site is hosted on GitHub Pages. Like any web server, GitHub
+            receives what your browser sends when it asks for a page: your IP
+            address, your browser type and the page requested. GitHub uses that
+            to serve the site and to protect it from abuse. That happens before
+            anything on this page runs. We do not see it, and we do not keep
+            it. It is covered by
+            <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement"
+               target="_blank" rel="noopener">GitHub&rsquo;s privacy statement</a>.</p>
+
+          <h2>Links away from here</h2>
+          <p>This page links out to Instagram, to Google Maps for directions,
+            and to the websites and phone numbers of participating businesses
+            and partners. Once you follow one of those you are on someone
+            else&rsquo;s service, under their rules and their privacy policy,
+            not this one.</p>
+          <p>Following or tagging us on Instagram happens entirely on
+            Instagram. We see what any account sees, and nothing more.</p>
+
+          <h2>If this changes</h2>
+          <p>If the site ever starts collecting something, an email signup for
+            instance, this page is updated in the same change that adds it, and
+            the date below moves.</p>
+
+          <h2>Asking about this</h2>
+          <p>Message <a href="https://www.instagram.com/fallcrawlkc" target="_blank"
+             rel="noopener">@fallcrawlkc</a> on Instagram.</p>
+
+          <p class="updated">Last updated 22 September 2026.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <nav class="footer-nav" aria-label="Site">
+        <a href="./">The crawl</a>
+        <a href="privacy.html" aria-current="page">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </nav>
+      <p class="legal">Must be 21+ to purchase or consume alcohol. No purchase required to
+        participate. Participating businesses operate independently and are responsible for
+        their own events, offers, service and premises.</p>
+      <p class="drink"><strong>Please drink responsibly.</strong></p>
+    </footer>
+
+    <script src="data/crawl.js"></script>
+    <script src="js/crawl.js" defer></script>
+  </body>
+</html>

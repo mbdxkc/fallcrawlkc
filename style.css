@@ -382,6 +382,60 @@ a.partner-name { display: inline-block; text-decoration: none; }
   .band, .site-footer, .hero, .site-header { padding-left: max(var(--pad), calc((100% - 62rem) / 2)); padding-right: max(var(--pad), calc((100% - 62rem) / 2)); }
 }
 
+/* ---------- legal pages ---------- */
+/* Privacy and Terms. The bands centre like everything else, but the body
+   copy inside them does not: these are paragraphs somebody actually reads
+   end to end, and centred prose is hard work at that length. Heading
+   centred, copy ranged left, column centred on the page. */
+.legal-title {
+  margin: 0 0 1.25rem;
+  color: var(--orange);
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  font-weight: 800;
+}
+
+.legal-page .prose { text-align: left; }
+
+/* `.band h2` is (0,1,1) and orange at up to 2rem, which is right for a
+   section heading and far too loud for a run of subheadings inside one
+   page. Two classes deep to outrank it rather than fight it. */
+.legal-page .prose h2 {
+  margin: 1.75rem 0 .4rem;
+  color: var(--ink);
+  font-size: clamp(1rem, 3.6vw, 1.1rem);
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+.legal-page .prose h2:first-of-type { margin-top: 1.25rem; }
+.legal-page .prose a { color: var(--orange); }
+.legal-page .prose a:hover,
+.legal-page .prose a:focus-visible { text-decoration: none; }
+
+.updated {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: .85rem;
+}
+
+/* ---------- footer nav ---------- */
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .4rem 1.4rem;
+  margin: 0 0 1.25rem;
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  text-indent: .1em;   /* tracking's trailing space */
+}
+.footer-nav a { color: var(--muted); text-decoration: none; }
+.footer-nav a:hover,
+.footer-nav a:focus-visible { color: var(--orange); }
+.footer-nav a[aria-current='page'] { color: var(--ink); }
+
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

@@ -133,12 +133,21 @@
     paras.forEach(function (t) { host.appendChild(el('p', null, t)); });
   }
 
-  /* ---- participating spots --------------------------------------------- */
+  /* ---- participating spots ---------------------------------------------
+     Each of the three renderers below checks for its own <ul> before it
+     writes. The check is not paranoia: privacy.html and terms.html reuse
+     this file for the header bar and have none of the list containers, and
+     an unguarded appendChild threw there, which aborted init() before the
+     nav and the social icons were built. An EMPTY list hides the fault,
+     because drop() returns first - so it only appears on a page that has
+     data to render and nowhere to put it.
+  ------------------------------------------------------------------------- */
   function venues() {
     var list = (DATA.venues || []).filter(function (v) { return v && v.live !== false; });
     if (!list.length) return drop('spots');
 
     var ul = document.getElementById('venue-list');
+    if (!ul) return;
     var n = document.querySelector('[data-venue-count]');
     if (n) n.textContent = String(list.length);
 
@@ -166,6 +175,7 @@
     var list = DATA.routes || [];
     if (!list.length) return drop('routes');
     var ul = document.getElementById('route-list');
+    if (!ul) return;
     list.forEach(function (r) {
       var li = el('li', 'route');
       li.appendChild(el('h3', 'route-name', r.name || ''));
@@ -179,6 +189,7 @@
     var list = DATA.partners || [];
     if (!list.length) return drop('partners');
     var ul = document.getElementById('partner-list');
+    if (!ul) return;
     list.forEach(function (p) {
       var li = el('li', 'partner');
       var head = p.url ? el('a', 'partner-name') : el('h3', 'partner-name');

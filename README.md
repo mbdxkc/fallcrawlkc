@@ -52,6 +52,8 @@ anchor behind.
 ```
 /
 ├── index.html        # the page
+├── privacy.html      # collects nothing, and says so specifically
+├── terms.html        # plain language, not lawyer-reviewed
 ├── style.css         # 339 lines, mobile-first
 ├── robots.txt        # disallow while pre-launch
 ├── data/
@@ -106,7 +108,12 @@ spec's 1024-byte limit for the charset declaration.
       GitHub Pages (185.199.108-111.153) **first**, then add `CNAME` — never the reverse
 - [ ] Add venues to `data/crawl.js`. The Spots section is absent until then
 - [ ] Replace `images/map.png` with the full map once names are locked
-- [ ] Remove `noindex` and the `robots.txt` disallow
+- [ ] Remove `noindex` and the `robots.txt` disallow. **Three pages carry it
+      now**, not one: index, privacy and terms
+- [ ] `favicon.ico` 404s on every page. No icon asset exists yet
+- [ ] Privacy and terms name no email. Contact routes to the Instagram DM,
+      because the only address in this repo is the studio's, and a studio
+      byline is not the client's legal contact. Swap it if Amy wants one
 - [ ] Decide the QR destination. The pedicab promo's QR currently points at
       Instagram, not this site. **Two codes generated 2026-09-22** and verified
       by decoding them back: one to `fallcrawlkc.com`, one to the Instagram
