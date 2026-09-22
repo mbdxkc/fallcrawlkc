@@ -13,16 +13,20 @@ and the search listing still say it in full.
 
 ---
 
-## Status: pre-launch, not indexed
+## Status: live at https://fallcrawlkc.com
 
 Client first look 15 September: positive on the build. The site is still missing
 its venue list and running an unverified Instagram handle, so that covers the
 shape, not the content.
 
 
-`index.html` carries `noindex, nofollow` and `robots.txt` disallows everything.
-**Both come off before the QR ships.** Live today: no domain, no venue list, and an
-unverified Instagram handle.
+Went live 22 September 2026. DNS moved off Squarespace to GitHub Pages
+(`185.199.108-111.153`, `www` CNAMEd to `mbdxkc.github.io`), the `CNAME` file
+went in after the A records, and Let's Encrypt issued the certificate the same
+afternoon. `noindex` and the `robots.txt` disallow came off once the domain
+answered publicly.
+
+Still missing its venue list, so the Spots section is absent by design.
 
 ---
 
@@ -119,14 +123,13 @@ spec's 1024-byte limit for the charset declaration.
 
 ## Open before launch
 
-- [ ] Point `fallcrawlkc.com` at the site, then swap the six absolute URLs and add `CNAME`.
+- [x] Point `fallcrawlkc.com` at the site, swap the absolute URLs, add `CNAME`.
       Registered 2026-09-14, nameservers at Squarespace, currently a "Coming Soon" page.
       Held there deliberately until the content is in. Change the Squarespace A records to
       GitHub Pages (185.199.108-111.153) **first**, then add `CNAME` — never the reverse
 - [ ] Add venues to `data/crawl.js`. The Spots section is absent until then
 - [ ] Replace `images/map.png` with the full map once names are locked
-- [ ] Remove `noindex` and the `robots.txt` disallow. **Three pages carry it
-      now**, not one: index, privacy and terms
+- [x] Remove `noindex` and the `robots.txt` disallow, across all three pages
 - [ ] `favicon.ico` 404s on every page. No icon asset exists yet
 - [ ] Privacy and terms name no email. Contact routes to the Instagram DM,
       because the only address in this repo is the studio's, and a studio
