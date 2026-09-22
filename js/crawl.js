@@ -317,14 +317,53 @@
   }
 
   function title() {
-    var t = document.querySelector('[data-title]');
-    if (t && DATA.title) t.textContent = DATA.title;
+    // Two spans, not one string: CSS decides which is visible at which
+    // width, so the bar can carry the full name on a desktop and a short
+    // one beside a menu button on a phone.
+    var full = document.querySelector('.title-full');
+    if (full && DATA.title) full.textContent = DATA.title;
+    var short = document.querySelector('.title-short');
+    if (short && (DATA.titleShort || DATA.title)) {
+      short.textContent = DATA.titleShort || DATA.title;
+    }
+  }
+
+  /* ---- the menu button -------------------------------------------------
+     Only does anything on a narrow screen: above the breakpoint CSS hides
+     the button and shows the nav, so the open state is irrelevant there.
+     The class lives on the header because both the button's bars and the
+     panel are styled from it.
+  --------------------------------------------------------------------- */
+  function menu() {
+    var btn = document.getElementById('bar-toggle');
+    var bar = document.querySelector('.site-header');
+    var host = document.getElementById('bar-nav');
+    if (!btn || !bar) return;
+    // No links to show means no button: this runs after nav(), which
+    // removes the nav outright when nothing survived.
+    if (!host) { btn.parentNode.removeChild(btn); return; }
+
+    function set(open) {
+      bar.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    btn.addEventListener('click', function () {
+      set(bar.className.indexOf('is-open') === -1);
+    });
+    // Following a link closes it; on the crawl page the target is an
+    // anchor on the same page, so nothing else would.
+    host.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') set(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') set(false);
+    });
   }
 
   function init() {
     basics(); title(); about();
     venues(); routes(); partners();
-    nav(); socials();
+    nav(); socials(); menu();
   }
 
   if (document.readyState === 'loading') {

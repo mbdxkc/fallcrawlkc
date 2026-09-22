@@ -25,6 +25,9 @@ window.FALL_CRAWL = {
 
   /* ---- The basics. Change these if anything moves. ---- */
   title:     'East Crossroads Fall Crawl',
+  // Shown in the bar on narrow screens, where the full name will not fit
+  // beside a menu button and the Instagram icon on one line.
+  titleShort: 'Fall Crawl',
   // Long form. NOT shown on the page at the moment - the big 10.24.26 is
   // the date on display. Kept because the page title and the search
   // listing still say it, and because it is the one place it is written
