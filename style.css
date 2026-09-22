@@ -114,6 +114,11 @@ a:hover, a:focus-visible { color: var(--orange); }
   backdrop-filter: blur(6px);
 }
 
+/* A <p> on the crawl page and an <a> on the others, where it is the way
+   home. Both need to look identical. */
+a.bar-title { text-decoration: none; }
+a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
+
 .bar-title {
   grid-area: title;
   margin: 0;

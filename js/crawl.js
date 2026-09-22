@@ -262,24 +262,42 @@
      Built AFTER the sections render, so a section that removed itself for
      being empty cannot leave a link pointing at nothing.
   ---------------------------------------------------------------------- */
+  /* `on` answers "will this section exist on the crawl page", from the
+     DATA rather than from the DOM. It has to: privacy.html and terms.html
+     carry the same header and none of these sections, so asking the
+     document would remove the nav on exactly the pages that most need a
+     way back. The tests below MUST match the ones the renderers use, or
+     the header offers a link to a section that removed itself. */
   var NAV = [
-    { id: 'map',      label: 'Where' },
-    { id: 'spots',    label: 'Spots' },
-    { id: 'routes',   label: 'Crawls' },
-    { id: 'partners', label: 'Partners' }
+    { id: 'map',      label: 'Where',    on: function () { return true; } },
+    { id: 'spots',    label: 'Spots',    on: function () {
+        return (DATA.venues || []).filter(function (v) {
+          return v && v.live !== false; }).length > 0; } },
+    { id: 'routes',   label: 'Crawls',   on: function () {
+        return (DATA.routes || []).length > 0; } },
+    { id: 'partners', label: 'Partners', on: function () {
+        return (DATA.partners || []).length > 0; } }
   ];
 
   function nav() {
     var host = document.getElementById('bar-nav');
     if (!host) return;
-    var live = NAV.filter(function (n) { return document.getElementById(n.id); });
+
+    // The crawl page is the one with the hero on it. On it the DOM is
+    // authoritative, because a section may already have removed itself;
+    // anywhere else the links have to reach back across to it.
+    var onCrawl = !!document.querySelector('.hero');
+    var live = NAV.filter(function (n) {
+      return onCrawl ? !!document.getElementById(n.id) : n.on();
+    });
     if (!live.length) { host.parentNode.removeChild(host); return; }
 
+    var prefix = onCrawl ? '' : './';
     var ul = document.createElement('ul');
     live.forEach(function (n) {
       var li = document.createElement('li');
       var a  = el('a', null, n.label);
-      a.href = '#' + n.id;
+      a.href = prefix + '#' + n.id;
       li.appendChild(a);
       ul.appendChild(li);
     });
