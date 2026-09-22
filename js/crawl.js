@@ -13,7 +13,7 @@
  *   @version      1.0.0
  *   @updated      2026-09-15
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
- *   @url          https://mbdxkc.github.io/fallcrawlkc/
+ *   @url          https://fallcrawlkc.com/
  *   @repository   https://github.com/mbdxkc/fallcrawlkc
  *
  * ============================================================================
