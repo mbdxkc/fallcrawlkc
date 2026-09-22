@@ -5,6 +5,10 @@ Single-page event site. Static HTML, hand-rolled CSS, vanilla JS, no build step.
 **Saturday, October 24, 2026** — the Saturday before Halloween. East Crossroads, Kansas City.
 No tickets, no wristbands, no set route.
 
+The long-form date is **no longer shown on the page** (client, 22 September). The
+big `10.24.26` carries it. `date` stays in `data/crawl.js` because the page title
+and the search listing still say it in full.
+
 **by mediaBrilliance.io**
 
 ---
@@ -56,8 +60,15 @@ anchor behind.
 │   └── crawl.js      # renders every list from data/crawl.js
 └── images/
     ├── logo.png      # lockup, cropped from the pitch board
+    ├── icons.png     # free / 21+ / no wristbands / costumes strip
     └── map.png       # teaser map, positions only, no names yet
 ```
+
+`icons.png` is rendered from the client's `Fall Crawl Icons.pdf` at 2194px wide
+with its black background knocked out, so it sits on the page colour instead of
+on a black rectangle of its own. The words are baked into the artwork, so the
+`alt` text carries them: that string is the only place the page states 21+
+outside the footer's legal line.
 
 The four scripts the base template ships (`header.js`, `footer.js`,
 `page-transition.js`, `utils.js`) were removed. All four serve a multi-page nav that
@@ -97,7 +108,10 @@ spec's 1024-byte limit for the charset declaration.
 - [ ] Replace `images/map.png` with the full map once names are locked
 - [ ] Remove `noindex` and the `robots.txt` disallow
 - [ ] Decide the QR destination. The pedicab promo's QR currently points at
-      Instagram, not this site
+      Instagram, not this site. **Two codes generated 2026-09-22** and verified
+      by decoding them back: one to `fallcrawlkc.com`, one to the Instagram
+      profile. The website one is only correct once the domain stops serving
+      Squarespace's "Coming Soon" page
 - [ ] Client asset fix: the pedicab promo reads "WINE & COCKAILS"
 
 ---

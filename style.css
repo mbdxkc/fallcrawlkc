@@ -217,7 +217,9 @@ a:hover, a:focus-visible { color: var(--orange); }
 
 /* primary call to action: Instagram */
 .cta {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: .55em;
   margin-top: clamp(1.5rem, 6vw, 2.25rem);
   padding: .85em 1.6em;
   background: var(--orange);
@@ -230,23 +232,37 @@ a:hover, a:focus-visible { color: var(--orange); }
   transition: filter .2s ease, transform .2s ease;
 }
 .cta:hover, .cta:focus-visible { color: #fff; filter: brightness(1.14); transform: translateY(-1px); }
-.cta-handle { display: block; font-weight: 400; font-size: .85em; opacity: .92; }
+/* Inline, not block: the handle reads as part of the phrase on the button
+   rather than as a second line hanging under it. */
+.cta-handle { font-weight: 700; opacity: .95; }
+.cta-icon { width: 1.15em; height: 1.15em; flex: none; }
 .cta-handle:empty { display: none; }
 
-.facts {
-  margin: clamp(1.75rem, 7vw, 2.5rem) 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: .5rem clamp(1rem, 4vw, 2rem);
-  color: var(--muted);
-  font-size: .9rem;
-  text-transform: uppercase;
-  letter-spacing: .12em;
-  text-indent: .12em;
+/* Client icon strip: free to attend / 21+ / no wristbands / costumes.
+   Replaces the text list that used to sit here and carries the same facts.
+   The artwork's black background is knocked out, so it sits on the page
+   colour instead of on a black rectangle of its own. */
+.icons {
+  display: block;
+  width: min(100%, 46rem);
+  height: auto;
+  margin: clamp(1.5rem, 6vw, 2.25rem) auto 0;
 }
+
+/* The sentence under the Instagram button. */
+.cta-note {
+  margin: .9rem auto 0;
+  max-width: 32rem;
+  color: var(--muted);
+  font-size: .95rem;
+  line-height: 1.5;
+}
+
+/* Body copy inside a band, measure-limited like .lede so paragraphs do not
+   run the full width of a desktop screen. */
+.prose { max-width: var(--measure); }
+.prose p { margin: 0 0 1rem; }
+.prose p:last-child { margin-bottom: 0; }
 
 /* ---------- bands ---------- */
 .band {
@@ -317,7 +333,6 @@ a.partner-name { display: inline-block; text-decoration: none; }
 
 /* ---------- 480 ---------- */
 @media (min-width: 480px) {
-  .facts { font-size: .95rem; }
 }
 
 /* ---------- 768 ---------- */

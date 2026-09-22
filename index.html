@@ -139,22 +139,37 @@
              alt="East Crossroads Fall Crawl: a skeleton raising a cocktail over the Kansas City skyline." />
         <p class="date-big" data-date-short>10.24.26</p>
         <h1>Saturday before Halloween</h1>
-        <p class="date-full" data-date>Saturday, October 24, 2026</p>
         <p class="hours" data-hours></p>
 
         <p class="pitch">No tickets. No wristbands. No set route.<br />
           <span>A build-your-own-adventure type of bar crawl.</span></p>
 
+        <!-- Client artwork. The alt text carries the words baked into it,
+             which are the only place the page states 21+ outside the
+             footer's legal line. -->
+        <img class="icons" src="images/icons.png" width="2194" height="524"
+             loading="lazy" decoding="async"
+             alt="Free to attend. 21+ only. No wristbands. Costumes encouraged." />
+
         <a class="cta" data-ig href="https://www.instagram.com/" target="_blank" rel="noopener">
-          Follow along on Instagram
+          <svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true" focusable="false">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="5" />
+            <circle cx="12" cy="12" r="4.2" />
+            <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none" />
+          </svg>
+          <span data-ig-button>Follow + tag</span>
           <span class="cta-handle" data-ig-handle></span>
         </a>
 
-        <ul class="facts">
-          <li>Wine &amp; cocktails</li>
-          <li>Costumes encouraged</li>
-          <li>21+</li>
-        </ul>
+        <p class="cta-note" data-ig-blurb></p>
+      </section>
+
+      <!-- ===== about ===== -->
+      <section class="band" id="about">
+        <h2 data-about-heading></h2>
+        <div class="prose" id="about-copy"></div>
       </section>
 
       <!-- ===== map ===== -->

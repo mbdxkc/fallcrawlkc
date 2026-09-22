@@ -100,6 +100,37 @@
       var t = a.querySelector('[data-ig-handle]');
       if (t) t.textContent = '@' + DATA.instagram;
     });
+
+    var ig = DATA.ig || {};
+    var btn = document.querySelector('[data-ig-button]');
+    if (btn && ig.button) btn.textContent = ig.button;
+
+    // The sentence under the button. Removed rather than left empty, so a
+    // blank line never opens up under the call to action.
+    var blurb = document.querySelector('[data-ig-blurb]');
+    if (blurb) {
+      if (ig.blurb) blurb.textContent = ig.blurb;
+      else if (blurb.parentNode) blurb.parentNode.removeChild(blurb);
+    }
+  }
+
+  /* ---- the block under the hero ---------------------------------------
+     Same rule as every list here: nothing to say removes the section
+     outright rather than leaving a heading with nothing under it.
+  --------------------------------------------------------------------- */
+  function about() {
+    var a = DATA.about || {};
+    var paras = (a.paragraphs || []).filter(function (t) { return t && t.trim(); });
+    if (!a.heading && !paras.length) return drop('about');
+
+    var h = document.querySelector('[data-about-heading]');
+    if (h) {
+      if (a.heading) h.textContent = a.heading;
+      else if (h.parentNode) h.parentNode.removeChild(h);
+    }
+    var host = document.getElementById('about-copy');
+    if (!host) return;
+    paras.forEach(function (t) { host.appendChild(el('p', null, t)); });
   }
 
   /* ---- participating spots --------------------------------------------- */
@@ -250,7 +281,7 @@
   }
 
   function init() {
-    basics(); title();
+    basics(); title(); about();
     venues(); routes(); partners();
     nav(); socials();
   }
