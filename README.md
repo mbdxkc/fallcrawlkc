@@ -58,16 +58,22 @@ anchor behind.
 ├── index.html        # the page
 ├── privacy.html      # collects nothing, and says so specifically
 ├── terms.html        # plain language, not lawyer-reviewed
-├── style.css         # 339 lines, mobile-first
-├── robots.txt        # disallow while pre-launch
+├── style.css         # mobile-first, no build step
+├── robots.txt        # Allow: /, since launch
+├── favicon.ico       # 16 / 32 / 48, built, not hand-cropped
 ├── data/
 │   └── crawl.js      # THE ONLY FILE THE CLIENT EDITS
 ├── js/
 │   └── crawl.js      # renders every list from data/crawl.js
+├── tools/
+│   └── make-icons.py # cuts every icon out of images/logo.png
 └── images/
     ├── logo.png      # lockup, cropped from the pitch board
     ├── icons.png     # free / 21+ / no wristbands / costumes strip
-    └── map.png       # teaser map, positions only, no names yet
+    ├── map.png       # teaser map, positions only, no names yet
+    ├── mark.png      # the skeleton lady alone, square, 684px
+    ├── apple-touch-icon.png
+    └── favicon-32.png
 ```
 
 ### Where the artwork comes from
@@ -80,6 +86,7 @@ re-derives it:
 | `images/icons.png` | `Fall Crawl Icons.pdf` (22 Sep) | Re-rendered 22 Sep and byte-identical to the file on the site |
 | `images/logo.png` | `Fall Crawl The Pitch.png` | Cropped lockup |
 | `images/map.png` | `Fall Crawl Map 1 Teaser.png` | Processed, not the raw file (1400x1367 against her 1326x1300) |
+| `images/mark.png`, `favicon.ico`, `apple-touch-icon.png`, `favicon-32.png` | `images/logo.png` | Built 22 Sep by `tools/make-icons.py`. Re-run it rather than re-cropping |
 
 **`Instagram logo.png` is deliberately unused.** Rendered beside the inline SVG
 the site already draws, at the 20px both appear at, the two are
@@ -111,10 +118,17 @@ ships as artwork and live type uses a system stack.
 **Paths are relative, not root-absolute.** A GitHub Pages project site is served from
 `/fallcrawlkc/`, where `/images/...` resolves outside the project and 404s.
 
-**`canonical`, `og:url` and `og:image` point at the Pages URL**, not at
-`fallcrawlkc.com`, because that domain is **not registered**. Pointing head tags at a
-domain with no DNS is worse than leaving them off. One find-and-replace when it
-resolves.
+**`canonical`, `og:url` and `og:image` point at `fallcrawlkc.com`.** They pointed
+at the Pages URL until the domain resolved on 22 September, because head tags
+aimed at a domain with no DNS are worse than none.
+
+**The icons are built, not drawn.** `tools/make-icons.py` cuts the skeleton lady
+out of `images/logo.png`, blanks the three skyline fragments and the stray serif
+that the wordmark used to hide, and writes every size. The `.ico` carries a
+tighter crop at 16 than at 32 and 48: the whole figure turns to grey mush that
+small, and her skull in profile does not. Run `python3 tools/make-icons.py`
+instead of cropping by hand, so the artwork stays reproducible from the one file
+the client supplied.
 
 **`<meta charset>` sits above the file header comment.** The header runs past the
 spec's 1024-byte limit for the charset declaration.
@@ -130,7 +144,8 @@ spec's 1024-byte limit for the charset declaration.
 - [ ] Add venues to `data/crawl.js`. The Spots section is absent until then
 - [ ] Replace `images/map.png` with the full map once names are locked
 - [x] Remove `noindex` and the `robots.txt` disallow, across all three pages
-- [ ] `favicon.ico` 404s on every page. No icon asset exists yet
+- [x] `favicon.ico`, `apple-touch-icon.png` and `favicon-32.png`, declared on
+      all three pages. Built from the logo by `tools/make-icons.py`
 - [ ] Privacy and terms name no email. Contact routes to the Instagram DM,
       because the only address in this repo is the studio's, and a studio
       byline is not the client's legal contact. Swap it if Amy wants one
