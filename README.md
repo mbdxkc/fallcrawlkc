@@ -66,15 +66,23 @@ Still missing its venue list, so the Spots section is absent by design.
 ├── js/
 │   └── crawl.js      # renders every list from data/crawl.js
 ├── tools/
-│   └── make-icons.py # cuts every icon out of images/logo.png
+│   ├── make-icons.py # cuts every icon out of images/logo.png
+│   └── make-webp.py  # rebuilds the three images the page loads
 └── images/
-    ├── logo.png      # lockup, cropped from the pitch board
-    ├── icons.png     # free / 21+ / no wristbands / costumes strip
-    ├── map.png       # teaser map, positions only, no names yet
-    ├── mark.png      # the skeleton lady alone, square, 684px
+    ├── logo.webp     # the lockup, as the page loads it
+    ├── icons.webp    # free / 21+ / no wristbands / costumes strip
+    ├── map.webp      # teaser map, positions only, no names yet
+    ├── logo.png      # SOURCE, and still the og:image for share cards
+    ├── icons.png     # SOURCE only, nothing links to it
+    ├── map.png       # SOURCE only, nothing links to it
+    ├── mark.png      # the skeleton lady alone, for a social avatar
     ├── apple-touch-icon.png
     └── favicon-32.png
 ```
+
+The `.png` files are sources. Only `logo.png` is still served, to the share-card
+scrapers. `map.png` stays because it was processed from the client's teaser by
+hand and no command reproduces it.
 
 ### Where the artwork comes from
 
@@ -86,6 +94,7 @@ re-derives it:
 | `images/icons.png` | `Fall Crawl Icons.pdf` (22 Sep) | Re-rendered 22 Sep and byte-identical to the file on the site |
 | `images/logo.png` | `Fall Crawl The Pitch.png` | Cropped lockup |
 | `images/map.png` | `Fall Crawl Map 1 Teaser.png` | Processed, not the raw file (1400x1367 against her 1326x1300) |
+| `images/*.webp` | the `.png` beside each | Built 24 Sep by `tools/make-webp.py`. Re-run it rather than converting by hand |
 | `images/mark.png`, `favicon.ico`, `apple-touch-icon.png`, `favicon-32.png` | `images/logo.png` | Built 22 Sep by `tools/make-icons.py`. Re-run it rather than re-cropping |
 
 **`Instagram logo.png` is deliberately unused.** Rendered beside the inline SVG
@@ -111,6 +120,13 @@ does not exist here, so each would have been a request rendering nothing.
 **Brand orange is `#C84008`**, sampled from the logo artwork rather than picked. It
 measures **4.19:1 on black**: clears 3:1 for large text, fails 4.5:1 for body copy.
 It is restricted to display type, rules and hover. Body copy uses `#F8F8F8`.
+
+**The page loads WebP, the share tags load PNG.** Converting the three images the
+page actually requests took them from 1,701 KB to 216 KB, an 87% cut, and `map.png`
+alone was two thirds of the whole site. Settings differ per image and
+`tools/make-webp.py` explains why: `icons` is lossless because four flat shapes with
+transparency compress better that way, 27 KB against 66 for lossy. Checked at 1:1
+against the originals before shipping.
 
 **No webfont.** The display face in the artwork is not licensed here, so the lockup
 ships as artwork and live type uses a system stack.

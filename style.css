@@ -278,7 +278,7 @@ a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
   text-indent: .16em;
 }
 
-.date-full, .hours {
+.hours {
   margin: .4rem 0 0;
   color: var(--muted);
   font-size: clamp(.95rem, 3vw, 1.05rem);

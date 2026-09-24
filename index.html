@@ -78,6 +78,9 @@
     <meta property="og:description" content="No tickets. No wristbands. No set route. A build-your-own-adventure bar crawl through the East Crossroads, the Saturday before Halloween." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://fallcrawlkc.com/" />
+    <!-- The share tags keep the PNG while the page itself loads WebP. A
+         scraper is the one client where PNG is still the safer bet, and it
+         fetches this once for a card rather than on every page view. -->
     <meta property="og:image" content="https://fallcrawlkc.com/images/logo.png" />
     <meta property="og:image:width" content="1000" />
     <meta property="og:image:height" content="489" />
@@ -161,7 +164,7 @@
            data/crawl.js, which is the only place they live. -->
       <!-- ===== hero ===== -->
       <section class="hero">
-        <img class="logo" src="images/logo.png" width="1000" height="489"
+        <img class="logo" src="images/logo.webp" width="1000" height="489"
              fetchpriority="high" decoding="sync"
              alt="East Crossroads Fall Crawl: a skeleton raising a cocktail over the Kansas City skyline." />
         <p class="date-big" data-date-short></p>
@@ -189,7 +192,7 @@
         <!-- Client artwork. The alt text carries the words baked into it,
              which are the only place the page states 21+ outside the
              footer's legal line. -->
-        <img class="icons" src="images/icons.png" width="2194" height="524"
+        <img class="icons" src="images/icons.webp" width="2194" height="524"
              loading="lazy" decoding="async"
              alt="Free to attend. 21+ only. No wristbands. Costumes encouraged." />
       </section>
@@ -204,7 +207,7 @@
       <section class="band" id="map">
         <h2>Where</h2>
         <p class="lede">The East Crossroads, Kansas City. Walnut over to Locust, Truman Road down to 19th.</p>
-        <img class="map-img" src="images/map.png" width="1400" height="1367" loading="lazy" decoding="async"
+        <img class="map-img" src="images/map.webp" width="1400" height="1367" loading="lazy" decoding="async"
              alt="Hand-drawn map of the East Crossroads showing participating spots between Walnut Street and Locust Street, Truman Road and 19th Street." />
         <p class="note">Teaser map. The full version with every name lands closer to the date.</p>
       </section>
