@@ -84,8 +84,6 @@
 
   /* ---- the basics ------------------------------------------------------ */
   function basics() {
-    var d = document.querySelector('[data-date]');
-    if (d && DATA.date) d.textContent = DATA.date;
     var s = document.querySelector('[data-date-short]');
     if (s && DATA.dateShort) s.textContent = DATA.dateShort;
 

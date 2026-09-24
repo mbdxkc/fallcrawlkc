@@ -22,7 +22,6 @@ window.FALL_CRAWL = {
 
   title:      "East Crossroads Fall Crawl",
   titleShort: "Fall Crawl",          // used on phones, where the full name will not fit
-  date:       "Saturday, October 24, 2026",   // search listings only, not on the page
   dateShort:  "10.24.26",            // the big orange date
   hours:      "",                    // e.g. "4 p.m. to midnight". Empty hides the line
   instagram:  "fallcrawlkc",         // handle only, no @

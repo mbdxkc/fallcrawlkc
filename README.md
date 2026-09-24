@@ -21,9 +21,11 @@ To undo: **Commits** at the top of this page, find yours, **...**, **Revert**.
 Single-page event site. Static HTML, hand-rolled CSS, vanilla JS, no build step.
 **by mediaBrilliance.io**
 
-The long-form date is **no longer shown on the page** (client, 22 September). The
-big `10.24.26` carries it. `date` stays in `data/crawl.js` because the page title
-and the search listing still say it in full.
+The long-form date came off the page on 22 September at the client's request; the
+big `10.24.26` carries it now. It survives in `index.html` alone, in the `<title>`,
+the meta description and the Event JSON-LD. There was a `date` field in
+`data/crawl.js` justified by those, which was wrong: they are hardcoded and never
+read it. Changing the event date is an `index.html` job.
 
 An empty list removes its whole section from the page rather than rendering an
 empty heading, so nothing half-finished can reach a visitor. The header links are
