@@ -1,46 +1,18 @@
 # East Crossroads Fall Crawl
 
-**Live at [fallcrawlkc.com](https://fallcrawlkc.com)**
-Saturday, October 24, 2026, the Saturday before Halloween. East Crossroads, Kansas City.
-No tickets, no wristbands, no set route.
+Live at **[fallcrawlkc.com](https://fallcrawlkc.com)**
 
 ---
 
 ## Editing the site
 
-Everything that changes lives in one file, and you edit it right here in the
-browser. Nothing to install, no password beyond your GitHub login.
+### [Open the event details →](https://github.com/mbdxkc/fallcrawlkc/edit/main/data/crawl.js)
 
-### [**Open the event details to edit**](https://github.com/mbdxkc/fallcrawlkc/edit/main/data/crawl.js)
+1. Type between the quote marks. Leave the quotes and commas alone.
+2. Click the green **Commit changes** button, then **Commit changes** again in the box.
+3. Reload [fallcrawlkc.com](https://fallcrawlkc.com) after a minute.
 
-1. That link opens the file ready to type in
-2. Change the words between the quote marks
-3. Green **Commit changes** button at the bottom, then **Commit changes** again
-   in the box that appears. The settings in that box are already right
-4. Reload [fallcrawlkc.com](https://fallcrawlkc.com) in about a minute
-
-**Keep every quote mark and comma where it is** and nothing can break. If one
-does go missing, that section simply hides itself until it is fixed. The logo,
-the date and the headline live elsewhere and are always there.
-
-### What is in that file
-
-| Section | What it changes on the site |
-|---|---|
-| The basics | The big date, the hours line, the Instagram handle |
-| The Instagram button | The orange button under the logo, and the line beneath it |
-| The block under the hero | The headline and the paragraphs about the night |
-| Social icons | The icons at the top right |
-| **Participating spots** | The list of bars. The whole section stays hidden until the first one is added |
-| Suggested crawls | Optional routes. Hidden until you turn them on |
-| Partners | EZ Pedicabs, and anyone else who joins |
-
-### If you change your mind
-
-Click **Commits** at the top of this page, find yours, click the **...** on the
-right and choose **Revert**. The site goes back to how it was on the same
-one-minute cycle. Nothing is ever lost, and there is no edit you can make that
-someone cannot undo.
+To undo: **Commits** at the top of this page, find yours, **...**, **Revert**.
 
 ---
 

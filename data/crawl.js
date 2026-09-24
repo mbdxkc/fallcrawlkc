@@ -4,7 +4,7 @@
  *
  *    1. Click the pencil icon, top right
  *    2. Change the words between the quote marks
- *    3. Green "Commit changes" button at the bottom, then again in the box
+ *    3. Click the green "Commit changes" button, then again in the box
  *    4. Reload fallcrawlkc.com in about a minute
  *
  *  Keep every quote mark and comma where it is and nothing can break. If one
