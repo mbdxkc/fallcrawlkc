@@ -1,15 +1,62 @@
 # East Crossroads Fall Crawl
 
-Single-page event site. Static HTML, hand-rolled CSS, vanilla JS, no build step.
-
-**Saturday, October 24, 2026** — the Saturday before Halloween. East Crossroads, Kansas City.
+**Live at [fallcrawlkc.com](https://fallcrawlkc.com)**
+Saturday, October 24, 2026, the Saturday before Halloween. East Crossroads, Kansas City.
 No tickets, no wristbands, no set route.
+
+---
+
+## Editing the site
+
+Everything that changes lives in one file, and you edit it right here in the
+browser. Nothing to install, no password beyond your GitHub login.
+
+### [**Open the event details to edit**](https://github.com/mbdxkc/fallcrawlkc/edit/main/data/crawl.js)
+
+1. That link opens the file ready to type in
+2. Change the words between the quote marks
+3. Green **Commit changes** button at the bottom, then **Commit changes** again
+   in the box that appears. The settings in that box are already right
+4. Reload [fallcrawlkc.com](https://fallcrawlkc.com) in about a minute
+
+**Keep every quote mark and comma where it is** and nothing can break. If one
+does go missing, that section simply hides itself until it is fixed. The logo,
+the date and the headline live elsewhere and are always there.
+
+### What is in that file
+
+| Section | What it changes on the site |
+|---|---|
+| The basics | The big date, the hours line, the Instagram handle |
+| The Instagram button | The orange button under the logo, and the line beneath it |
+| The block under the hero | The headline and the paragraphs about the night |
+| Social icons | The icons at the top right |
+| **Participating spots** | The list of bars. The whole section stays hidden until the first one is added |
+| Suggested crawls | Optional routes. Hidden until you turn them on |
+| Partners | EZ Pedicabs, and anyone else who joins |
+
+### If you change your mind
+
+Click **Commits** at the top of this page, find yours, click the **...** on the
+right and choose **Revert**. The site goes back to how it was on the same
+one-minute cycle. Nothing is ever lost, and there is no edit you can make that
+someone cannot undo.
+
+---
+
+# Notes for whoever maintains this
+
+Single-page event site. Static HTML, hand-rolled CSS, vanilla JS, no build step.
+**by mediaBrilliance.io**
 
 The long-form date is **no longer shown on the page** (client, 22 September). The
 big `10.24.26` carries it. `date` stays in `data/crawl.js` because the page title
 and the search listing still say it in full.
 
-**by mediaBrilliance.io**
+An empty list removes its whole section from the page rather than rendering an
+empty heading, so nothing half-finished can reach a visitor. The header links are
+built *after* the sections render, so a section that removes itself never leaves a
+dead anchor behind.
 
 ---
 
@@ -27,27 +74,6 @@ afternoon. `noindex` and the `robots.txt` disallow came off once the domain
 answered publicly.
 
 Still missing its venue list, so the Spots section is absent by design.
-
----
-
-## Editing the content
-
-Everything that changes week to week lives in **`data/crawl.js`**. Nothing else needs
-touching, and the client edits it from GitHub's web editor:
-
-1. Open `data/crawl.js` on GitHub
-2. Pencil icon, top right
-3. Change the text between the quote marks
-4. Commit changes
-
-That file holds the date, the Instagram handle, the social icons, the venue list,
-the suggested crawls and the partners. Instructions are written at the top of it in
-plain language.
-
-An empty list removes its whole section from the page rather than rendering an empty
-heading, so nothing half-finished can reach a visitor. The header links are built
-*after* the sections render, so a section that removes itself never leaves a dead
-anchor behind.
 
 ---
 
