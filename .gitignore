@@ -1,0 +1,3 @@
+# macOS writes these into every folder it opens. Nothing here is built, so
+# this file exists for that one reason.
+.DS_Store
