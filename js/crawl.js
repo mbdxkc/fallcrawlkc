@@ -287,10 +287,10 @@
     /* Home is not a section, it is the crawl page itself, so it carries no
        anchor and is the one entry that shows unconditionally. */
     { id: null,     label: 'Home',   on: function () { return true; } },
+    { id: 'spin',   label: 'Spin',   on: function () { return true; } },
     { id: 'map',    label: 'Where',  on: function () { return true; } },
     { id: 'expect', label: 'Expect', on: function () {
         return (DATA.expect || []).length > 0; } },
-    { id: 'spin',   label: 'Spin',   on: function () { return true; } },
     { id: 'spots',  label: 'Spots',  on: function () {
         return liveVenues().length > 0; } }
   ];
