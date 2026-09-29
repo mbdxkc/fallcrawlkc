@@ -173,7 +173,9 @@ drawn once, five twinkling stars) under a streetlight haze along the bottom of
 the window, the sky as it looks from downtown. The header reads "East Crossroads
 Fall Crawl - KCMO" (29 Sep, the only visible place the page names the city), and
 the nav stays behind the menu button below 1100px, where five links would run
-into the title. All motion is off under
+into the title. The Instagram button is the handle alone in a glowing orange
+ring (`.cta-ig`), filling on hover; `ig.button` in the data file can put a word
+back in front of it. All motion is off under
 `prefers-reduced-motion`. Every header layer was contrast-checked against the
 title and links.
 

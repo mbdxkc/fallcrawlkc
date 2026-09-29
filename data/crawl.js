@@ -31,7 +31,7 @@ window.FALL_CRAWL = {
   /* ---- The Instagram button under the hero --------------------------- */
 
   ig: {
-    button: "Follow",                // the @handle is added for you
+    button: "",                      // a word before the @handle, e.g. "Follow". Empty shows the handle alone
     blurb:  "",                      // the line under the button. Empty hides it
   },
 

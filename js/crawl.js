@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.5.0
+ *   @version      1.5.1
  *   @updated      2026-09-29
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.5.0  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.5.1  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -97,6 +97,8 @@
       a.href = 'https://www.instagram.com/' + DATA.instagram;
       var t = a.querySelector('[data-ig-handle]');
       if (t) t.textContent = '@' + DATA.instagram;
+      // The icon is hidden from screen readers, so the link says where it goes.
+      a.setAttribute('aria-label', '@' + DATA.instagram + ' on Instagram');
     });
 
     var ig = DATA.ig || {};
