@@ -112,6 +112,55 @@
     }
   }
 
+  /* ---- countdown and add-to-calendar -----------------------------------
+     Both run from DATA.date (YYYY-MM-DD). The countdown reads "N days to
+     go", then "Tomorrow", then "Tonight", and disappears after the event,
+     taking the calendar buttons with it. Days are counted in the visitor's
+     own calendar, midnight to midnight. */
+  function eventDay() {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(DATA.date || '');
+    return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null;
+  }
+
+  function countdown() {
+    var n = document.querySelector('[data-countdown]');
+    var day = eventDay();
+    if (!n) return;
+    if (!day) { n.parentNode.removeChild(n); return; }
+    var now = new Date(); now.setHours(0, 0, 0, 0);
+    var days = Math.round((day - now) / 86400000);
+    if (days < 0) { n.parentNode.removeChild(n); return; }
+    n.textContent = days === 0 ? 'Tonight' : days === 1 ? 'Tomorrow' : days + ' days to go';
+    if (days === 0) n.className += ' is-tonight';
+  }
+
+  function calendar() {
+    var box = document.getElementById('cal');
+    var day = eventDay();
+    if (!box || !day) return;
+    var now = new Date(); now.setHours(0, 0, 0, 0);
+    if (day < now) return;
+    var pad = function (x) { return (x < 10 ? '0' : '') + x; };
+    var ymd = function (d) { return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()); };
+    var next = new Date(day); next.setDate(next.getDate() + 1);
+    var title = DATA.title || 'East Crossroads Fall Crawl';
+    var where = 'East Crossroads, Kansas City, MO';
+    var about = 'A build-your-own-adventure bar crawl. No tickets. No wristbands. No set route. 21+. ' +
+                'Spots, specials and the spin wheel: https://fallcrawlkc.com/';
+    // An all-day event: no official hours have been published.
+    var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//fallcrawlkc//EN', 'BEGIN:VEVENT',
+      'UID:fallcrawl-' + ymd(day) + '@fallcrawlkc.com', 'DTSTAMP:' + ymd(new Date()) + 'T000000Z',
+      'DTSTART;VALUE=DATE:' + ymd(day), 'DTEND;VALUE=DATE:' + ymd(next),
+      'SUMMARY:' + title, 'LOCATION:' + where.replace(/,/g, '\\,'),
+      'DESCRIPTION:' + about.replace(/,/g, '\\,'), 'URL:https://fallcrawlkc.com/',
+      'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+    document.getElementById('cal-ics').href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+    document.getElementById('cal-google').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+      '&text=' + encodeURIComponent(title) + '&dates=' + ymd(day) + '/' + ymd(next) +
+      '&details=' + encodeURIComponent(about) + '&location=' + encodeURIComponent(where);
+    box.hidden = false;
+  }
+
   /* ---- the headline over the map ------------------------------------ */
   function headline() {
     var h = document.querySelector('[data-headline]');
@@ -519,6 +568,17 @@
     var ig = document.getElementById('spot-ig');
     if (v.insta) { ig.textContent = '@' + v.insta; ig.href = 'https://www.instagram.com/' + v.insta; ig.hidden = false; }
     else ig.hidden = true;
+    // A ride for the long walks: the first partner with a phone number.
+    var ride = document.getElementById('spot-ride');
+    var cab = (DATA.partners || []).filter(function (p) { return p && p.phone; })[0];
+    var digits = cab ? String(cab.phone).replace(/\D/g, '') : '';
+    if (ride && digits.length === 10) {
+      ride.textContent = 'Too far to walk? ';
+      var call = el('a', null, 'Call ' + cab.name);
+      call.href = 'tel:+1' + digits;
+      ride.appendChild(call);
+      ride.hidden = false;
+    }
     openModal(card);
   }
 
@@ -661,8 +721,15 @@
     var fog = document.createElement('div');
     fog.className = 'fog-bank';
     fog.setAttribute('aria-hidden', 'true');
-    fog.innerHTML = [0, 1, 2, 3, 4, 5].map(function (i) {
-      return '<i style="--fx:' + ((i - 2.5) * 5.5 + rnd(-3, 3)).toFixed(1) + '%;--fy:' + rnd(-15, 15).toFixed(0) + '%;' +
+    // Puffs span the whole bar, packed tighter and denser toward the middle
+    // (--fa, strength) and thinning to a light haze over the links.
+    var PUFFS = 13;
+    fog.innerHTML = Array.apply(null, Array(PUFFS)).map(function (_, i) {
+      var t = i / (PUFFS - 1) * 2 - 1;                 // -1 .. 1 across the bar
+      var x = Math.sign(t) * Math.pow(Math.abs(t), 1.35) * 50;
+      var strength = Math.max(0.18, 1 - Math.pow(Math.abs(t), 1.6) * 0.85);
+      return '<i style="--fx:' + (x + rnd(-2, 2)).toFixed(1) + '%;--fy:' + rnd(-15, 15).toFixed(0) + '%;' +
+        '--fa:' + strength.toFixed(2) + ';' +
         '--fw:' + rnd(9, 15).toFixed(1) + 'rem;--fd:' + (rnd(14, 24) * PACE).toFixed(1) + 's;' +
         '--fdl:-' + rnd(0, 20).toFixed(1) + 's"></i>';
     }).join('');
@@ -670,7 +737,7 @@
   }
 
   function init() {
-    basics(); title(); headline(); expect(); soon();
+    basics(); title(); countdown(); calendar(); headline(); expect(); soon();
     venues(); routes(); partners();
     nav(); socials(); menu();
     wheel(); ageGate(); ghosts();

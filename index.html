@@ -71,25 +71,25 @@
 
 
     <title>East Crossroads Fall Crawl - Saturday, October 24, 2026 - Kansas City</title>
-    <meta name="description" content="A build-your-own-adventure bar crawl through the East Crossroads, Kansas City. Saturday before Halloween, Oct. 24, 2026. Wine, cocktails, costumes. 21+." />
+    <meta name="description" content="A build-your-own-adventure bar crawl through the East Crossroads, Kansas City. Saturday before Halloween, Oct. 24, 2026. 13 spots, specialty cocktails, live entertainment, costumes. Free, 21+." />
     <link rel="canonical" href="https://fallcrawlkc.com/" />
 
     <meta property="og:title" content="East Crossroads Fall Crawl - 10.24.26" />
     <meta property="og:description" content="No tickets. No wristbands. No set route. A build-your-own-adventure bar crawl through the East Crossroads, the Saturday before Halloween." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://fallcrawlkc.com/" />
-    <!-- The share tags keep the PNG while the page itself loads WebP. A
-         scraper is the one client where PNG is still the safer bet, and it
-         fetches this once for a card rather than on every page view. -->
-    <meta property="og:image" content="https://fallcrawlkc.com/images/logo.png" />
-    <meta property="og:image:width" content="1000" />
-    <meta property="og:image:height" content="489" />
-    <meta property="og:image:alt" content="East Crossroads Fall Crawl logo: a skeleton raising a cocktail over the Kansas City skyline." />
+    <!-- The share card is a 1200x630 PNG built by tools/make-og.py: the
+         date and place, not just the logo, because it is what people see
+         when the link is texted. PNG because scrapers fetch it once. -->
+    <meta property="og:image" content="https://fallcrawlkc.com/images/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="East Crossroads Fall Crawl, 10.24.26, Saturday before Halloween in the East Crossroads, Kansas City." />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="East Crossroads Fall Crawl - 10.24.26" />
     <meta name="twitter:description" content="No tickets. No wristbands. No set route. A build-your-own-adventure bar crawl through the East Crossroads." />
-    <meta name="twitter:image" content="https://fallcrawlkc.com/images/logo.png" />
+    <meta name="twitter:image" content="https://fallcrawlkc.com/images/og.png" />
 
     <meta name="theme-color" content="#000000" />
 
@@ -100,6 +100,8 @@
     <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
 
+    <!-- crossorigin is required even same-origin, or the font is fetched twice. -->
+    <link rel="preload" href="fonts/antic.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="style.css" />
 
     <script type="application/ld+json">
@@ -107,12 +109,12 @@
       "@context": "https://schema.org",
       "@type": "Event",
       "name": "East Crossroads Fall Crawl",
-      "description": "A build-your-own-adventure bar crawl through the East Crossroads in Kansas City. No tickets, no wristbands, no set route.",
+      "description": "A build-your-own-adventure bar crawl through the East Crossroads in Kansas City: 13 neighborhood spots, specialty cocktails, live entertainment and costumes. No tickets, no wristbands, no set route.",
       "startDate": "2026-10-24",
       "endDate": "2026-10-24",
       "eventStatus": "https://schema.org/EventScheduled",
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-      "image": "https://fallcrawlkc.com/images/logo.png",
+      "image": ["https://fallcrawlkc.com/images/og.png", "https://fallcrawlkc.com/images/logo.png"],
       "location": {
         "@type": "Place",
         "name": "East Crossroads",
@@ -170,6 +172,7 @@
         <p class="date-big" data-date-short></p>
         <h1>Saturday before Halloween</h1>
         <p class="hours" data-hours></p>
+        <p class="countdown" data-countdown></p>
 
         <p class="pitch"><span class="pitch-lead">A build-your-own-adventure type of bar crawl.</span>
           <span class="pitch-sub">No tickets. No wristbands. No set route.</span></p>
@@ -188,10 +191,15 @@
 
         <p class="cta-note" data-ig-blurb></p>
 
-        <!-- Client artwork. The alt text carries the words baked into it. -->
-        <img class="icons" src="images/icons.webp" width="2194" height="524"
-             loading="lazy" decoding="async"
-             alt="Free to attend. 21+ only. No wristbands. Costumes encouraged." />
+        <!-- Filled by js/crawl.js from the event date in data/crawl.js. The
+             Apple/Outlook link is a calendar file built in the page, so
+             nothing loads from elsewhere; Google is a plain outbound link. -->
+        <p class="cal" id="cal" hidden>
+          <span class="cal-label">Add to calendar</span>
+          <a class="cal-link" id="cal-ics" download="fall-crawl.ics">Apple / Outlook</a>
+          <a class="cal-link" id="cal-google" target="_blank" rel="noopener">Google</a>
+        </p>
+
       </section>
 
       <!-- ===== spin for your next stop =====
@@ -259,6 +267,14 @@
         <ul class="partner-list" id="partner-list"></ul>
       </section>
 
+      <!-- ===== the ground rules, as icons, last thing before the footer =====
+           Client artwork. The alt text carries the words baked into it. -->
+      <section class="band band-icons" aria-label="The basics">
+        <img class="icons" src="images/icons.webp" width="2194" height="524"
+             loading="lazy" decoding="async"
+             alt="Free to attend. 21+ only. No wristbands. Costumes encouraged." />
+      </section>
+
     </main>
 
     <footer class="site-footer">
@@ -281,6 +297,7 @@
       <dl class="spot-details" id="spot-details"></dl>
       <p class="spot-empty" id="spot-empty">Details drop day-of. Check their Instagram for the latest.</p>
       <a class="ig-link" id="spot-ig" target="_blank" rel="noopener"></a>
+      <p class="spot-ride" id="spot-ride" hidden></p>
       <div class="modal-actions">
         <button class="cta" type="button" id="spot-again">Spin again</button>
         <button class="modal-close" type="button" id="spot-close">Close</button>

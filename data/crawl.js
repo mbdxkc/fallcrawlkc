@@ -23,6 +23,7 @@ window.FALL_CRAWL = {
   title:      "East Crossroads Fall Crawl",
   titleShort: "Fall Crawl",          // used on phones, where the full name will not fit
   dateShort:  "10.24.26",            // the big orange date
+  date:       "2026-10-24",          // the real date: runs the countdown and the calendar button
   hours:      "",                    // e.g. "4 p.m. to midnight". Empty hides the line
   instagram:  "fallcrawlkc",         // handle only, no @
 

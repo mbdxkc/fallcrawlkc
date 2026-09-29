@@ -58,6 +58,8 @@
     <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
 
+    <!-- crossorigin is required even same-origin, or the font is fetched twice. -->
+    <link rel="preload" href="fonts/antic.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="style.css" />
   </head>
 
@@ -102,8 +104,10 @@
 
           <h2>Links away from here</h2>
           <p>This page links out to Instagram, to Google Maps for directions,
-            and to the websites and phone numbers of participating businesses
-            and partners. Once you follow one of those you are on someone
+            to Google Calendar if you choose to add the event there, and to the
+            websites and phone numbers of participating businesses and partners.
+            The Apple / Outlook calendar button makes the file on your own
+            device and sends nothing anywhere. Once you follow one of those you are on someone
             else&rsquo;s service, under their rules and their privacy policy,
             not this one.</p>
           <p>Following or tagging us on Instagram happens entirely on
