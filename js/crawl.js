@@ -481,7 +481,7 @@
         document.getElementById('spin-live').textContent = 'Landed on ' + spots[i].name;
         showSpot(spots[i], example);
       };
-      if (still) done(); else setTimeout(done, 4200);   // matches the CSS transition
+      if (still) done(); else setTimeout(done, 5040);   // matches the CSS transition
     }
 
     btn.addEventListener('click', spin);
@@ -618,6 +618,9 @@
 
   function rnd(a, b) { return a + Math.random() * (b - a); }
 
+  // One knob for the header's tempo: every duration below is multiplied by it.
+  var PACE = 1.2;
+
   function ghosts() {
     var bar = document.querySelector('.site-header');
     if (!bar || bar.querySelector('.ghost-run')) return;
@@ -642,13 +645,13 @@
       var sz = SIZES[Math.floor(Math.random() * SIZES.length)];
       var scale = rnd(sz.scale[0], sz.scale[1]);
       var cross = rnd(sz.cross[0], sz.cross[1]);        // seconds on screen
-      var loop = cross / 0.6 + rnd(0, 8);               // plus an offscreen pause
+      var loop = (cross / 0.6 + rnd(0, 8)) * PACE;      // plus an offscreen pause
       var dir = Math.random() < 0.5 ? 1 : -1;           // 1 = right to left
       var art = kind === 'ghost' ? ghostSVG() : kind === 'goblin' ? goblinSVG() : monsterSVG();
       return '<span class="fig-lane ' + (walker ? 'walker' : 'floater') + (dir < 0 ? ' rev' : '') +
-        '" style="--dur:' + loop.toFixed(1) + 's;--delay:' + (k * rnd(1, 3) + rnd(0, 4)).toFixed(1) + 's;' +
+        '" style="--dur:' + loop.toFixed(1) + 's;--delay:' + ((k * rnd(1, 3) + rnd(0, 4)) * PACE).toFixed(1) + 's;' +
         '--y:' + (walker ? 0 : rnd(-0.25, 0.2)).toFixed(2) + 'rem;--scale:' + scale.toFixed(2) +
-        ';--bob:' + (rnd(1.6, 2.6) * scale).toFixed(2) + 's;--step:' + (0.9 * scale).toFixed(2) + 's">' + art + '</span>';
+        ';--bob:' + (rnd(1.6, 2.6) * scale * PACE).toFixed(2) + 's;--step:' + (0.9 * scale * PACE).toFixed(2) + 's">' + art + '</span>';
     }).join('');
     bar.insertBefore(run, bar.firstChild);
   }

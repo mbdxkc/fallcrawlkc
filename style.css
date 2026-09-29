@@ -527,8 +527,8 @@ a.partner-name { display: inline-block; text-decoration: none; }
 /* ---------- the wheel ---------- */
 .wheel-wrap { position: relative; width: min(100%, 24rem); margin: 0 auto; }
 .wheel { display: block; width: 100%; height: auto; }
-/* 4.2s here and the setTimeout in js/crawl.js are the same number. */
-.wheel-rotor { transition: transform 4.2s cubic-bezier(.12, .7, .08, 1); transform-origin: 0 0; }
+/* 5.04s here and the setTimeout in js/crawl.js are the same number. */
+.wheel-rotor { transition: transform 5.04s cubic-bezier(.12, .7, .08, 1); transform-origin: 0 0; }
 .wheel-label { fill: var(--ink); font-family: var(--sans); font-size: 7px; }
 .wheel-hub { fill: var(--orange); stroke: #000; stroke-width: 1.5; }
 .wheel-pointer {
