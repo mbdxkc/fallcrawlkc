@@ -22,10 +22,10 @@ Single-page event site. Static HTML, hand-rolled CSS, vanilla JS, no build step.
 **by mediaBrilliance.io**
 
 The long-form date came off the page on 22 September at the client's request; the
-big `10.24.26` carries it now. It survives in `index.html` alone, in the `<title>`,
-the meta description and the Event JSON-LD. There was a `date` field in
-`data/crawl.js` justified by those, which was wrong: they are hardcoded and never
-read it. Changing the event date is an `index.html` job.
+big `10.24.26` carries it now. `data/crawl.js` has a `date` field (added 28 Sep)
+that drives the countdown and the add-to-calendar links, but the `<title>`, meta
+description and Event JSON-LD in `index.html` are still hardcoded and do not read
+it. Changing the event date means both files.
 
 An empty list removes its whole section from the page rather than rendering an
 empty heading, so nothing half-finished can reach a visitor. The header links are
@@ -64,15 +64,20 @@ Still missing its venue list, so the Spots section is absent by design.
 ├── data/
 │   └── crawl.js      # THE ONLY FILE THE CLIENT EDITS
 ├── js/
-│   └── crawl.js      # renders every list from data/crawl.js
+│   └── crawl.js      # renders every list, the wheel, the header scene, the bat
+├── fonts/
+│   ├── antic.woff2   # body face, self-hosted, SIL OFL
+│   └── OFL-antic.txt
 ├── tools/
 │   ├── make-icons.py # cuts every icon out of images/logo.png
+│   ├── make-og.py    # builds images/og.png, the 1200x630 share card
 │   └── make-webp.py  # rebuilds the three images the page loads
 └── images/
     ├── logo.webp     # the lockup, as the page loads it
     ├── icons.webp    # free / 21+ / no wristbands / costumes strip
     ├── map.webp      # teaser map, positions only, no names yet
-    ├── logo.png      # SOURCE, and still the og:image for share cards
+    ├── og.png        # share card (og/twitter/JSON-LD), built by make-og.py
+    ├── logo.png      # SOURCE, and a second JSON-LD image
     ├── icons.png     # SOURCE only, nothing links to it
     ├── map.png       # SOURCE only, nothing links to it
     ├── mark.png      # the skeleton lady alone, for a social avatar
@@ -80,8 +85,8 @@ Still missing its venue list, so the Spots section is absent by design.
     └── favicon-32.png
 ```
 
-The `.png` files are sources. Only `logo.png` is still served, to the share-card
-scrapers. `map.png` stays because it was processed from the client's teaser by
+The `.png` files are sources, except `og.png` and `logo.png`, which the share-card
+scrapers fetch. `map.png` stays because it was processed from the client's teaser by
 hand and no command reproduces it.
 
 ### Where the artwork comes from
@@ -128,8 +133,11 @@ alone was two thirds of the whole site. Settings differ per image and
 transparency compress better that way, 27 KB against 66 for lossy. Checked at 1:1
 against the originals before shipping.
 
-**No webfont.** The display face in the artwork is not licensed here, so the lockup
-ships as artwork and live type uses a system stack.
+**One self-hosted webfont.** Body type is Antic (SIL OFL), served from `fonts/` and
+preloaded (without the preload its swap shifted the desktop layout 0.14 CLS).
+Display type names Gagalin first and falls back to a heavy system stack until the
+client sends the file; add it to `fonts/` with an `@font-face`. Distillery Strong
+lives only in the logo artwork. Nothing is fetched from a font service.
 
 **Paths are relative, not root-absolute.** A GitHub Pages project site is served from
 `/fallcrawlkc/`, where `/images/...` resolves outside the project and 404s.
@@ -148,6 +156,21 @@ the client supplied.
 
 **`<meta charset>` sits above the file header comment.** The header runs past the
 spec's 1024-byte limit for the charset declaration.
+
+**What the page does beyond the lists (28 Sep).** A 21+ check (sessionStorage,
+per tab); a countdown and add-to-calendar links; the "Where to Next?" spin wheel
+of live spots, whose card shows drinks, entertainment, menu and cover where known
+and "details drop day-of" otherwise, with 13 made-up example spots while the venue
+list is empty (`showExamples`); a header scene of ghosts, a goblin and a monster
+(size sets speed, randomised per load), fog thickest behind the title, and the
+real moon for Kansas City (position and phase computed in the browser); a bat
+drawn per frame from a 3D wing model about once a minute. All motion is off under
+`prefers-reduced-motion`. Every header layer was contrast-checked against the
+title and links.
+
+**The one outside request is weather.** Open-Meteo, for Kansas City's fixed
+coordinates, cached 30 minutes; clouds veil the moon and bad weather thickens the
+fog. The privacy page says so. If it fails, the sky stays clear.
 
 ---
 
@@ -171,6 +194,12 @@ spec's 1024-byte limit for the charset declaration.
       profile. The website one is only correct once the domain stops serving
       Squarespace's "Coming Soon" page
 - [ ] Client asset fix: the pedicab promo reads "WINE & COCKAILS"
+- [ ] Gagalin font file from the client; headings use a fallback until then
+- [ ] `Fall Crawl Unofficial Map.png` from the client (not received)
+- [ ] Set `showExamples: false` once real venues are in (the wheel switches
+      automatically, this just removes the examples from the file)
+- [ ] Client copy still to write: headline blurb, the line under the Follow
+      button, Trick-or-Treat Routes; Crawl Guide is hidden (`guide: false`)
 
 ---
 
