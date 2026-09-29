@@ -94,6 +94,29 @@ window.FALL_CRAWL = {
     //   entertainment: "DJ from 9 p.m.", menu: "", cover: "No cover", live: true },
   ],
 
+  /* ---- Wheel preview ------------------------------------------------
+     Made-up spots so the wheel can be tried before the real list exists.
+     They only appear while "venues" above is empty, are marked "Example" on
+     the card, and never show in the spots list. Set to false to turn off.  */
+
+  showExamples: true,
+
+  examples: [
+    { name: "The Hollow Tap",   street: "1601 Grand Blvd", drinks: "$6 black-cherry sours",       entertainment: "Costume contest at 10 p.m.", cover: "No cover" },
+    { name: "Bone Dry Bar",     street: "1614 Walnut St",  drinks: "Smoked old fashioned, $9",   menu: "Graveyard nachos",           cover: "$5 after 9 p.m." },
+    { name: "Crypt & Keg",      street: "1700 Grand Blvd", drinks: "Pumpkin ale on tap",          entertainment: "Live punk trio" },
+    { name: "Midnight Mortuary",street: "1722 McGee St",   drinks: "Blood-orange margaritas",     entertainment: "Tarot readings",           cover: "No cover" },
+    { name: "Wicked Pour",      street: "1805 Oak St",     drinks: "$7 witch's brew shots" },
+    { name: "The Screaming Pint",street: "1812 Grand Blvd",entertainment: "Horror-movie karaoke",     cover: "$10 after 9 p.m." },
+    { name: "Candlewax Lounge", street: "1820 Walnut St",  drinks: "Candy-corn espresso martini", menu: "Late-night churros" },
+    { name: "Ghoul Hall",       street: "1901 McGee St",   entertainment: "DJ from 9 p.m.",          cover: "$5" },
+    { name: "Haunt & Hops",     street: "1906 Oak St" },
+    { name: "Skeleton Key",     street: "1615 Locust St",  drinks: "Mezcal \"bone marrow\" shot", entertainment: "Speakeasy password at the door" },
+    { name: "Coffin Club",      street: "1733 Grand Blvd", drinks: "Cider on draft",              menu: "Coffin-shaped pizza slices", cover: "No cover" },
+    { name: "Poltergeist Pub",  street: "1840 McGee St",   entertainment: "Ghost-story open mic" },
+    { name: "The Last Rites",   street: "1918 Walnut St",  drinks: "$8 absinthe drip",            cover: "$10" },
+  ],
+
   /* ---- Suggested crawls ----------------------------------------------
      Optional routes, not official. Hidden until the // come off.         */
 

@@ -470,6 +470,28 @@ a.partner-name { display: inline-block; text-decoration: none; }
 .legal { margin: 0 auto; max-width: 42rem; }
 .drink { margin: .9rem 0 0; color: var(--ink); }
 
+/* ---------- ghost chase across the header ---------- */
+.site-header { overflow: hidden; }
+.site-header > *:not(.ghost-run) { position: relative; z-index: 1; }
+.ghost-run { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.ghost-lane {
+  position: absolute; top: 50%; left: 0; display: flex; align-items: center; gap: 2.2rem;
+  transform: translate(-12rem, -50%);
+  animation: ghost-chase 16s linear 2s infinite;
+}
+.ghost { display: block; color: rgba(248, 248, 248, .5); }
+.ghost-scared { width: 1.35rem; animation: ghost-bob .35s ease-in-out infinite alternate; }
+.ghost-chaser { width: 2.1rem; color: rgba(248, 248, 248, .38); animation: ghost-bob .6s ease-in-out infinite alternate, ghost-lunge 1.6s ease-in-out infinite; }
+/* Order in the lane is scared first, chaser second, so the lane runs
+   right-to-left: the scared ghost leads, the chaser gains on it. */
+@keyframes ghost-chase {
+  0%   { transform: translate(100vw, -50%); }
+  55%  { transform: translate(-12rem, -50%); }
+  100% { transform: translate(-12rem, -50%); }
+}
+@keyframes ghost-bob   { from { translate: 0 -3px; } to { translate: 0 3px; } }
+@keyframes ghost-lunge { 0%, 100% { margin-left: 0; } 50% { margin-left: -1.4rem; } }
+
 /* ---------- what to expect ---------- */
 .expect-list {
   list-style: none; margin: clamp(1.25rem, 5vw, 2rem) auto 0; padding: 0;
@@ -624,4 +646,5 @@ a.partner-name { display: inline-block; text-decoration: none; }
   .cta, .social { transition: none; }
   .cta:hover, .cta:focus-visible { transform: none; }
   .wheel-rotor { transition: none; }
+  .ghost-run { display: none; }
 }

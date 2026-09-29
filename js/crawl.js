@@ -400,8 +400,16 @@
     var svg = document.getElementById('wheel');
     var btn = document.getElementById('spin-btn');
     if (!svg || !btn) return;
-    var spots = liveVenues();
+    var spots = liveVenues(), example = false;
+    if (!spots.length && DATA.showExamples) {
+      spots = (DATA.examples || []).filter(function (v) { return v && v.name; });
+      example = true;
+    }
     if (!spots.length) return;               // "Coming soon" stays up
+    if (example) {
+      var lede = document.getElementById('spin-lede');
+      if (lede) lede.textContent = 'Try it out. These spots are made up until the real list lands.';
+    }
 
     document.getElementById('spin-soon').hidden = true;
     document.getElementById('wheel-wrap').hidden = false;
@@ -470,7 +478,7 @@
         spinning = false; btn.disabled = false;
         remember(spots[i].name);
         document.getElementById('spin-live').textContent = 'Landed on ' + spots[i].name;
-        showSpot(spots[i]);
+        showSpot(spots[i], example);
       };
       if (still) done(); else setTimeout(done, 4200);   // matches the CSS transition
     }
@@ -487,9 +495,11 @@
     });
   }
 
-  function showSpot(v) {
+  function showSpot(v, example) {
     var card = document.getElementById('spot-card');
     if (!card) return;
+    var k = card.querySelector('.spot-kicker');
+    if (k) k.textContent = example ? 'Example spot' : 'Your next stop';
     document.getElementById('spot-name').textContent = v.name;
     var st = document.getElementById('spot-street');
     if (v.street) { st.textContent = v.street; st.href = MAPS + encodeURIComponent(v.street + ', Kansas City, MO'); st.hidden = false; }
@@ -540,11 +550,38 @@
     openModal(d);
   }
 
+  /* ---- ghost chase across the header ------------------------------------
+     Decorative: a small ghost fleeing, a big one gaining, every so often.
+     Injected here so all three pages get it from one place. Hidden from
+     assistive tech, never takes clicks, and off entirely under
+     prefers-reduced-motion (in CSS). */
+  var GHOST = function (cls, eyes) {
+    return '<svg class="ghost ' + cls + '" viewBox="0 0 40 46" aria-hidden="true" focusable="false">' +
+      '<path d="M20 2C9.5 2 3 10 3 20v24l5.5-5 5.5 5 6-5 6 5 5.5-5 5.5 5V20C37 10 30.5 2 20 2z" fill="currentColor"/>' +
+      eyes + '</svg>';
+  };
+  function ghosts() {
+    var bar = document.querySelector('.site-header');
+    if (!bar || bar.querySelector('.ghost-run')) return;
+    var run = document.createElement('div');
+    run.className = 'ghost-run';
+    run.setAttribute('aria-hidden', 'true');
+    run.innerHTML =
+      '<span class="ghost-lane">' +
+        GHOST('ghost-scared', '<circle cx="14" cy="18" r="3.4" fill="#000"/><circle cx="26" cy="18" r="3.4" fill="#000"/>' +
+                              '<ellipse cx="20" cy="29" rx="3" ry="4.2" fill="#000"/>') +
+        GHOST('ghost-chaser', '<path d="M10 15l8 4M30 15l-8 4" stroke="#000" stroke-width="2.6" stroke-linecap="round"/>' +
+                              '<circle cx="14.5" cy="20" r="2.6" fill="#c84008"/><circle cx="25.5" cy="20" r="2.6" fill="#c84008"/>' +
+                              '<path d="M12 29q8 7 16 0" stroke="#000" stroke-width="2.4" fill="none" stroke-linecap="round"/>') +
+      '</span>';
+    bar.insertBefore(run, bar.firstChild);
+  }
+
   function init() {
     basics(); title(); headline(); expect(); soon();
     venues(); routes(); partners();
     nav(); socials(); menu();
-    wheel(); ageGate();
+    wheel(); ageGate(); ghosts();
   }
 
   if (document.readyState === 'loading') {
