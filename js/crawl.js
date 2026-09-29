@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.5.5
+ *   @version      1.5.6
  *   @updated      2026-09-29
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.5.5  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.5.6  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -137,9 +137,9 @@
   }
 
   function calendar() {
-    var box = document.getElementById('cal');
+    var big = document.querySelector('[data-date-short]');
     var day = eventDay();
-    if (!box || !day) return;
+    if (!big || !big.textContent || !day) return;
     var now = new Date(); now.setHours(0, 0, 0, 0);
     if (day < now) return;
     var pad = function (x) { return (x < 10 ? '0' : '') + x; };
@@ -160,28 +160,26 @@
     var googleHref = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
       '&text=' + encodeURIComponent(title) + '&dates=' + ymd(day) + '/' + ymd(next) +
       '&details=' + encodeURIComponent(about) + '&location=' + encodeURIComponent(where);
-    document.getElementById('cal-ics').href = icsHref;
-    document.getElementById('cal-google').href = googleHref;
-    box.hidden = false;
 
-    // The big date is a link too. Apple devices and desktop take the
-    // calendar file; Android has no handler for one and would only
-    // download it, so there the date opens Google Calendar instead.
-    var big = document.querySelector('[data-date-short]');
-    if (big && big.textContent) {
-      var a = document.createElement('a');
-      a.className = 'date-link';
-      a.title = 'Add to calendar';
-      a.setAttribute('aria-label', big.textContent + ', add to calendar');
-      if (/Android/i.test(navigator.userAgent)) {
-        a.href = googleHref; a.target = '_blank'; a.rel = 'noopener';
-      } else {
-        a.href = icsHref; a.setAttribute('download', 'fall-crawl.ics');
-      }
-      a.textContent = big.textContent;
-      big.textContent = '';
-      big.appendChild(a);
+    // The big date is the add-to-calendar link. Apple devices and desktop
+    // take the calendar file, built here so nothing loads from elsewhere;
+    // Android has no handler for one and would only download it, so there
+    // the date opens Google Calendar instead.
+    var a = document.createElement('a');
+    a.className = 'date-link';
+    a.title = 'Add to calendar';
+    a.setAttribute('aria-label', big.textContent + ', add to calendar');
+    if (/Android/i.test(navigator.userAgent)) {
+      a.href = googleHref; a.target = '_blank'; a.rel = 'noopener';
+    } else {
+      a.href = icsHref; a.setAttribute('download', 'fall-crawl.ics');
     }
+    a.textContent = big.textContent;
+    a.insertAdjacentHTML('beforeend', '<svg class="date-cal" viewBox="0 0 24 24" fill="none" ' +
+      'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false">' +
+      '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M12 13v5M9.5 15.5h5"/></svg>');
+    big.textContent = '';
+    big.appendChild(a);
   }
 
   /* ---- the headline over the map ------------------------------------ */

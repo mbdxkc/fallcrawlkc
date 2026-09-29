@@ -23,7 +23,7 @@ Single-page event site. Static HTML, hand-rolled CSS, vanilla JS, no build step.
 
 The long-form date came off the page on 22 September at the client's request; the
 big `10.24.26` carries it now. `data/crawl.js` has a `date` field (added 28 Sep)
-that drives the countdown and the add-to-calendar links, but the `<title>`, meta
+that drives the countdown and the add-to-calendar date, but the `<title>`, meta
 description and Event JSON-LD in `index.html` are still hardcoded and do not read
 it. Changing the event date means both files.
 
@@ -158,8 +158,9 @@ the client supplied.
 spec's 1024-byte limit for the charset declaration.
 
 **What the page does beyond the lists (28 Sep).** A 21+ check (sessionStorage,
-per tab); a countdown and add-to-calendar links, with the big date itself a link (the
-calendar file, or Google Calendar on Android, which cannot open one); the "Where to Next?" spin wheel
+per tab); a countdown; the big date as the add-to-calendar link, marked with a
+calendar-plus icon (the calendar file, or Google Calendar on Android, which
+cannot open one); the "Where to Next?" spin wheel
 of live spots, whose card shows drinks, entertainment, menu and cover where known
 and "details drop day-of" otherwise, with 13 made-up example spots while the venue
 list is empty (`showExamples`, off since 28 Sep at Amy's request); the wheel sits
