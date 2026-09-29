@@ -735,19 +735,199 @@
     }).join('');
     bar.insertBefore(fog, bar.firstChild);
 
-    // A big low moon, cropped by the bar as if rising, sitting in the gap
-    // between the title and the Instagram icon. Under the fog and figures.
     var moon = document.createElement('div');
     moon.className = 'moon';
     moon.setAttribute('aria-hidden', 'true');
     bar.insertBefore(moon, bar.firstChild);
+    sky(bar, moon, fog);
+  }
+
+  /* ---- the real moon over Kansas City, and the weather --------------------
+     Position and phase are computed here from the date (the low-precision
+     lunar formulas popularised by SunCalc, after Meeus), nothing fetched:
+     east of south maps to the left of the bar, west to the right, altitude
+     to how high it sits, and below the horizon it is gone. Weather is the
+     one outside request on the site: current conditions for Kansas City's
+     fixed coordinates from Open-Meteo, cached for 30 minutes in this tab.
+     Clouds and daylight dim the moon, fog and rain thicken the fog bank. If
+     the request fails the sky just stays clear. */
+  var KC = { lat: 39.0997, lng: -94.5786 };
+  var RAD = Math.PI / 180, DAY_MS = 864e5, J1970 = 2440588, J2000 = 2451545, OBL = RAD * 23.4397;
+
+  function toDays(d) { return d.valueOf() / DAY_MS - 0.5 + J1970 - J2000; }
+  function ra(l, b)  { return Math.atan2(Math.sin(l) * Math.cos(OBL) - Math.tan(b) * Math.sin(OBL), Math.cos(l)); }
+  function dec(l, b) { return Math.asin(Math.sin(b) * Math.cos(OBL) + Math.cos(b) * Math.sin(OBL) * Math.sin(l)); }
+  function sunCoords(d) {
+    var M = RAD * (357.5291 + 0.98560028 * d);
+    var C = RAD * (1.9148 * Math.sin(M) + 0.02 * Math.sin(2 * M) + 0.0003 * Math.sin(3 * M));
+    var L = M + C + RAD * 102.9372 + Math.PI;
+    return { ra: ra(L, 0), dec: dec(L, 0) };
+  }
+  function moonCoords(d) {
+    var L = RAD * (218.316 + 13.176396 * d), M = RAD * (134.963 + 13.064993 * d), F = RAD * (93.272 + 13.229350 * d);
+    var l = L + RAD * 6.289 * Math.sin(M), b = RAD * 5.128 * Math.sin(F);
+    return { ra: ra(l, b), dec: dec(l, b), dist: 385001 - 20905 * Math.cos(M) };
+  }
+  function moonNow(date) {
+    var d = toDays(date), c = moonCoords(d), phi = RAD * KC.lat;
+    var H = RAD * (280.16 + 360.9856235 * d) - RAD * -KC.lng - c.ra;
+    var alt = Math.asin(Math.sin(phi) * Math.sin(c.dec) + Math.cos(phi) * Math.cos(c.dec) * Math.cos(H));
+    var az = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(phi) - Math.tan(c.dec) * Math.cos(phi));
+    var s = sunCoords(d), sd = 149598000;
+    var p = Math.acos(Math.sin(s.dec) * Math.sin(c.dec) + Math.cos(s.dec) * Math.cos(c.dec) * Math.cos(s.ra - c.ra));
+    var inc = Math.atan2(sd * Math.sin(p), c.dist - sd * Math.cos(p));
+    var ang = Math.atan2(Math.cos(s.dec) * Math.sin(s.ra - c.ra),
+      Math.sin(s.dec) * Math.cos(c.dec) - Math.cos(s.dec) * Math.sin(c.dec) * Math.cos(s.ra - c.ra));
+    var sunAlt = Math.asin(Math.sin(phi) * Math.sin(s.dec) +
+      Math.cos(phi) * Math.cos(s.dec) * Math.cos(RAD * (280.16 + 360.9856235 * d) - RAD * -KC.lng - s.ra));
+    return {
+      alt: alt / RAD,                                  // degrees above the horizon
+      bearing: (az / RAD + 180 + 360) % 360,          // compass: 90 east, 180 south, 270 west
+      lit: (1 + Math.cos(inc)) / 2,                    // fraction illuminated
+      waxing: ang < 0,
+      sunUp: sunAlt / RAD > -4
+    };
+  }
+
+  // The lit shape as SVG: the full disc in shadow, then the lit part bounded
+  // by the limb on one side and the terminator ellipse on the other.
+  function moonSVG(lit, waxing) {
+    var rx = Math.abs(1 - 2 * lit) * 50;
+    var sweep = lit < 0.5 ? 0 : 1;
+    var litPath = 'M50 0A50 50 0 0 1 50 100A' + rx.toFixed(2) + ' 50 0 0 ' + sweep + ' 50 0Z';
+    return '<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">' +
+      '<defs><radialGradient id="mg" cx="42%" cy="38%" r="65%">' +
+        '<stop offset="0" stop-color="#bf901f"/><stop offset=".6" stop-color="#9a6f14"/><stop offset="1" stop-color="#6b4a0b"/>' +
+      '</radialGradient></defs>' +
+      '<circle cx="50" cy="50" r="49.5" fill="#2a2210" opacity=".55"/>' +
+      '<g' + (waxing ? '' : ' transform="translate(100 0) scale(-1 1)"') + '>' +
+        '<path d="' + litPath + '" fill="url(#mg)"/>' +
+      '</g>' +
+      '<clipPath id="mc"><path d="' + litPath + '"' + (waxing ? '' : ' transform="translate(100 0) scale(-1 1)"') + '/></clipPath>' +
+      '<g fill="#5c3e08" opacity=".22" clip-path="url(#mc)">' +
+        '<ellipse cx="36" cy="40" rx="15" ry="11"/><ellipse cx="60" cy="58" rx="11" ry="14"/>' +
+        '<ellipse cx="62" cy="30" rx="9" ry="7"/><ellipse cx="30" cy="68" rx="7" ry="6"/></g>' +
+    '</svg>';
+  }
+
+  var WX_KEY = 'fallcrawl-weather';
+  function weather(done) {
+    try {
+      var hit = JSON.parse(sessionStorage.getItem(WX_KEY));
+      if (hit && Date.now() - hit.t < 30 * 60000) return done(hit.w);
+    } catch (e) {}
+    if (!window.fetch) return done(null);
+    var ctl = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 5000);
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=' + KC.lat + '&longitude=' + KC.lng +
+          '&current=cloud_cover,weather_code', ctl ? { signal: ctl.signal } : {})
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        clearTimeout(timer);
+        var w = j && j.current ? { clouds: j.current.cloud_cover, code: j.current.weather_code } : null;
+        if (w) { try { sessionStorage.setItem(WX_KEY, JSON.stringify({ t: Date.now(), w: w })); } catch (e) {} }
+        done(w);
+      })
+      .catch(function () { clearTimeout(timer); done(null); });
+  }
+
+  function sky(bar, moon, fog) {
+    var wx = null;
+    function place() {
+      var m = moonNow(new Date());
+      // Only the arc a person facing south would see: rising east to setting west.
+      if (m.alt <= -1 || m.bearing < 45 || m.bearing > 315) { moon.hidden = true; return; }
+      moon.hidden = false;
+      moon.innerHTML = moonSVG(m.lit, m.waxing);
+      var H = bar.offsetHeight, size = moon.offsetWidth;
+      var x = Math.min(1, Math.max(0, (m.bearing - 60) / 240));   // 60 = far left, 300 = far right
+      var up = Math.min(1, Math.max(0, m.alt / 40));              // 40 degrees up = sitting fully in the bar
+      moon.style.left = (6 + x * 88).toFixed(1) + '%';
+      moon.style.top = (H - (0.2 + 0.82 * up) * size).toFixed(1) + 'px';
+      var dim = 1;
+      if (m.sunUp) dim *= 0.45;                                    // a daytime moon is washed out
+      // Clouds veil the moon but never erase it: overcast leaves a faint glow.
+      var veil = wx && wx.clouds != null ? Math.min(100, wx.clouds) / 100 : 0;
+      dim *= 1 - 0.45 * veil;
+      moon.style.setProperty('--veil', (veil * 3).toFixed(1) + 'px');
+      // Never let the moon fight the text it passes behind.
+      var r = moon.getBoundingClientRect(), behind = false;
+      [].forEach.call(bar.querySelectorAll('.bar-nav a, .bar-title, .social, .bar-toggle'), function (t) {
+        if (!t.offsetParent) return;
+        var b = t.getBoundingClientRect();
+        if (b.right > r.left && b.left < r.right && b.bottom > r.top && b.top < r.bottom) behind = true;
+      });
+      if (behind) dim *= 0.5;
+      moon.style.opacity = (0.95 * dim).toFixed(2);
+      moon.style.setProperty('--glow', (0.28 * m.lit * dim).toFixed(2));
+    }
+    place();
+    setInterval(place, 5 * 60000);
+    window.addEventListener('resize', place);
+    weather(function (w) {
+      wx = w;
+      if (w && w.code != null) {
+        var c = w.code;
+        // 45/48 fog, 51-67 drizzle and rain, 80-82 showers, 95+ storms: thicker fog.
+        if (c === 45 || c === 48 || (c >= 51 && c <= 67) || (c >= 80 && c <= 82) || c >= 95) fog.classList.add('is-thick');
+      }
+      place();
+    });
+  }
+
+  /* ---- the bat ------------------------------------------------------------
+     A giant bat crosses the page window (not the header) about once a
+     minute, at a random moment, height and direction, flapping on a
+     slightly rising or dipping path. Fixed-position, click-through, under
+     the header and the dialogs, and never runs under reduced motion. */
+  // A bat seen from below in flight: forearm to the wrist, four finger bones
+  // fanning to the wingtip, the membrane scalloped between them, pointed
+  // ears, a tail membrane between the feet. The right wing is the left one
+  // mirrored. Line work in the site orange, like the logo.
+  var BAT_WING =
+    '<path class="bat-membrane" d="M93 40C84 30 72 21 58 17C44 13 24 16 4 26' +
+      'C9 32 11 40 12 51C18 49 25 55 30 63C36 57 44 59 50 66C57 58 70 58 80 62C84 55 88 50 92 49Z"/>' +
+    '<path class="bat-bone" d="M93 40L58 17M58 17L4 26M58 17L12 51M58 17L30 63M58 17L50 66"/>' +
+    '<path class="bat-claw" d="M58 17l-3-5 5 3z"/>';
+  var BAT = '<svg viewBox="0 0 200 90" aria-hidden="true" focusable="false">' +
+    '<g class="bat-wing bat-wing-l">' + BAT_WING + '</g>' +
+    '<g transform="translate(200 0) scale(-1 1)"><g class="bat-wing bat-wing-r">' + BAT_WING + '</g></g>' +
+    '<g class="bat-torso">' +
+      '<path class="bat-membrane" d="M92 62C95 72 98 80 100 84C102 80 105 72 108 62C104 66 96 66 92 62Z"/>' +
+      '<path class="bat-body" d="M100 26c-3 0-5 2-6 5l-3-11 7 7 2-1 2 1 7-7-3 11c-1-3-3-5-6-5z' +
+        'M100 31c7 0 10 7 10 16 0 10-4 17-10 19-6-2-10-9-10-19 0-9 3-16 10-16z"/>' +
+      '<path class="bat-body" d="M94 64l-3 7M106 64l3 7" stroke-width="2.2" fill="none"/>' +
+      '<circle cx="96.8" cy="35.5" r="1.3" fill="#f8f8f8"/><circle cx="103.2" cy="35.5" r="1.3" fill="#f8f8f8"/>' +
+    '</g></svg>';
+
+  function bat() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var el = document.createElement('div');
+    el.className = 'bat';
+    el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = BAT;
+    document.body.appendChild(el);
+    function fly() {
+      var dir = Math.random() < 0.5 ? 1 : -1;       // 1 = left to right
+      var y0 = rnd(18, 70), y1 = y0 + rnd(-18, 18);   // vh
+      var secs = rnd(5, 8) * PACE;
+      el.style.setProperty('--y0', y0.toFixed(1) + 'vh');
+      el.style.setProperty('--y1', y1.toFixed(1) + 'vh');
+      el.style.setProperty('--dur', secs.toFixed(1) + 's');
+      el.className = 'bat' + (dir < 0 ? ' bat-rev' : '');
+      void el.offsetWidth;                            // restart the animation
+      el.classList.add('is-flying');
+      setTimeout(function () { el.classList.remove('is-flying'); }, secs * 1000 + 100);
+      setTimeout(fly, (rnd(45, 75) + secs) * 1000);   // about once a minute
+    }
+    setTimeout(fly, rnd(12, 30) * 1000);
   }
 
   function init() {
     basics(); title(); countdown(); calendar(); headline(); expect(); soon();
     venues(); routes(); partners();
     nav(); socials(); menu();
-    wheel(); ageGate(); ghosts();
+    wheel(); ageGate(); ghosts(); bat();
   }
 
   if (document.readyState === 'loading') {

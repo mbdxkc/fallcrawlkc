@@ -30,8 +30,10 @@
 
       @desc         Every claim on this page is a fact about the build, not
                     boilerplate. The site loads no analytics, no cookies, no
-                    forms and no third-party fonts or scripts, and keeps two
-                    sessionStorage values (21+ answer, wheel history) -
+                    forms and no third-party fonts or scripts; keeps three
+                    sessionStorage values (21+ answer, wheel history, weather
+                    cache); and makes one outside request, Open-Meteo for
+                    Kansas City's current weather -
                     checked across index.html, style.css and js/crawl.js. If
                     any of that changes, THIS PAGE CHANGES IN THE SAME COMMIT,
                     or it becomes a false statement about data handling.
@@ -84,11 +86,23 @@
 
           <h2>What we do not do</h2>
           <p>No cookies. No analytics. No tracking pixels. No advertising
-            tags. No fonts or scripts are loaded from another company.</p>
-          <p>Two small notes are kept in your browser while the tab is open:
-            that you answered the 21+ question, and which spots the wheel has
-            already landed on, so it can skip them. They stay on your device,
-            are never sent anywhere, and are gone when you close the tab.</p>
+            tags. No fonts or scripts are loaded from another company. The one
+            outside request is the weather check described below.</p>
+          <p>A few small notes are kept in your browser while the tab is open:
+            that you answered the 21+ question, which spots the wheel has
+            already landed on so it can skip them, and the last weather check.
+            They stay on your device and are gone when you close the tab.</p>
+
+          <h2>The weather</h2>
+          <p>The moon in the header follows the real sky over Kansas City, and
+            to dim it on cloudy nights the page asks
+            <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>,
+            a free weather service, for the current conditions in Kansas City.
+            It asks about Kansas City, never about where you are. Your browser
+            connects to Open-Meteo directly to do that, so, like any website,
+            Open-Meteo sees your IP address and browser type. At most once
+            every 30 minutes; nothing else is sent. The moon's position and
+            phase are worked out on your own device.</p>
           <p>There are no forms. There is nothing to sign up for and nowhere
             to enter your name, email or phone number.</p>
 
