@@ -171,7 +171,8 @@ ravens on one canvas, first within a minute of arriving, then at random at least
 five minutes apart; behind every page, a sparse, faint starfield (one canvas,
 drawn once, five twinkling stars) under a streetlight haze along the bottom of
 the window, the sky as it looks from downtown. The header reads "East Crossroads
-Fall Crawl - KCMO" (29 Sep, the only visible place the page names the city), and
+Fall Crawl - KCMO" (29 Sep, and "Kansas City" between the lockup and the date, in wide white caps
+flanked by the lockup's orange sparkles, and
 the nav stays behind the menu button below 1100px, where five links would run
 into the title. The Instagram button is the handle alone in a glowing orange
 ring (`.cta-ig`), filling on hover; `ig.button` in the data file can put a word
