@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.2.0
+ *   @version      1.3.0
  *   @updated      2026-09-28
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.2.0  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.3.0  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -938,8 +938,7 @@
 
   // One bat added to the page, and a function that poses it for a frame:
   // centre (x, y) in px, drawn size, heading (1 = left to right), wingbeat
-  // phase and climb rate. Line work thickens as a bat shrinks, so a small one
-  // still reads as orange on black rather than a black speck.
+  // phase and climb rate.
   function makeBat() {
     var el = document.createElement('div');
     el.className = 'bat';
@@ -956,11 +955,7 @@
     return {
       el: el,
       pose: function (x, y, size, dir, cyc, vy) {
-        if (size !== drawn) {
-          drawn = size;
-          el.style.width = size + 'px';
-          el.style.setProperty('--bw', Math.max(1, 170 / size).toFixed(2));
-        }
+        if (size !== drawn) { drawn = size; el.style.width = size + 'px'; }
         var fl = flap(cyc);
         var bob = -Math.sin(fl[0]) * 2.2;                   // the body rides opposite the wings
         var bank = Math.max(-22, Math.min(22, -vy * 2.6)) * dir;
@@ -1007,61 +1002,144 @@
     setTimeout(fly, rnd(12, 30) * 1000);
   }
 
-  /* ---- the swarm ----------------------------------------------------------
-     Every five to ten minutes (the first a few minutes in) a colony pours
-     across the window from the same bat model: 14 to 22 of them streaming in
-     over a second and a half, swooping down through the middle of the screen
-     and up again as they leave. Nearer bats are bigger, quicker and brighter;
-     each keeps its own wingbeat and small jinks inside the flock. Built for
-     each pass and removed after it. */
-  function swarm() {
-    if (STILL) return;
+  /* ---- the ravens -------------------------------------------------------
+     A thousand ravens pour across the page window: the first within a
+     minute of arriving, then again at random, never less than five minutes
+     apart. They stream in over three seconds along a wandering line, and the
+     flock stretches and turns as it goes, the way a murmuration does. Each
+     bird is the same projected wing model as the bat, reshaped as a raven:
+     fingered primaries, a heavy bill, a wedge tail. Black with orange line
+     work, like the logo; nearer birds bigger, farther ones dimmer.
+
+     Drawn on one canvas that exists only for the pass. The wingbeat is
+     prebuilt as 24 poses, so a bird costs one fill and one stroke a frame. */
+
+  var RAVEN_TILT = 25 * RAD;                            // mostly side-on: wings beat up and down in the crow V and M
+  // Wing plane, u forward and v out along the span: shoulder, wrist, five
+  // primary tips (leading to trailing), the secondaries, the body.
+  var RAVEN_WING = { shoulder: [4, 0], wrist: [6, 20], tips: [[-4, 46], [-6.5, 46.5], [-8.5, 45], [-10, 42.5], [-11, 39.5]],
+                     trail: [-8, 19], root: [-6, 0] };
+  // Body side-on: wedge tail, a deep chest, heavy head and bill.
+  var RAVEN_BODY = [[-25, 0], [-19, -5.5], [-11, -3], [-5, -5.5], [3, -5.5], [9, -4], [13, -3.5], [17, -3], [22, -1],
+                    [22, 1], [17, 2.2], [13, 3], [8, 5.5], [0, 6.5], [-8, 4.5], [-12, 3], [-19, 5.5]];
+  var RAVEN_POSES = 24;
+
+  // The hand beats further than the arm and pivots at the wrist, which
+  // bends the wing into the raven's M rather than a flat paddle.
+  function ravenWing(th, f, near) {
+    var vw = RAVEN_WING.wrist[1], th2 = th * 1.45 + 0.12;
+    var P = function (p) {
+      var arm = Math.min(p[1], vw) * f, hand = Math.max(0, p[1] - vw) * f;
+      var y = arm * Math.sin(th) + hand * Math.sin(th2);
+      var z = (arm * Math.cos(th) + hand * Math.cos(th2)) * (near ? -1 : 1);
+      return [p[0], -(y * Math.cos(RAVEN_TILT) - z * Math.sin(RAVEN_TILT))];
+    };
+    var w = P(RAVEN_WING.wrist), tips = RAVEN_WING.tips.map(P);
+    var pts = [P(RAVEN_WING.shoulder), w, tips[0]];
+    // A shallow notch between each primary gives the fingered raven wingtip.
+    for (var i = 1; i < tips.length; i++) {
+      var a = tips[i - 1], b = tips[i];
+      pts.push([(a[0] + b[0]) / 2 * 0.9 + w[0] * 0.1, (a[1] + b[1]) / 2 * 0.9 + w[1] * 0.1], b);
+    }
+    pts.push(P(RAVEN_WING.trail), P(RAVEN_WING.root));
+    return pts;
+  }
+
+  function ravenPoses() {
+    var poses = [];
+    for (var k = 0; k < RAVEN_POSES; k++) {
+      var fl = flap(k / RAVEN_POSES), path = new Path2D();
+      [ravenWing(fl[0] * 0.92, fl[1] * 0.9, false), RAVEN_BODY, ravenWing(fl[0], fl[1], true)].forEach(function (pts) {
+        path.moveTo(pts[0][0], pts[0][1]);
+        for (var i = 1; i < pts.length; i++) path.lineTo(pts[i][0], pts[i][1]);
+        path.closePath();
+      });
+      poses.push(path);
+    }
+    return poses;
+  }
+
+  function ravens() {
+    if (STILL || !window.Path2D) return;
+    var poses = null, N = 1000;
+
+    function gauss() { return Math.max(-2.5, Math.min(2.5, (Math.random() + Math.random() + Math.random() - 1.5) * 2)); }
 
     function pass() {
-      var W = window.innerWidth, H = window.innerHeight;
-      var dir = Math.random() < 0.5 ? 1 : -1;
-      var baseY = rnd(0.18, 0.4) * H, dip = rnd(0.15, 0.3) * H;
-      var n = Math.round(rnd(14, 22)), flock = [];
-      for (var i = 0; i < n; i++) flock.push({ depth: Math.random() });
-      flock.sort(function (a, b) { return a.depth - b.depth; });   // far ones first, so near ones paint over
-      flock.forEach(function (f) {
-        f.b = makeBat();
-        f.size = Math.min(150, Math.max(34, W * (0.03 + f.depth * 0.07)));
-        f.secs = (rnd(3.4, 4.2) - f.depth * 0.9) * PACE;
-        f.delay = rnd(0, 1.6);
-        f.dy = rnd(-0.12, 0.12) * H;
-        f.beat = rnd(0.13, 0.19); f.phase = Math.random();
-        f.j = 0; f.vj = 0; f.jy = 0; f.nextJink = 0; f.y = null;
-        f.b.el.style.opacity = (0.55 + 0.45 * f.depth).toFixed(2);
-      });
-      var start = null;
+      poses = poses || ravenPoses();
+      var W = window.innerWidth, H = window.innerHeight, dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var cv = document.createElement('canvas');
+      cv.className = 'ravens';
+      cv.setAttribute('aria-hidden', 'true');
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      document.body.appendChild(cv);
+      var ctx = cv.getContext('2d');
+      var orange = getComputedStyle(document.documentElement).getPropertyValue('--orange').trim() || '#c8430f';
 
-      function step(ts) {
-        if (start === null) start = ts;
-        var T = (ts - start) / 1000, live = 0;
-        flock.forEach(function (f) {
-          if (!f.b) return;
-          var t = T - f.delay;
-          live++;
-          if (t < 0) return;
-          var p = t / f.secs;
-          if (p >= 1) { f.b.el.remove(); f.b = null; return; }
-          if (t >= f.nextJink) { f.jy = rnd(-0.05, 0.05) * H; f.nextJink = t + rnd(0.3, 0.7); }
-          f.vj += (f.jy - f.j) * 0.02 - f.vj * 0.15;
-          f.j += f.vj;
-          var x = dir > 0 ? -f.size + p * (W + 2 * f.size) : W + f.size - p * (W + 2 * f.size);
-          var y = baseY + f.dy + dip * Math.sin(Math.PI * p) + f.j;
-          var vy = f.y === null ? 0 : y - f.y;
-          f.y = y;
-          f.b.el.classList.add('is-flying');
-          f.b.pose(x, y, f.size, dir, (t / f.beat + f.phase) % 1, vy);
-        });
-        if (live) requestAnimationFrame(step); else next(false);
+      var dir = Math.random() < 0.5 ? 1 : -1;
+      var R = Math.min(W, H) * 0.14;                     // flock radius
+      var unit = Math.min(W, H) / 1400;                  // px per model unit for the nearest birds
+      var M = R * 4 + 60;                                // margin, so the whole flock starts and ends offscreen
+      var secs = rnd(8, 10) * PACE;
+      var y0 = rnd(0.3, 0.6), slope = rnd(-0.3, 0.3), f1 = rnd(0.5, 1), f2 = rnd(1.5, 2.5), a1 = rnd(0, 6.3), a2 = rnd(0, 6.3);
+      var flockPhase = rnd(0, 6.3);
+
+      // Centre of the flock at progress p along its line.
+      function centre(p) {
+        return [dir > 0 ? -M + p * (W + 2 * M) : W + M - p * (W + 2 * M),
+                H * (y0 + slope * (p - 0.5) + 0.16 * Math.sin(2 * Math.PI * f1 * p + a1) + 0.06 * Math.sin(2 * Math.PI * f2 * p + a2))];
       }
-      requestAnimationFrame(step);
+      // A bird's place at time t: its point on the line plus its slot in a
+      // flock that stretches and turns over time.
+      function place(b, t) {
+        var c = centre((t - b.lag) / secs);
+        var st = 1 + 0.5 * Math.sin(t * 0.8 + flockPhase), turn = 0.6 * Math.sin(t * 0.45 + flockPhase);
+        var ox = b.ox * R * st, oy = b.oy * R / st;
+        return [c[0] + ox * Math.cos(turn) - oy * Math.sin(turn) + 3 * Math.sin(t * b.ww + b.wp),
+                c[1] + ox * Math.sin(turn) + oy * Math.cos(turn) + 3 * Math.cos(t * b.ww * 1.3 + b.wp)];
+      }
+
+      var birds = [];
+      for (var i = 0; i < N; i++) {
+        var depth = Math.pow(Math.random(), 1.6);         // most birds far, a few close
+        birds.push({ depth: depth, s: unit * (0.35 + 0.65 * depth), alpha: 0.45 + 0.55 * depth,
+                     lag: rnd(0, 3), ox: gauss() * 1.4, oy: gauss() * 0.7,
+                     beat: rnd(0.28, 0.4) * PACE, ph: Math.random(), ww: rnd(1, 2.5), wp: rnd(0, 6.3) });
+      }
+      birds.sort(function (a, b) { return a.depth - b.depth; });  // far first, near paint over them
+
+      var t0 = null;
+      function frame(ts) {
+        if (t0 === null) t0 = ts;
+        var t = (ts - t0) / 1000;
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, cv.width, cv.height);
+        ctx.fillStyle = '#070506'; ctx.strokeStyle = orange; ctx.lineJoin = 'round';
+        var live = false;
+        for (var i = 0; i < birds.length; i++) {
+          var b = birds[i], p = (t - b.lag) / secs;
+          if (p < 0) { live = true; continue; }
+          if (p > 1) continue;
+          live = true;
+          var q = place(b, t), q0 = place(b, t - 0.05);
+          var vx = q[0] - q0[0], vy = q[1] - q0[1];
+          var sx = vx < 0 ? -1 : 1;
+          var ang = Math.max(-0.6, Math.min(0.6, Math.atan2(vy, Math.abs(vx) || 1e-6)));
+          var s = b.s * 2 * dpr, co = Math.cos(ang), si = Math.sin(ang);
+          ctx.setTransform(sx * s * co, s * si, -sx * s * si, s * co, q[0] * dpr, q[1] * dpr);
+          ctx.globalAlpha = b.alpha;
+          ctx.lineWidth = 0.9 * dpr / s;                  // under a pixel of orange at any size
+          var pose = poses[Math.floor(((t / b.beat + b.ph) % 1) * RAVEN_POSES)];
+          ctx.fill(pose); ctx.stroke(pose);
+        }
+        if (live) { requestAnimationFrame(frame); return; }
+        cv.remove();
+        next(false);
+      }
+      requestAnimationFrame(frame);
     }
 
-    function next(first) { setTimeout(pass, (first ? rnd(120, 240) : rnd(300, 600)) * 1000); }
+    function next(first) { setTimeout(pass, (first ? rnd(20, 60) : rnd(300, 600)) * 1000); }
     next(true);
   }
 
@@ -1069,7 +1147,7 @@
     basics(); title(); countdown(); calendar(); headline(); expect(); soon();
     venues(); routes(); partners();
     nav(); socials(); menu();
-    wheel(); ageGate(); ghosts(); bat(); swarm();
+    wheel(); ageGate(); ghosts(); bat(); ravens();
   }
 
   if (document.readyState === 'loading') {
