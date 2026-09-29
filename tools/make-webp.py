@@ -25,8 +25,8 @@
 
   The .png files beside them are SOURCES, not served assets. Nothing in the
   markup points at map.png or icons.png any more, so a visitor never
-  downloads them; they stay in the repo because map.png was processed from
-  the client's teaser by hand and is the only copy of that work.
+  downloads them; they stay in the repo as the sources of record. map.png is
+  the client's map with its black frame cropped off (see the README).
 
   logo.png is the exception and is still referenced: og:image and
   twitter:image keep pointing at it, because a share-card scraper is the one
@@ -35,7 +35,7 @@
 
   WHY THE SETTINGS DIFFER
 
-  map      Lossy. A hand-drawn map full of fine strokes, and at 1251 KB it
+  map      Lossy. A hand-drawn map full of fine strokes, and as a PNG it
            was two thirds of the whole site. Its alpha channel was fully
            opaque, so the mode drops to RGB before encoding.
   logo     Lossy. Lossless costs three times as much here for no visible

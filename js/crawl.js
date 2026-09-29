@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.5.6
+ *   @version      1.5.7
  *   @updated      2026-09-29
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.5.6  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.5.7  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 

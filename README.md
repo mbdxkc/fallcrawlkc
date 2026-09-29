@@ -75,7 +75,7 @@ Still missing its venue list, so the Spots section is absent by design.
 └── images/
     ├── logo.webp     # the lockup, as the page loads it
     ├── icons.webp    # free / 21+ / no wristbands / costumes strip
-    ├── map.webp      # teaser map, positions only, no names yet
+    ├── map.webp      # the map with all 13 spots named
     ├── og.png        # share card (og/twitter/JSON-LD), built by make-og.py
     ├── logo.png      # SOURCE, and a second JSON-LD image
     ├── icons.png     # SOURCE only, nothing links to it
@@ -86,8 +86,8 @@ Still missing its venue list, so the Spots section is absent by design.
 ```
 
 The `.png` files are sources, except `og.png` and `logo.png`, which the share-card
-scrapers fetch. `map.png` stays because it was processed from the client's teaser by
-hand and no command reproduces it.
+scrapers fetch. `map.png` is the client's map with its black frame cropped off, so
+it meets the page's own 1px border instead of a dead black band.
 
 ### Where the artwork comes from
 
@@ -98,7 +98,7 @@ re-derives it:
 |---|---|---|
 | `images/icons.png` | `Fall Crawl Icons.pdf` (22 Sep) | Re-rendered 22 Sep and byte-identical to the file on the site |
 | `images/logo.png` | `Fall Crawl The Pitch.png` | Cropped lockup |
-| `images/map.png` | `Fall Crawl Map 1 Teaser.png` | Processed, not the raw file (1400x1367 against her 1326x1300) |
+| `images/map.png` | `Fall Crawl Unoffical Map.png` (29 Sep; her spelling) | 1158x1168 with a solid black frame of 10/15/15/17px (left/top/right/bottom), cropped to the 1129x1133 interior. Replaced the 24 Sep teaser |
 | `images/*.webp` | the `.png` beside each | Built 24 Sep by `tools/make-webp.py`. Re-run it rather than converting by hand |
 | `images/mark.png`, `favicon.ico`, `apple-touch-icon.png`, `favicon-32.png` | `images/logo.png` | Built 22 Sep by `tools/make-icons.py`. Re-run it rather than re-cropping |
 
@@ -195,7 +195,7 @@ fog. The privacy page says so. If it fails, the sky stays clear.
       Held there deliberately until the content is in. Change the Squarespace A records to
       GitHub Pages (185.199.108-111.153) **first**, then add `CNAME` — never the reverse
 - [ ] Add venues to `data/crawl.js`. The Spots section is absent until then
-- [ ] Replace `images/map.png` with the full map once names are locked
+- [x] Replace `images/map.png` with the full map. Done 29 Sep from `Fall Crawl Unoffical Map.png`
 - [x] Remove `noindex` and the `robots.txt` disallow, across all three pages
 - [x] `favicon.ico`, `apple-touch-icon.png` and `favicon-32.png`, declared on
       all three pages. Built from the logo by `tools/make-icons.py`
@@ -209,7 +209,7 @@ fog. The privacy page says so. If it fails, the sky stays clear.
       Squarespace's "Coming Soon" page
 - [ ] Client asset fix: the pedicab promo reads "WINE & COCKAILS"
 - [ ] Gagalin font file from the client; headings use a fallback until then
-- [ ] `Fall Crawl Unofficial Map.png` from the client (not received)
+- [x] `Fall Crawl Unoffical Map.png` from the client (received 29 Sep)
 - [x] `showExamples: false`. Amy, 28 Sep: no made-up spots or specials, so
       nobody is disappointed when the real list lands. The wheel reads
       "Coming soon" until the first venue is added
