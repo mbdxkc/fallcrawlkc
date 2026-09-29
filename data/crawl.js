@@ -24,6 +24,7 @@ window.FALL_CRAWL = {
   titleShort: "Fall Crawl",          // used on phones, where the full name will not fit
   dateShort:  "10.24.26",            // the big orange date
   date:       "2026-10-24",          // the real date: runs the countdown and the calendar button
+  wheelFrom:  "2026-10-17",          // the spin wheel stays hidden until this day. "" shows it now
   hours:      "",                    // e.g. "4 p.m. to midnight". Empty hides the line
   instagram:  "fallcrawlkc",         // handle only, no @
 
@@ -100,7 +101,7 @@ window.FALL_CRAWL = {
      They only appear while "venues" above is empty, are marked "Example" on
      the card, and never show in the spots list. Set to false to turn off.  */
 
-  showExamples: true,
+  showExamples: false,
 
   examples: [
     { name: "The Hollow Tap",   street: "1601 Grand Blvd", drinks: "$6 black-cherry sours",       entertainment: "Costume contest at 10 p.m.", cover: "No cover" },

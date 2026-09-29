@@ -161,7 +161,9 @@ spec's 1024-byte limit for the charset declaration.
 per tab); a countdown and add-to-calendar links; the "Where to Next?" spin wheel
 of live spots, whose card shows drinks, entertainment, menu and cover where known
 and "details drop day-of" otherwise, with 13 made-up example spots while the venue
-list is empty (`showExamples`); a header scene of ghosts, a goblin and a monster
+list is empty (`showExamples`, off since 28 Sep at Amy's request); the wheel sits
+last before the icon strip and stays off the page, nav link included, until
+`wheelFrom` (2026-10-17); a header scene of ghosts, a goblin and a monster
 (size sets speed, randomised per load), fog thickest behind the title, and the
 real moon for Kansas City (position and phase computed in the browser); a bat
 drawn per frame from a 3D wing model about once a minute; and a flock of 1,000
@@ -198,8 +200,9 @@ fog. The privacy page says so. If it fails, the sky stays clear.
 - [ ] Client asset fix: the pedicab promo reads "WINE & COCKAILS"
 - [ ] Gagalin font file from the client; headings use a fallback until then
 - [ ] `Fall Crawl Unofficial Map.png` from the client (not received)
-- [ ] Set `showExamples: false` once real venues are in (the wheel switches
-      automatically, this just removes the examples from the file)
+- [x] `showExamples: false`. Amy, 28 Sep: no made-up spots or specials, so
+      nobody is disappointed when the real list lands. The wheel reads
+      "Coming soon" until the first venue is added
 - [ ] Client copy still to write: headline blurb, the line under the Follow
       button, Trick-or-Treat Routes; Crawl Guide is hidden (`guide: false`)
 

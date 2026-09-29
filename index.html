@@ -17,7 +17,7 @@
 
       @project      fallcrawlkc
       @file         index.html
-      @version      1.3.0
+      @version      1.4.0
       @updated      2026-09-28
       @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
       @url          https://fallcrawlkc.com/
@@ -63,7 +63,7 @@
                     system stack.
 
     ============================================================================
-      Fall Crawl v1.3.0  ·  index.html  ·  mediaBrilliance
+      Fall Crawl v1.4.0  ·  index.html  ·  mediaBrilliance
     ============================================================================
     -->
 
@@ -202,25 +202,6 @@
 
       </section>
 
-      <!-- ===== spin for your next stop =====
-           Straight under the hero: on the night people open this page
-           mid-crawl to decide where to go, so the tool leads and the
-           reference (map, what to expect) follows. -->
-      <section class="band" id="spin">
-        <h2>Where to Next?</h2>
-        <p class="lede" id="spin-lede">Can&rsquo;t pick? Spin the wheel and let the crawl decide.</p>
-        <div class="wheel-wrap" id="wheel-wrap" hidden>
-          <div class="wheel-pointer" aria-hidden="true"></div>
-          <svg class="wheel" id="wheel" viewBox="-110 -110 220 220" role="img" aria-label="Wheel of participating spots"></svg>
-        </div>
-        <button class="cta spin-btn" id="spin-btn" type="button" hidden>Spin</button>
-        <label class="spin-skip" id="spin-skip-wrap" hidden>
-          <input type="checkbox" id="spin-skip" checked /> Skip spots I&rsquo;ve already landed on
-        </label>
-        <p class="soon" id="spin-soon">Coming soon. The wheel fills up once the spots are announced.</p>
-        <p class="sr-only" id="spin-live" aria-live="polite"></p>
-      </section>
-
       <!-- ===== where: the headline over the map ===== -->
       <section class="band" id="map">
         <h2 class="headline" data-headline></h2>
@@ -265,6 +246,25 @@
       <section class="band" id="partners">
         <h2>Partners</h2>
         <ul class="partner-list" id="partner-list"></ul>
+      </section>
+
+      <!-- ===== spin for your next stop =====
+           Last before the icon strip, where the client wanted it. Taken off
+           the page entirely until wheelFrom in data/crawl.js, so nothing,
+           the nav link included, points at it before then. -->
+      <section class="band" id="spin">
+        <h2>Where to Next?</h2>
+        <p class="lede" id="spin-lede">Can&rsquo;t pick? Spin the wheel and let the crawl decide.</p>
+        <div class="wheel-wrap" id="wheel-wrap" hidden>
+          <div class="wheel-pointer" aria-hidden="true"></div>
+          <svg class="wheel" id="wheel" viewBox="-110 -110 220 220" role="img" aria-label="Wheel of participating spots"></svg>
+        </div>
+        <button class="cta spin-btn" id="spin-btn" type="button" hidden>Spin</button>
+        <label class="spin-skip" id="spin-skip-wrap" hidden>
+          <input type="checkbox" id="spin-skip" checked /> Skip spots I&rsquo;ve already landed on
+        </label>
+        <p class="soon" id="spin-soon">Coming soon. The wheel fills up once the spots are announced.</p>
+        <p class="sr-only" id="spin-live" aria-live="polite"></p>
       </section>
 
       <!-- ===== the ground rules, as icons, last thing before the footer =====

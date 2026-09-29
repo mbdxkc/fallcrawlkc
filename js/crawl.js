@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.3.0
+ *   @version      1.4.0
  *   @updated      2026-09-28
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.3.0  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.4.0  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -337,12 +337,12 @@
     /* Home is not a section, it is the crawl page itself, so it carries no
        anchor and is the one entry that shows unconditionally. */
     { id: null,     label: 'Home',   on: function () { return true; } },
-    { id: 'spin',   label: 'Spin',   on: function () { return true; } },
     { id: 'map',    label: 'Where',  on: function () { return true; } },
     { id: 'expect', label: 'Expect', on: function () {
         return (DATA.expect || []).length > 0; } },
     { id: 'spots',  label: 'Spots',  on: function () {
-        return liveVenues().length > 0; } }
+        return liveVenues().length > 0; } },
+    { id: 'spin',   label: 'Spin',   on: wheelOpen }
   ];
 
   function liveVenues() {
@@ -444,6 +444,22 @@
       var s = seen(); if (s.indexOf(name) < 0) s.push(name);
       sessionStorage.setItem(SEEN_KEY, JSON.stringify(s));
     } catch (e) { /* storage blocked: the wheel still works, it just forgets */ }
+  }
+
+  // The wheel stays off the page until DATA.wheelFrom (YYYY-MM-DD), in the
+  // visitor's own calendar. Empty, missing or mistyped shows it, so a typo
+  // in the data file can only make it appear early, never lose it.
+  function wheelOpen() {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(DATA.wheelFrom || '');
+    if (!m) return true;
+    var now = new Date(); now.setHours(0, 0, 0, 0);
+    return now >= new Date(+m[1], +m[2] - 1, +m[3]);
+  }
+
+  // Runs before nav(), so a removed section takes its link with it.
+  function spinWindow() {
+    var sec = document.getElementById('spin');
+    if (sec && !wheelOpen()) sec.parentNode.removeChild(sec);
   }
 
   function wheel() {
@@ -1145,7 +1161,7 @@
 
   function init() {
     basics(); title(); countdown(); calendar(); headline(); expect(); soon();
-    venues(); routes(); partners();
+    venues(); routes(); partners(); spinWindow();
     nav(); socials(); menu();
     wheel(); ageGate(); ghosts(); bat(); ravens();
   }
