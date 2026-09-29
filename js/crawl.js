@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.1.0
+ *   @version      1.2.0
  *   @updated      2026-09-28
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.1.0  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.2.0  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -934,8 +934,13 @@
              'M16 -3.2L19.5 -8.5L19.8 -2.6ZM16 3.2L19.5 8.5L19.8 2.6Z' +                          // ears
              'M-13 -2.2Q-19 -6 -22 -5Q-20 0 -22 5Q-19 6 -13 2.2Z';                                // tail membrane
 
-  function bat() {
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var STILL = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // One bat added to the page, and a function that poses it for a frame:
+  // centre (x, y) in px, drawn size, heading (1 = left to right), wingbeat
+  // phase and climb rate. Line work thickens as a bat shrinks, so a small one
+  // still reads as orange on black rather than a black speck.
+  function makeBat() {
     var el = document.createElement('div');
     el.className = 'bat';
     el.setAttribute('aria-hidden', 'true');
@@ -947,30 +952,15 @@
     document.body.appendChild(el);
     var frame = el.querySelector('.bat-frame');
     var far = el.querySelectorAll('.bat-far path'), near = el.querySelectorAll('.bat-near path');
-
-    function fly() {
-      var W = window.innerWidth, H = window.innerHeight;
-      var dir = Math.random() < 0.5 ? 1 : -1;               // 1 = left to right
-      var size = Math.min(Math.max(W * 0.3, 170), 420);     // px, the drawn box
-      var secs = rnd(5.5, 8) * PACE;
-      var y = rnd(0.2, 0.7) * H, targetY = y, vy = 0, nextJink = 0;
-      var beat = rnd(0.2, 0.26);                            // seconds per wingbeat
-      var t0 = null;
-      el.style.width = size + 'px';
-      el.classList.add('is-flying');
-
-      function step(ts) {
-        if (t0 === null) t0 = ts;
-        var t = (ts - t0) / 1000, p = t / secs;
-        if (p >= 1) { el.classList.remove('is-flying'); setTimeout(fly, (rnd(45, 75)) * 1000); return; }
-        // Headway with a little surge on each downstroke.
-        var cyc = (t / beat) % 1;
-        var x = dir > 0 ? -size + p * (W + 2 * size) : W + size - p * (W + 2 * size);
-        x += dir * 6 * Math.sin(cyc * 2 * Math.PI);
-        // Jinks: a new target height every 0.35-0.9s, chased with damping.
-        if (t >= nextJink) { targetY = Math.min(H * 0.85, Math.max(H * 0.12, y + rnd(-0.14, 0.14) * H)); nextJink = t + rnd(0.35, 0.9); }
-        vy += (targetY - y) * 0.012 - vy * 0.12;
-        y += vy;
+    var drawn = 0;
+    return {
+      el: el,
+      pose: function (x, y, size, dir, cyc, vy) {
+        if (size !== drawn) {
+          drawn = size;
+          el.style.width = size + 'px';
+          el.style.setProperty('--bw', Math.max(1, 170 / size).toFixed(2));
+        }
         var fl = flap(cyc);
         var bob = -Math.sin(fl[0]) * 2.2;                   // the body rides opposite the wings
         var bank = Math.max(-22, Math.min(22, -vy * 2.6)) * dir;
@@ -979,6 +969,37 @@
         var nw = wingPath(fl[0], fl[1], true), fw = wingPath(fl[0] * 0.92, fl[1] * 0.9, false);
         near[0].setAttribute('d', nw.membrane); near[1].setAttribute('d', nw.bones);
         far[0].setAttribute('d', fw.membrane); far[1].setAttribute('d', fw.bones);
+      }
+    };
+  }
+
+  function bat() {
+    if (STILL) return;
+    var b = makeBat();
+
+    function fly() {
+      var W = window.innerWidth, H = window.innerHeight;
+      var dir = Math.random() < 0.5 ? 1 : -1;
+      var size = Math.min(Math.max(W * 0.3, 170), 420);     // px, the drawn box
+      var secs = rnd(5.5, 8) * PACE;
+      var y = rnd(0.2, 0.7) * H, targetY = y, vy = 0, nextJink = 0;
+      var beat = rnd(0.2, 0.26);                            // seconds per wingbeat
+      var t0 = null;
+      b.el.classList.add('is-flying');
+
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var t = (ts - t0) / 1000, p = t / secs;
+        if (p >= 1) { b.el.classList.remove('is-flying'); setTimeout(fly, (rnd(45, 75)) * 1000); return; }
+        // Headway with a little surge on each downstroke.
+        var cyc = (t / beat) % 1;
+        var x = dir > 0 ? -size + p * (W + 2 * size) : W + size - p * (W + 2 * size);
+        x += dir * 6 * Math.sin(cyc * 2 * Math.PI);
+        // Jinks: a new target height every 0.35-0.9s, chased with damping.
+        if (t >= nextJink) { targetY = Math.min(H * 0.85, Math.max(H * 0.12, y + rnd(-0.14, 0.14) * H)); nextJink = t + rnd(0.35, 0.9); }
+        vy += (targetY - y) * 0.012 - vy * 0.12;
+        y += vy;
+        b.pose(x, y, size, dir, cyc, vy);
         requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
@@ -986,11 +1007,69 @@
     setTimeout(fly, rnd(12, 30) * 1000);
   }
 
+  /* ---- the swarm ----------------------------------------------------------
+     Every five to ten minutes (the first a few minutes in) a colony pours
+     across the window from the same bat model: 14 to 22 of them streaming in
+     over a second and a half, swooping down through the middle of the screen
+     and up again as they leave. Nearer bats are bigger, quicker and brighter;
+     each keeps its own wingbeat and small jinks inside the flock. Built for
+     each pass and removed after it. */
+  function swarm() {
+    if (STILL) return;
+
+    function pass() {
+      var W = window.innerWidth, H = window.innerHeight;
+      var dir = Math.random() < 0.5 ? 1 : -1;
+      var baseY = rnd(0.18, 0.4) * H, dip = rnd(0.15, 0.3) * H;
+      var n = Math.round(rnd(14, 22)), flock = [];
+      for (var i = 0; i < n; i++) flock.push({ depth: Math.random() });
+      flock.sort(function (a, b) { return a.depth - b.depth; });   // far ones first, so near ones paint over
+      flock.forEach(function (f) {
+        f.b = makeBat();
+        f.size = Math.min(150, Math.max(34, W * (0.03 + f.depth * 0.07)));
+        f.secs = (rnd(3.4, 4.2) - f.depth * 0.9) * PACE;
+        f.delay = rnd(0, 1.6);
+        f.dy = rnd(-0.12, 0.12) * H;
+        f.beat = rnd(0.13, 0.19); f.phase = Math.random();
+        f.j = 0; f.vj = 0; f.jy = 0; f.nextJink = 0; f.y = null;
+        f.b.el.style.opacity = (0.55 + 0.45 * f.depth).toFixed(2);
+      });
+      var start = null;
+
+      function step(ts) {
+        if (start === null) start = ts;
+        var T = (ts - start) / 1000, live = 0;
+        flock.forEach(function (f) {
+          if (!f.b) return;
+          var t = T - f.delay;
+          live++;
+          if (t < 0) return;
+          var p = t / f.secs;
+          if (p >= 1) { f.b.el.remove(); f.b = null; return; }
+          if (t >= f.nextJink) { f.jy = rnd(-0.05, 0.05) * H; f.nextJink = t + rnd(0.3, 0.7); }
+          f.vj += (f.jy - f.j) * 0.02 - f.vj * 0.15;
+          f.j += f.vj;
+          var x = dir > 0 ? -f.size + p * (W + 2 * f.size) : W + f.size - p * (W + 2 * f.size);
+          var y = baseY + f.dy + dip * Math.sin(Math.PI * p) + f.j;
+          var vy = f.y === null ? 0 : y - f.y;
+          f.y = y;
+          f.b.el.classList.add('is-flying');
+          f.b.pose(x, y, f.size, dir, (t / f.beat + f.phase) % 1, vy);
+        });
+        if (live) requestAnimationFrame(step); else next(false);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function next(first) { setTimeout(pass, (first ? rnd(120, 240) : rnd(300, 600)) * 1000); }
+    next(true);
+  }
+
   function init() {
     basics(); title(); countdown(); calendar(); headline(); expect(); soon();
     venues(); routes(); partners();
     nav(); socials(); menu();
-    wheel(); ageGate(); ghosts(); bat();
+    wheel(); ageGate(); ghosts(); bat(); swarm();
   }
 
   if (document.readyState === 'loading') {

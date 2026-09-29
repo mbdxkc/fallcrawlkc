@@ -10,7 +10,7 @@
 
     @project      fallcrawlkc
     @file         style.css
-    @version      1.1.0
+    @version      1.2.0
     @updated      2026-09-28
     @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
     @url          https://fallcrawlkc.com/
@@ -49,7 +49,7 @@
                   glyphs left by half the tracking.
 
   ============================================================================
-    Fall Crawl v1.1.0  ·  style.css  ·  mediaBrilliance
+    Fall Crawl v1.2.0  ·  style.css  ·  mediaBrilliance
   ============================================================================
 */
 
@@ -559,13 +559,14 @@ a.partner-name { display: inline-block; text-decoration: none; }
 /* ---------- the bat ---------- */
 /* Drawn and moved frame by frame in js/crawl.js. Under the sticky header
    (z-index 5) and the dialogs; black shapes with orange line work, like the
-   logo, the far wing dimmer so the body reads in front of it. */
+   logo, the far wing dimmer so the body reads in front of it. The swarm
+   reuses these; --bw thickens the lines on small bats. */
 .bat { position: fixed; left: 0; top: 0; z-index: 4; pointer-events: none; visibility: hidden; will-change: transform; }
 .bat.is-flying { visibility: visible; }
 .bat svg { display: block; width: 100%; height: auto; overflow: visible; }
-.bat-membrane { fill: #070506; stroke: var(--orange); stroke-width: .7; stroke-linejoin: round; }
-.bat-bone { fill: none; stroke: var(--orange); stroke-opacity: .7; stroke-width: .55; stroke-linecap: round; }
-.bat-body { fill: #070506; stroke: var(--orange); stroke-width: .7; stroke-linejoin: round; }
+.bat-membrane { fill: #070506; stroke: var(--orange); stroke-width: calc(.7 * var(--bw, 1)); stroke-linejoin: round; }
+.bat-bone { fill: none; stroke: var(--orange); stroke-opacity: .7; stroke-width: calc(.55 * var(--bw, 1)); stroke-linecap: round; }
+.bat-body { fill: #070506; stroke: var(--orange); stroke-width: calc(.7 * var(--bw, 1)); stroke-linejoin: round; }
 .bat-eye { fill: #f8f8f8; }
 .bat-far { opacity: .8; }
 

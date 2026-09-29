@@ -64,7 +64,7 @@ Still missing its venue list, so the Spots section is absent by design.
 ├── data/
 │   └── crawl.js      # THE ONLY FILE THE CLIENT EDITS
 ├── js/
-│   └── crawl.js      # renders every list, the wheel, the header scene, the bat
+│   └── crawl.js      # renders every list, the wheel, the header scene, the bats
 ├── fonts/
 │   ├── antic.woff2   # body face, self-hosted, SIL OFL
 │   └── OFL-antic.txt
@@ -164,7 +164,8 @@ and "details drop day-of" otherwise, with 13 made-up example spots while the ven
 list is empty (`showExamples`); a header scene of ghosts, a goblin and a monster
 (size sets speed, randomised per load), fog thickest behind the title, and the
 real moon for Kansas City (position and phase computed in the browser); a bat
-drawn per frame from a 3D wing model about once a minute. All motion is off under
+drawn per frame from a 3D wing model about once a minute, and a swarm of 14 to 22
+of them swooping across every five to ten minutes. All motion is off under
 `prefers-reduced-motion`. Every header layer was contrast-checked against the
 title and links.
 
