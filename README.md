@@ -214,8 +214,18 @@ fog. The privacy page says so. If it fails, the sky stays clear.
 - [x] `showExamples: false`. Amy, 28 Sep: no made-up spots or specials, so
       nobody is disappointed when the real list lands. The wheel reads
       "Coming soon" until the first venue is added
-- [ ] Client copy still to write: headline blurb, the line under the Follow
-      button, Trick-or-Treat Routes; Crawl Guide is hidden (`guide: false`)
+- [x] Trick-or-Treat Routes copy (Amy, 29 Sep). The line under the Instagram
+      button is settled as none: the icon in the button carries it (`ig.blurb`
+      stays empty)
+- [ ] Client copy still to write: the headline blurb under the map heading;
+      Crawl Guide is hidden (`guide: false`)
+- [ ] Amy to approve the Play It Safe draft (`safety` in the data file), and
+      confirm Beckett's vs Becketts and Grinders vs Grinder's
+- [ ] Amy's final map, with The Fold relabelled The Den
+
+Page order (29 Sep): hero, What to Expect, map, Fall Crawl Roulette,
+Trick-or-Treat Routes, What's Happening, Play It Safe, Partners, icon strip.
+The menu follows it: Home, Expect, Where, Spin, Spots.
 
 ---
 
