@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.6.1
+ *   @version      1.6.2
  *   @updated      2026-09-29
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.6.1  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.6.2  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -365,10 +365,10 @@
     /* Home is not a section, it is the crawl page itself, so it carries no
        anchor and is the one entry that shows unconditionally. */
     { id: null,     label: 'Home',   on: function () { return true; } },
-    { id: 'map',    label: 'Where',  on: function () { return true; } },
-    { id: 'spin',   label: 'Spin',   on: wheelOpen },
     { id: 'expect', label: 'Expect', on: function () {
         return (DATA.expect || []).length > 0; } },
+    { id: 'map',    label: 'Where',  on: function () { return true; } },
+    { id: 'spin',   label: 'Spin',   on: wheelOpen },
     { id: 'spots',  label: 'Spots',  on: function () {
         return liveVenues().length > 0; } }
   ];
