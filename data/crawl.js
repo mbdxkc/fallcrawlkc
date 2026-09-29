@@ -24,7 +24,7 @@ window.FALL_CRAWL = {
   titleShort: "Fall Crawl - KCMO",   // used on phones, where the full name will not fit
   dateShort:  "10.24.26",            // the big orange date
   date:       "2026-10-24",          // the real date: runs the countdown and the calendar button
-  wheelFrom:  "2026-10-17",          // the spin wheel stays hidden until this day. "" shows it now
+  wheelFrom:  "",                    // a date hides the wheel until that day, e.g. "2026-10-17". "" shows it now
   hours:      "",                    // e.g. "4 p.m. to midnight". Empty hides the line
   instagram:  "fallcrawlkc",         // handle only, no @
 
@@ -62,10 +62,29 @@ window.FALL_CRAWL = {
 
   /* ---- Coming-soon sections -------------------------------------------
      Leave as "" and the section shows "Coming soon". Type a description
-     and it replaces that. false hides the section completely.            */
+     and it replaces that, or a list of lines for more than one paragraph.
+     false hides the section completely.                                   */
 
   guide:  false,                     // Crawl Guide (hidden for now)
-  treats: "",                        // Trick-or-Treat Routes
+  // Trick-or-Treat Routes: one line per paragraph, in quotes, each
+  // followed by a comma.
+  treats: [
+    "We won't send you into the wild alone.",
+    "Three curated routes are coming soon, whether you want to hit them all, take your time or chase the wildest things happening throughout the crawl.",
+    "Built around special events, experiences and timing. Routes drop closer to crawl day.",
+  ],
+
+  /* ---- Play it safe ---------------------------------------------------
+     Same shape as What to Expect: one block per item.                     */
+
+  safety: [
+    { title: "Get Home Safe",
+      text:  "Don't drink and drive. Walk between spots, call a pedicab or grab a rideshare, and plan your ride home before the first drink." },
+    { title: "Match Your ID",
+      text:  "Spots check IDs at the door, so your face has to match yours. Keep masks, makeup and prosthetics easy to lift or take off." },
+    { title: "No Weapons",
+      text:  "No weapons, real or fake. Prop swords, guns, knives and blasters stay home, even as part of a costume." },
+  ],
 
   /* ---- Social icons, top right ---------------------------------------
      Only instagram, tiktok and facebook work. Delete the // to add one.  */
@@ -77,11 +96,12 @@ window.FALL_CRAWL = {
   ],
 
   /* ---- Participating spots -------------------------------------------
-     Every spot here also goes on the "Spin for your next stop" wheel.
-     Anything left as "" is simply left off, and a spot with no details yet
-     says "Details drop day-of". Fill in what you know, add the rest later.
+     Every spot here also goes on the Fall Crawl Roulette wheel. Anything
+     left as "" is simply left off, and a spot with no details yet says
+     "Details coming soon." Fill in what you know, add the rest later.
 
        street        no city. "Kansas City, MO" is added for the map link
+       hours         e.g. "4 p.m. to 1:30 a.m.", shown under the address
        insta         handle only, no @. "" if they have none
        doing         one line for the list, e.g. "Spooky cocktail menu"
        drinks        drink specials
@@ -95,32 +115,32 @@ window.FALL_CRAWL = {
     //   doing: "Spooky cocktail menu", drinks: "$8 spiced old fashioneds",
     //   entertainment: "DJ from 9 p.m.", menu: "", cover: "No cover", live: true },
 
-    // The 13 on the map, A to Z (29 Sep). Names only so far.
-    { name: "Beckett's",                street: "", insta: "",
+    // The 13, A to Z, by account name and address (29 Sep).
+    { name: "Beckett's",                street: "1701 McGee St",    hours: "", insta: "",
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "The Belfry Collective",    street: "", insta: "",
+    { name: "The Belfry",               street: "1532 Grand Blvd",  hours: "", insta: "",
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Chartreuse Saloon",        street: "", insta: "",
+    { name: "Chartreuse Saloon",        street: "1627 Oak St",      hours: "", insta: "",
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Cigar Box",                street: "", insta: "",
+    { name: "Cigar Box",                street: "1519 Grand Blvd",  hours: "", insta: "",
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "The Fold",                 street: "", insta: "",
+    { name: "The Den",                  street: "1830 Walnut St",   hours: "", insta: "",
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Grinder's",                street: "", insta: "",
+    { name: "Grinders",                 street: "417 E 18th St",    hours: "", insta: "",
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "International Tap House",  street: "", insta: "",
+    { name: "International Tap House",  street: "403 E 18th St",    hours: "", insta: "",
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Jade Jaguar",              street: "", insta: "",
+    { name: "Jade Jaguar",              street: "1800 Walnut St",   hours: "", insta: "",
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "King G",                   street: "", insta: "",
+    { name: "King G",                   street: "500 E 18th St",    hours: "", insta: "",
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Mod Gallery",              street: "", insta: "",
+    { name: "MOD Gallery",              street: "1809 McGee St",    hours: "", insta: "",
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Ricochet",                 street: "", insta: "",
+    { name: "Ricochet",                 street: "1720 McGee St",    hours: "", insta: "",
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Tannin",                   street: "", insta: "",
+    { name: "Tannin",                   street: "1526 Walnut St",   hours: "", insta: "",
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Ted's Taproom",            street: "", insta: "",
+    { name: "Ted's Taproom",            street: "1829 McGee St",    hours: "", insta: "",
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
   ],
 

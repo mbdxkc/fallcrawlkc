@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.5.9
+ *   @version      1.6.0
  *   @updated      2026-09-29
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.5.9  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.6.0  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -194,10 +194,12 @@
   }
 
   /* ---- what to expect -------------------------------------------------- */
-  function expect() {
-    var list = (DATA.expect || []).filter(function (x) { return x && x.title; });
-    if (!list.length) return drop('expect');
-    var ul = document.getElementById('expect-list');
+  // What to Expect and Play It Safe share one card layout.
+  function expect() { cards('expect', DATA.expect); cards('safety', DATA.safety); }
+  function cards(id, items) {
+    var list = (items || []).filter(function (x) { return x && x.title; });
+    if (!list.length) return drop(id);
+    var ul = document.getElementById(id + '-list');
     if (!ul) return;
     list.forEach(function (x) {
       var li = el('li', 'expect');
@@ -214,8 +216,12 @@
       if (pair[1] === false) return drop(pair[2]);   // false hides the section outright
       var n = document.querySelector(pair[0]);
       if (!n) return;
-      if (pair[1]) { n.textContent = pair[1]; n.className = ''; }
-      else n.textContent = 'Coming soon.';
+      var lines = [].concat(pair[1] || []).filter(Boolean);
+      if (!lines.length) { n.textContent = 'Coming soon.'; return; }
+      // One paragraph per line, the first as the lead-in.
+      var box = el('div', 'prose soon-copy');
+      lines.forEach(function (t, i) { box.appendChild(el('p', i ? null : 'soon-lead', t)); });
+      n.parentNode.replaceChild(box, n);
     });
   }
 
@@ -248,6 +254,7 @@
         a.rel = 'noopener';
         li.appendChild(a);
       }
+      if (v.hours) li.appendChild(el('p', 'venue-hours', v.hours));
       if (v.doing) li.appendChild(el('p', 'venue-doing', v.doing));
 
       var ig = insta(v.insta);
@@ -359,11 +366,11 @@
        anchor and is the one entry that shows unconditionally. */
     { id: null,     label: 'Home',   on: function () { return true; } },
     { id: 'map',    label: 'Where',  on: function () { return true; } },
+    { id: 'spin',   label: 'Spin',   on: wheelOpen },
     { id: 'expect', label: 'Expect', on: function () {
         return (DATA.expect || []).length > 0; } },
     { id: 'spots',  label: 'Spots',  on: function () {
-        return liveVenues().length > 0; } },
-    { id: 'spin',   label: 'Spin',   on: wheelOpen }
+        return liveVenues().length > 0; } }
   ];
 
   function liveVenues() {
@@ -591,6 +598,8 @@
     var st = document.getElementById('spot-street');
     if (v.street) { st.textContent = v.street; st.href = MAPS + encodeURIComponent(v.street + ', Kansas City, MO'); st.hidden = false; }
     else st.hidden = true;
+    var hrs = document.getElementById('spot-hours');
+    if (hrs) { hrs.textContent = v.hours || ''; hrs.hidden = !v.hours; }
     var dl = document.getElementById('spot-details');
     dl.textContent = '';
     var any = false;

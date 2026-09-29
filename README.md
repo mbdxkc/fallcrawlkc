@@ -160,12 +160,12 @@ spec's 1024-byte limit for the charset declaration.
 **What the page does beyond the lists (28 Sep).** A 21+ check (sessionStorage,
 per tab); a countdown; the big date as the add-to-calendar link, marked with a
 calendar-plus icon (the calendar file, or Google Calendar on Android, which
-cannot open one); the "Where to Next?" spin wheel
+cannot open one); the Fall Crawl Roulette wheel, right under the map,
 of live spots, whose card shows drinks, entertainment, menu and cover where known
 and "details drop day-of" otherwise, with 13 made-up example spots while the venue
 list is empty (`showExamples`, off since 28 Sep at Amy's request); the wheel sits
-last before the icon strip and stays off the page, nav link included, until
-`wheelFrom` (2026-10-17); a header scene of ghosts, a goblin and a monster
+under the map and shows now (29 Sep, for the weekend launch); a date in
+`wheelFrom` would take it off the page until that day, nav link included; a header scene of ghosts, a goblin and a monster
 (size sets speed, randomised per load), fog thickest behind the title, and the
 real moon for Kansas City (position and phase computed in the browser); a bat
 drawn per frame from a 3D wing model about once a minute; and a flock of 1,000
@@ -173,12 +173,13 @@ ravens on one canvas, first within a minute of arriving, then at random at least
 five minutes apart; behind every page, a sparse, faint starfield (one canvas,
 drawn once, five twinkling stars) under a streetlight haze along the bottom of
 the window, the sky as it looks from downtown. The header reads "East Crossroads
-Fall Crawl - KCMO" (29 Sep, and "Kansas City" between the lockup and the date, in wide white caps
-flanked by the lockup's orange sparkles, and
-the nav stays behind the menu button below 1100px, where five links would run
-into the title. The Instagram button is the handle alone in a glowing orange
-ring (`.cta-ig`), filling on hover; `ig.button` in the data file can put a word
-back in front of it. All motion is off under
+Fall Crawl - KCMO" (29 Sep), and "Kansas City" sits between the lockup and the
+date in wide white caps, flanked by the lockup's orange sparkles. The nav stays
+behind the menu button below 1100px, where five links would run into the title.
+The Instagram button is the icon and handle in a glowing orange ring
+(`.cta-ig`), filling on hover; `ig.button` in the data file can put a word in
+front of the handle. Play It Safe (getting home, ID-recognizable costumes, no
+weapons) renders from `safety` in the data file, in the What to Expect cards. All motion is off under
 `prefers-reduced-motion`. Every header layer was contrast-checked against the
 title and links.
 
@@ -194,7 +195,7 @@ fog. The privacy page says so. If it fails, the sky stays clear.
       Registered 2026-09-14, nameservers at Squarespace, currently a "Coming Soon" page.
       Held there deliberately until the content is in. Change the Squarespace A records to
       GitHub Pages (185.199.108-111.153) **first**, then add `CNAME` — never the reverse
-- [ ] Venue details in `data/crawl.js`. All 13 names are in (29 Sep, A to Z, from the map); street, Instagram and the rest are still empty
+- [ ] Venue details in `data/crawl.js`. All 13 are in by account name with street addresses (29 Sep, A to Z); `hours`, Instagram and the specials are still empty. The Fold is listed as The Den at its owner's request; the map image still says The Fold until Amy's final map arrives
 - [x] Replace `images/map.png` with the full map. Done 29 Sep from `Fall Crawl Unoffical Map.png`
 - [x] Remove `noindex` and the `robots.txt` disallow, across all three pages
 - [x] `favicon.ico`, `apple-touch-icon.png` and `favicon-32.png`, declared on

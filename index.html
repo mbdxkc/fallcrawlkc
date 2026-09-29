@@ -17,7 +17,7 @@
 
       @project      fallcrawlkc
       @file         index.html
-      @version      1.5.9
+      @version      1.6.0
       @updated      2026-09-29
       @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
       @url          https://fallcrawlkc.com/
@@ -63,7 +63,7 @@
                     system stack.
 
     ============================================================================
-      Fall Crawl v1.5.9  ·  index.html  ·  mediaBrilliance
+      Fall Crawl v1.6.0  ·  index.html  ·  mediaBrilliance
     ============================================================================
     -->
 
@@ -180,6 +180,13 @@
           <span class="pitch-sub">No tickets. No wristbands. No set route.</span></p>
 
         <a class="cta cta-ig" data-ig href="https://www.instagram.com/" target="_blank" rel="noopener">
+          <svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true" focusable="false">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="5" />
+            <circle cx="12" cy="12" r="4.2" />
+            <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none" />
+          </svg>
           <span data-ig-button></span>
           <span class="cta-handle" data-ig-handle></span>
         </a>
@@ -194,6 +201,26 @@
         <p class="lede" data-blurb></p>
         <img class="map-img" src="images/map.webp" width="1129" height="1133" loading="lazy" decoding="async"
              alt="Hand-drawn map of the East Crossroads, Main Street to Cherry Street and Truman Road to 19th Street, naming the 13 participating spots, each with a featured spirit: Tannin, The Belfry Collective, Cigar Box, Chartreuse Saloon, Beckett's, Ricochet, King G, Jade Jaguar, International Tap House, Mod Gallery, Grinder's, The Fold and Ted's Taproom." />
+      </section>
+
+      <!-- ===== Fall Crawl Roulette =====
+           Straight under the map: see where the spots are, then let the
+           wheel pick one. A date in wheelFrom (data/crawl.js) takes it off
+           the page until that day, nav link included. -->
+      <section class="band" id="spin">
+        <h2>Fall Crawl Roulette</h2>
+        <p class="lede" id="spin-lede">Can&rsquo;t decide where to go next? Leave it to fate.<br />
+          Spin the wheel. Go where it sends you. No arguing.</p>
+        <div class="wheel-wrap" id="wheel-wrap" hidden>
+          <div class="wheel-pointer" aria-hidden="true"></div>
+          <svg class="wheel" id="wheel" viewBox="-110 -110 220 220" role="img" aria-label="Wheel of participating spots"></svg>
+        </div>
+        <button class="cta spin-btn" id="spin-btn" type="button" hidden>Spin</button>
+        <label class="spin-skip" id="spin-skip-wrap" hidden>
+          <input type="checkbox" id="spin-skip" checked /> Skip spots I&rsquo;ve already landed on
+        </label>
+        <p class="soon" id="spin-soon">Coming soon. The wheel fills up once the spots are announced.</p>
+        <p class="sr-only" id="spin-live" aria-live="polite"></p>
       </section>
 
       <!-- ===== what to expect ===== -->
@@ -211,7 +238,7 @@
       <!-- ===== what's happening ===== -->
       <section class="band" id="spots">
         <h2>What&rsquo;s Happening</h2>
-        <p class="lede">Every spot runs its own night: cocktail features, activations, entertainment.</p>
+        <p class="lede">Every spot runs its own night: live entertainment, pop-up bars, one-night-only cocktail features and lots of spooky surprises along the way.</p>
         <ul class="venue-list" id="venue-list"></ul>
       </section>
 
@@ -228,29 +255,16 @@
         <p class="soon" data-treats></p>
       </section>
 
+      <!-- ===== play it safe: getting home, and the costume rules ===== -->
+      <section class="band" id="safety">
+        <h2>Play It Safe</h2>
+        <ul class="expect-list" id="safety-list"></ul>
+      </section>
+
       <!-- ===== partners ===== -->
       <section class="band" id="partners">
         <h2>Partners</h2>
         <ul class="partner-list" id="partner-list"></ul>
-      </section>
-
-      <!-- ===== spin for your next stop =====
-           Last before the icon strip, where the client wanted it. Taken off
-           the page entirely until wheelFrom in data/crawl.js, so nothing,
-           the nav link included, points at it before then. -->
-      <section class="band" id="spin">
-        <h2>Where to Next?</h2>
-        <p class="lede" id="spin-lede">Can&rsquo;t pick? Spin the wheel and let the crawl decide.</p>
-        <div class="wheel-wrap" id="wheel-wrap" hidden>
-          <div class="wheel-pointer" aria-hidden="true"></div>
-          <svg class="wheel" id="wheel" viewBox="-110 -110 220 220" role="img" aria-label="Wheel of participating spots"></svg>
-        </div>
-        <button class="cta spin-btn" id="spin-btn" type="button" hidden>Spin</button>
-        <label class="spin-skip" id="spin-skip-wrap" hidden>
-          <input type="checkbox" id="spin-skip" checked /> Skip spots I&rsquo;ve already landed on
-        </label>
-        <p class="soon" id="spin-soon">Coming soon. The wheel fills up once the spots are announced.</p>
-        <p class="sr-only" id="spin-live" aria-live="polite"></p>
       </section>
 
       <!-- ===== the ground rules, as icons, last thing before the footer =====
@@ -280,8 +294,9 @@
       <p class="spot-kicker">Your next stop</p>
       <h2 id="spot-name"></h2>
       <a class="venue-street" id="spot-street" target="_blank" rel="noopener"></a>
+      <p class="venue-hours" id="spot-hours" hidden></p>
       <dl class="spot-details" id="spot-details"></dl>
-      <p class="spot-empty" id="spot-empty">Details drop day-of. Check their Instagram for the latest.</p>
+      <p class="spot-empty" id="spot-empty">Details coming soon.</p>
       <a class="ig-link" id="spot-ig" target="_blank" rel="noopener"></a>
       <p class="spot-ride" id="spot-ride" hidden></p>
       <div class="modal-actions">
