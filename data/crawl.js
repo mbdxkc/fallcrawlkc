@@ -60,9 +60,9 @@ window.FALL_CRAWL = {
 
   /* ---- Coming-soon sections -------------------------------------------
      Leave as "" and the section shows "Coming soon". Type a description
-     and it replaces that.                                                 */
+     and it replaces that. false hides the section completely.            */
 
-  guide:  "",                        // Crawl Guide
+  guide:  false,                     // Crawl Guide (hidden for now)
   treats: "",                        // Trick-or-Treat Routes
 
   /* ---- Social icons, top right ---------------------------------------

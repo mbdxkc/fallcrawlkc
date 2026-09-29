@@ -140,7 +140,8 @@
 
   /* ---- coming-soon sections: the text if there is any, else the promise */
   function soon() {
-    [['[data-guide]', DATA.guide], ['[data-treats]', DATA.treats]].forEach(function (pair) {
+    [['[data-guide]', DATA.guide, 'guide'], ['[data-treats]', DATA.treats, 'treats']].forEach(function (pair) {
+      if (pair[1] === false) return drop(pair[2]);   // false hides the section outright
       var n = document.querySelector(pair[0]);
       if (!n) return;
       if (pair[1]) { n.textContent = pair[1]; n.className = ''; }
@@ -550,25 +551,70 @@
     openModal(d);
   }
 
-  /* ---- ghost chase across the header ------------------------------------
-     Decorative: a small ghost fleeing, a big one gaining, every so often.
-     Injected here so all three pages get it from one place. Hidden from
-     assistive tech, never takes clicks, and off entirely under
-     prefers-reduced-motion (in CSS). */
-  var GHOST = function (cls, eyes) {
-    return '<svg class="ghost ' + cls + '" viewBox="0 0 40 46" aria-hidden="true" focusable="false">' +
-      '<path d="M20 2C9.5 2 3 10 3 20v24l5.5-5 5.5 5 6-5 6 5 5.5-5 5.5 5V20C37 10 30.5 2 20 2z" fill="currentColor"/>' +
-      eyes + '</svg>';
-  };
-  var FACES = {
-    scared: '<circle cx="14" cy="18" r="3.4" fill="#000"/><circle cx="26" cy="18" r="3.4" fill="#000"/>' +
-            '<ellipse cx="20" cy="29" rx="3" ry="4.2" fill="#000"/>',
-    chaser: '<path d="M10 15l8 4M30 15l-8 4" stroke="#000" stroke-width="2.6" stroke-linecap="round"/>' +
-            '<circle cx="14.5" cy="20" r="2.6" fill="#c84008"/><circle cx="25.5" cy="20" r="2.6" fill="#c84008"/>' +
-            '<path d="M12 29q8 7 16 0" stroke="#000" stroke-width="2.4" fill="none" stroke-linecap="round"/>',
-    drift:  '<ellipse cx="14" cy="19" rx="2.6" ry="3.4" fill="#000"/><ellipse cx="26" cy="19" rx="2.6" ry="3.4" fill="#000"/>' +
-            '<path d="M15 28q5 3 10 0" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round"/>'
-  };
+  /* ---- night procession across the header -----------------------------
+     Decorative and slow: translucent ghosts drift through the bar and the
+     odd goblin or monster trudges along its bottom edge. Each figure draws
+     its own pace, pause, height and direction on page load. Injected here
+     so all three pages get it from one place. Hidden from assistive tech,
+     never takes clicks, and off under prefers-reduced-motion (in CSS). */
+  var uid = 0;
+
+  // A sheet ghost: a soft dome fading out through a ragged hem, blurred at
+  // the edges, with hollow eyes. Its hem sways on its own (CSS).
+  function ghostSVG() {
+    var n = ++uid;
+    return '<svg class="fig ghost" viewBox="0 0 60 84" aria-hidden="true" focusable="false">' +
+      '<defs>' +
+        '<linearGradient id="gb' + n + '" x1="0" y1="0" x2="0" y2="1">' +
+          '<stop offset="0" stop-color="#fff" stop-opacity=".75"/>' +
+          '<stop offset=".55" stop-color="#e8ecf2" stop-opacity=".42"/>' +
+          '<stop offset="1" stop-color="#dfe6ee" stop-opacity="0"/></linearGradient>' +
+        '<filter id="gf' + n + '" x="-30%" y="-30%" width="160%" height="160%">' +
+          '<feGaussianBlur stdDeviation="1.1"/></filter>' +
+        '<filter id="gg' + n + '" x="-50%" y="-50%" width="200%" height="200%">' +
+          '<feGaussianBlur stdDeviation="4"/></filter>' +
+      '</defs>' +
+      '<ellipse cx="30" cy="30" rx="24" ry="26" fill="#cfe0ff" opacity=".14" filter="url(#gg' + n + ')"/>' +
+      '<g filter="url(#gf' + n + ')">' +
+        '<path class="ghost-sheet" d="M30 4C15 4 8 16 8 30v22c0 6-3 12-5 18 4-2 7-6 9-3 2 4 1 10 3 14 2-5 5-10 8-8 3 2 3 8 6 9 2-4 3-10 7-10 3 0 4 6 7 7 1-5 1-11 4-13 3-1 5 4 8 5-2-6-4-13-4-19V30C53 16 45 4 30 4z" fill="url(#gb' + n + ')"/>' +
+      '</g>' +
+      '<ellipse cx="22.5" cy="28" rx="3.6" ry="5" fill="#0a0a0f" opacity=".8"/>' +
+      '<ellipse cx="37.5" cy="28" rx="3.6" ry="5" fill="#0a0a0f" opacity=".8"/>' +
+      '<ellipse cx="30" cy="41" rx="3" ry="4.4" fill="#0a0a0f" opacity=".55"/>' +
+    '</svg>';
+  }
+
+  // A hunched goblin walking: big ears, long nose, lantern-green eyes.
+  function goblinSVG() {
+    return '<svg class="fig goblin" viewBox="0 0 48 52" aria-hidden="true" focusable="false">' +
+      '<g fill="#26301f">' +
+        '<path d="M8 16l-7-5 9 1zM40 16l7-5-9 1z"/>' +                       // ears
+        '<ellipse cx="24" cy="17" rx="13" ry="11"/>' +                       // head
+        '<path d="M34 19l9 3-9 1z"/>' +                                       // nose
+        '<path d="M14 26q10-4 18 0l4 14q-12 4-24 0z"/>' +                     // hunched body
+        '<rect class="leg leg-a" x="16" y="38" width="5" height="13" rx="2"/>' +
+        '<rect class="leg leg-b" x="26" y="38" width="5" height="13" rx="2"/>' +
+        '<path d="M33 28l9 8-2 2-9-7z"/>' +                                   // arm
+      '</g>' +
+      '<circle cx="21" cy="15" r="2" fill="#b9ff4a"/><circle cx="29" cy="15" r="2" fill="#b9ff4a"/>' +
+      '<circle cx="21" cy="15" r="4" fill="#b9ff4a" opacity=".18"/><circle cx="29" cy="15" r="4" fill="#b9ff4a" opacity=".18"/>' +
+    '</svg>';
+  }
+
+  // A shaggy horned monster: one big ember eye, stubby legs.
+  function monsterSVG() {
+    return '<svg class="fig monster" viewBox="0 0 56 52" aria-hidden="true" focusable="false">' +
+      '<g fill="#2c2029">' +
+        '<path d="M15 12l-4-10 9 7zM41 12l4-10-9 7z"/>' +                     // horns
+        '<path d="M8 26c0-11 9-18 20-18s20 7 20 18v10c0 3-2 5-3 7l-3-3-3 4-3-4-3 4-3-4-3 4-3-4-3 4-3-4-3 3c-1-2-3-4-3-7z"/>' +
+        '<rect class="leg leg-a" x="17" y="40" width="7" height="11" rx="3"/>' +
+        '<rect class="leg leg-b" x="32" y="40" width="7" height="11" rx="3"/>' +
+      '</g>' +
+      '<circle cx="28" cy="24" r="6.5" fill="#1a1016"/>' +
+      '<circle cx="28" cy="24" r="3.4" fill="#e0561c"/>' +
+      '<circle cx="28" cy="24" r="9" fill="#e0561c" opacity=".12"/>' +
+    '</svg>';
+  }
 
   function rnd(a, b) { return a + Math.random() * (b - a); }
 
@@ -579,29 +625,19 @@
     run.className = 'ghost-run';
     run.setAttribute('aria-hidden', 'true');
 
-    // The original chase keeps its fixed timing; every other lane draws its
-    // own speed, pause, height, size and direction on each page load, so the
-    // header never repeats the same pattern.
-    var lanes = [{ kind: 'chase', dur: 16, delay: 2, dir: 1, y: 0, scale: 1 }];
-    // A phone's header is a third as wide, so it gets half the extra lanes.
-    var extra = window.innerWidth < 768 ? 2 : 6;
-    for (var k = 0; k < extra; k++) {
-      lanes.push({
-        kind:  k < extra / 3 ? 'chase' : 'drift',
-        dur:   rnd(11, 26),                  // seconds per loop, travel is half of it
-        delay: rnd(0, 14),
-        dir:   Math.random() < 0.5 ? 1 : -1, // 1 = right to left
-        y:     rnd(-0.35, 0.35),              // rem off the centre line
-        scale: rnd(0.6, 1.05)
-      });
-    }
-    run.innerHTML = lanes.map(function (l) {
-      var inner = l.kind === 'chase'
-        ? GHOST('ghost-scared', FACES.scared) + GHOST('ghost-chaser', FACES.chaser)
-        : GHOST('ghost-drift', FACES.drift);
-      return '<span class="ghost-lane' + (l.dir < 0 ? ' ghost-lane-rev' : '') + '" style="' +
-        '--dur:' + l.dur.toFixed(1) + 's;--delay:' + l.delay.toFixed(1) + 's;' +
-        '--y:' + l.y.toFixed(2) + 'rem;--scale:' + l.scale.toFixed(2) + '">' + inner + '</span>';
+    // A phone's header is a third as wide, so it gets fewer figures.
+    var cast = window.innerWidth < 768
+      ? ['ghost', 'ghost', 'goblin']
+      : ['ghost', 'ghost', 'ghost', 'goblin', 'monster'];
+    run.innerHTML = cast.map(function (kind, k) {
+      var walker = kind !== 'ghost';
+      var loop = walker ? rnd(55, 90) : rnd(40, 75);   // seconds; travel is 60% of it
+      var dir = Math.random() < 0.5 ? 1 : -1;           // 1 = right to left
+      var art = kind === 'ghost' ? ghostSVG() : kind === 'goblin' ? goblinSVG() : monsterSVG();
+      return '<span class="fig-lane ' + (walker ? 'walker' : 'floater') + (dir < 0 ? ' rev' : '') +
+        '" style="--dur:' + loop.toFixed(1) + 's;--delay:' + (k * rnd(4, 9) + rnd(0, 6)).toFixed(1) + 's;' +
+        '--y:' + (walker ? 0 : rnd(-0.25, 0.2)).toFixed(2) + 'rem;--scale:' + rnd(0.8, 1.1).toFixed(2) +
+        ';--bob:' + rnd(2.6, 4.2).toFixed(2) + 's">' + art + '</span>';
     }).join('');
     bar.insertBefore(run, bar.firstChild);
   }
