@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.5.4
+ *   @version      1.5.5
  *   @updated      2026-09-29
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.5.4  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.5.5  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -156,11 +156,32 @@
       'SUMMARY:' + title, 'LOCATION:' + where.replace(/,/g, '\\,'),
       'DESCRIPTION:' + about.replace(/,/g, '\\,'), 'URL:https://fallcrawlkc.com/',
       'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
-    document.getElementById('cal-ics').href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
-    document.getElementById('cal-google').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+    var icsHref = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+    var googleHref = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
       '&text=' + encodeURIComponent(title) + '&dates=' + ymd(day) + '/' + ymd(next) +
       '&details=' + encodeURIComponent(about) + '&location=' + encodeURIComponent(where);
+    document.getElementById('cal-ics').href = icsHref;
+    document.getElementById('cal-google').href = googleHref;
     box.hidden = false;
+
+    // The big date is a link too. Apple devices and desktop take the
+    // calendar file; Android has no handler for one and would only
+    // download it, so there the date opens Google Calendar instead.
+    var big = document.querySelector('[data-date-short]');
+    if (big && big.textContent) {
+      var a = document.createElement('a');
+      a.className = 'date-link';
+      a.title = 'Add to calendar';
+      a.setAttribute('aria-label', big.textContent + ', add to calendar');
+      if (/Android/i.test(navigator.userAgent)) {
+        a.href = googleHref; a.target = '_blank'; a.rel = 'noopener';
+      } else {
+        a.href = icsHref; a.setAttribute('download', 'fall-crawl.ics');
+      }
+      a.textContent = big.textContent;
+      big.textContent = '';
+      big.appendChild(a);
+    }
   }
 
   /* ---- the headline over the map ------------------------------------ */

@@ -158,7 +158,8 @@ the client supplied.
 spec's 1024-byte limit for the charset declaration.
 
 **What the page does beyond the lists (28 Sep).** A 21+ check (sessionStorage,
-per tab); a countdown and add-to-calendar links; the "Where to Next?" spin wheel
+per tab); a countdown and add-to-calendar links, with the big date itself a link (the
+calendar file, or Google Calendar on Android, which cannot open one); the "Where to Next?" spin wheel
 of live spots, whose card shows drinks, entertainment, menu and cover where known
 and "details drop day-of" otherwise, with 13 made-up example spots while the venue
 list is empty (`showExamples`, off since 28 Sep at Amy's request); the wheel sits
