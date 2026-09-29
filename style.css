@@ -10,7 +10,7 @@
 
     @project      fallcrawlkc
     @file         style.css
-    @version      1.6.0
+    @version      1.6.1
     @updated      2026-09-29
     @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
     @url          https://fallcrawlkc.com/
@@ -49,7 +49,7 @@
                   glyphs left by half the tracking.
 
   ============================================================================
-    Fall Crawl v1.6.0  ·  style.css  ·  mediaBrilliance
+    Fall Crawl v1.6.1  ·  style.css  ·  mediaBrilliance
   ============================================================================
 */
 
@@ -81,8 +81,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
 
 *, *::before, *::after { box-sizing: border-box; }
 
-/* A class that sets display (.cta, .spin-skip) would otherwise beat the
-   hidden attribute the script uses to show and hide wheel controls. */
+/* A class that sets display (.cta) would otherwise beat the hidden
+   attribute the script uses to show and hide wheel controls. */
 [hidden] { display: none !important; }
 
 html { -webkit-text-size-adjust: 100%; }
@@ -698,7 +698,6 @@ body::after {
   text-transform: uppercase; letter-spacing: .08em; text-indent: .08em;
 }
 .spin-btn[disabled] { opacity: .6; cursor: default; }
-.spin-skip { display: block; margin-top: 1rem; color: var(--muted); font-size: .9rem; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* ---------- dialogs: spot card and age check ---------- */

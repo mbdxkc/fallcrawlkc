@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.6.0
+ *   @version      1.6.1
  *   @updated      2026-09-29
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.6.0  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.6.1  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -455,24 +455,12 @@
     });
   }
 
-  /* ---- spin for your next stop ----------------------------------------
-     A wheel of the live spots. Each spin lands on a random one, skipping
-     spots already landed on this visit (while the box is ticked), then
-     opens a card with whatever details the data file has so far. Missing
-     details are left off; a spot with none says details drop day-of.
-     Landed spots live in sessionStorage only, for this tab. */
-  var SEEN_KEY = 'fallcrawl-seen';
+  /* ---- Fall Crawl Roulette --------------------------------------------
+     A wheel of the live spots. Each spin lands on a random one, never the
+     same one twice in a row, then opens a card with whatever details the
+     data file has so far. Missing details are left off; a spot with none
+     says details are coming soon. Nothing is stored. */
   var COLORS = ['#c84008', '#1b1b1b', '#8a2b06', '#2b2b2b'];
-
-  function seen() {
-    try { return JSON.parse(sessionStorage.getItem(SEEN_KEY)) || []; } catch (e) { return []; }
-  }
-  function remember(name) {
-    try {
-      var s = seen(); if (s.indexOf(name) < 0) s.push(name);
-      sessionStorage.setItem(SEEN_KEY, JSON.stringify(s));
-    } catch (e) { /* storage blocked: the wheel still works, it just forgets */ }
-  }
 
   // The wheel stays off the page until DATA.wheelFrom (YYYY-MM-DD), in the
   // visitor's own calendar. Empty, missing or mistyped shows it, so a typo
@@ -507,7 +495,6 @@
 
     document.getElementById('spin-soon').hidden = true;
     document.getElementById('wheel-wrap').hidden = false;
-    document.getElementById('spin-skip-wrap').hidden = false;
     btn.hidden = false;
 
     // Draw one slice per spot, names along the radius.
@@ -542,19 +529,16 @@
     hub.setAttribute('r', '9'); hub.setAttribute('class', 'wheel-hub');
     svg.appendChild(hub);
 
-    var angle = 0, spinning = false;
+    var angle = 0, spinning = false, last = -1;
     var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // "Spin again" landing where it just was reads as broken, so the
+    // previous spot sits out one spin. A single spot has to repeat.
     function pick() {
-      var skip = document.getElementById('spin-skip').checked;
-      var s = seen();
       var pool = spots.map(function (v, i) { return i; })
-                      .filter(function (i) { return !skip || s.indexOf(spots[i].name) < 0; });
-      if (!pool.length) {                    // been everywhere: start the loop over
-        try { sessionStorage.removeItem(SEEN_KEY); } catch (e) {}
-        pool = spots.map(function (v, i) { return i; });
-      }
-      return pool[Math.floor(Math.random() * pool.length)];
+                      .filter(function (i) { return i !== last || n === 1; });
+      last = pool[Math.floor(Math.random() * pool.length)];
+      return last;
     }
 
     function spin() {
@@ -570,7 +554,6 @@
       rotor.style.transform = 'rotate(' + angle + 'deg)';
       var done = function () {
         spinning = false; btn.disabled = false;
-        remember(spots[i].name);
         document.getElementById('spin-live').textContent = 'Landed on ' + spots[i].name;
         showSpot(spots[i], example);
       };
