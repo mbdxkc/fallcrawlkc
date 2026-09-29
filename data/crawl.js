@@ -29,27 +29,41 @@ window.FALL_CRAWL = {
   /* ---- The Instagram button under the hero --------------------------- */
 
   ig: {
-    button: "Follow + tag",          // the @handle is added for you
-    blurb:  "Follow @fallcrawlkc for the latest updates, cocktail specials & everything happening along the crawl. Tag us while you're out — we want to see where you end up! 🔮",
+    button: "Follow",                // the @handle is added for you
+    blurb:  "",                      // the line under the button. Empty hides it
   },
 
-  /* ---- The block under the hero -------------------------------------- */
+  /* ---- The headline over the map ------------------------------------- */
 
-  about: {
-    heading: "The East Crossroads is getting spooky",
+  headline: "The East Crossroads is Getting Spooky!",
+  blurb:    "",                      // 1 or 2 sentences under the headline. Empty hides it
 
-    // One line per paragraph. Copy a line to add one, delete a line to remove
-    // one, and keep the comma at the end of each.
-    paragraphs: [
-      "Spend the Saturday before Halloween exploring the East Crossroads as bars and restaurants throughout the neighborhood come together for specialty cocktails, one-night-only events, live entertainment, featured brands and plenty of surprises.",
+  /* ---- What to Expect -------------------------------------------------
+     One block per item. Copy a block to add one, delete a block to remove
+     one.                                                                  */
 
-      "The plan is simple: throw on a costume, grab your friends and show up.",
+  expect: [
+    { title: "13 Neighborhood Spots",
+      text:  "Your favorite East Crossroads bars and restaurants are doing their own thing for the night." },
+    { title: "Really Good Drinks",
+      text:  "Specialty craft cocktails, one-night-only menus and featured pours throughout the neighborhood." },
+    { title: "More Than a Bar Crawl",
+      text:  "Live entertainment. Themed parties. Pop-up bars. Spooky surprises. Giveaways. And more still in the works." },
+    { title: "No Schedule to Follow",
+      text:  "Start wherever you want. Stay somewhere all night. Hit four places. Try all 13. We genuinely do not care. Most places open around 4 p.m. More info to come." },
+    { title: "Costumes Encouraged",
+      text:  "It's the Saturday before Halloween in the Crossroads Arts District. Get creative!" },
+    { title: "Free to Attend",
+      text:  "No tickets. No wristbands. Drinks are purchased directly from each participating business. 21+.",
+      note:  "Cover charges may apply at some locations." },
+  ],
 
-      "Stop for a cocktail, stay for an event, wander to the next bar — the night is yours.",
+  /* ---- Coming-soon sections -------------------------------------------
+     Leave as "" and the section shows "Coming soon". Type a description
+     and it replaces that.                                                 */
 
-      "No tickets. No wristbands. No starting point. No finish line. There is no right way to crawl it.",
-    ],
-  },
+  guide:  "",                        // Crawl Guide
+  treats: "",                        // Trick-or-Treat Routes
 
   /* ---- Social icons, top right ---------------------------------------
      Only instagram, tiktok and facebook work. Delete the // to add one.  */
@@ -61,19 +75,23 @@ window.FALL_CRAWL = {
   ],
 
   /* ---- Participating spots -------------------------------------------
-     The whole section stays hidden until there is one bar in here, and the
-     count in the heading looks after itself.
+     Every spot here also goes on the "Spin for your next stop" wheel.
+     Anything left as "" is simply left off, and a spot with no details yet
+     says "Details drop day-of". Fill in what you know, add the rest later.
 
-     To add one, delete the // from the two lines below and change the words.
-
-       street   no city. "Kansas City, MO" is added for the map link
-       doing    leave as "" until confirmed and the line is left off
-       insta    handle only, no @. "" if they have none
-       live     false hides a bar without deleting it                     */
+       street        no city. "Kansas City, MO" is added for the map link
+       insta         handle only, no @. "" if they have none
+       doing         one line for the list, e.g. "Spooky cocktail menu"
+       drinks        drink specials
+       entertainment DJs, bands, costume contests, anything happening
+       menu          feature menu or food
+       cover         e.g. "$10 after 9 p.m." or "No cover"
+       live          false hides a spot without deleting it              */
 
   venues: [
     // { name: "Example Bar", street: "1234 Grand Blvd", insta: "examplebar",
-    //   doing: "Spiced old fashioned, $8 all night", live: true },
+    //   doing: "Spooky cocktail menu", drinks: "$8 spiced old fashioneds",
+    //   entertainment: "DJ from 9 p.m.", menu: "", cover: "No cover", live: true },
   ],
 
   /* ---- Suggested crawls ----------------------------------------------

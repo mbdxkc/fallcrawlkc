@@ -15,7 +15,7 @@
 
       @project      fallcrawlkc
       @file         privacy.html
-      @updated      2026-09-22
+      @updated      2026-09-28
       @client       East Crossroads Fall Crawl, Kansas City, MO
       @repository   https://github.com/mbdxkc/fallcrawlkc
 
@@ -30,7 +30,8 @@
 
       @desc         Every claim on this page is a fact about the build, not
                     boilerplate. The site loads no analytics, no cookies, no
-                    storage, no forms and no third-party fonts or scripts -
+                    forms and no third-party fonts or scripts, and keeps two
+                    sessionStorage values (21+ answer, wheel history) -
                     checked across index.html, style.css and js/crawl.js. If
                     any of that changes, THIS PAGE CHANGES IN THE SAME COMMIT,
                     or it becomes a false statement about data handling.
@@ -81,8 +82,11 @@
 
           <h2>What we do not do</h2>
           <p>No cookies. No analytics. No tracking pixels. No advertising
-            tags. Nothing is written to your device, and no fonts or scripts
-            are loaded from another company.</p>
+            tags. No fonts or scripts are loaded from another company.</p>
+          <p>Two small notes are kept in your browser while the tab is open:
+            that you answered the 21+ question, and which spots the wheel has
+            already landed on, so it can skip them. They stay on your device,
+            are never sent anywhere, and are gone when you close the tab.</p>
           <p>There are no forms. There is nothing to sign up for and nowhere
             to enter your name, email or phone number.</p>
 
@@ -114,7 +118,7 @@
           <p>Message <a href="https://www.instagram.com/fallcrawlkc" target="_blank"
              rel="noopener">@fallcrawlkc</a> on Instagram.</p>
 
-          <p class="updated">Last updated 22 September 2026.</p>
+          <p class="updated">Last updated 28 September 2026.</p>
         </div>
       </section>
     </main>

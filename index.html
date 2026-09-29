@@ -17,8 +17,8 @@
 
       @project      fallcrawlkc
       @file         index.html
-      @version      1.0.0
-      @updated      2026-09-24
+      @version      1.1.0
+      @updated      2026-09-28
       @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
       @url          https://fallcrawlkc.com/
       @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -63,7 +63,7 @@
                     system stack.
 
     ============================================================================
-      Fall Crawl v1.0.0  ·  index.html  ·  mediaBrilliance
+      Fall Crawl v1.1.0  ·  index.html  ·  mediaBrilliance
     ============================================================================
     -->
 
@@ -171,9 +171,8 @@
         <h1>Saturday before Halloween</h1>
         <p class="hours" data-hours></p>
 
-        <p class="pitch">No tickets. No wristbands. No set route.<br />
-          <span>A build-your-own-adventure type of bar crawl.</span></p>
-
+        <p class="pitch"><span class="pitch-lead">A build-your-own-adventure type of bar crawl.</span>
+          <span class="pitch-sub">No tickets. No wristbands. No set route.</span></p>
 
         <a class="cta" data-ig href="https://www.instagram.com/" target="_blank" rel="noopener">
           <svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -189,39 +188,64 @@
 
         <p class="cta-note" data-ig-blurb></p>
 
-        <!-- Client artwork. The alt text carries the words baked into it,
-             which are the only place the page states 21+ outside the
-             footer's legal line. -->
+        <!-- Client artwork. The alt text carries the words baked into it. -->
         <img class="icons" src="images/icons.webp" width="2194" height="524"
              loading="lazy" decoding="async"
              alt="Free to attend. 21+ only. No wristbands. Costumes encouraged." />
       </section>
 
-      <!-- ===== about ===== -->
-      <section class="band" id="about">
-        <h2 data-about-heading></h2>
-        <div class="prose" id="about-copy"></div>
-      </section>
-
-      <!-- ===== map ===== -->
+      <!-- ===== where: the headline over the map ===== -->
       <section class="band" id="map">
-        <h2>Where</h2>
-        <p class="lede">The East Crossroads, Kansas City. Walnut over to Locust, Truman Road down to 19th.</p>
+        <h2 class="headline" data-headline></h2>
+        <p class="lede" data-blurb></p>
         <img class="map-img" src="images/map.webp" width="1400" height="1367" loading="lazy" decoding="async"
              alt="Hand-drawn map of the East Crossroads showing participating spots between Walnut Street and Locust Street, Truman Road and 19th Street." />
-        <p class="note">Teaser map. The full version with every name lands closer to the date.</p>
+      </section>
+
+      <!-- ===== what to expect ===== -->
+      <section class="band" id="expect">
+        <h2>What to Expect</h2>
+        <ul class="expect-list" id="expect-list"></ul>
+      </section>
+
+      <!-- ===== spin for your next stop ===== -->
+      <section class="band" id="spin">
+        <h2>Where to Next?</h2>
+        <p class="lede" id="spin-lede">Can&rsquo;t pick? Spin the wheel and let the crawl decide.</p>
+        <div class="wheel-wrap" id="wheel-wrap" hidden>
+          <div class="wheel-pointer" aria-hidden="true"></div>
+          <svg class="wheel" id="wheel" viewBox="-110 -110 220 220" role="img" aria-label="Wheel of participating spots"></svg>
+        </div>
+        <button class="cta spin-btn" id="spin-btn" type="button" hidden>Spin</button>
+        <label class="spin-skip" id="spin-skip-wrap" hidden>
+          <input type="checkbox" id="spin-skip" checked /> Skip spots I&rsquo;ve already landed on
+        </label>
+        <p class="soon" id="spin-soon">Coming soon. The wheel fills up once the spots are announced.</p>
+        <p class="sr-only" id="spin-live" aria-live="polite"></p>
+      </section>
+
+      <!-- ===== crawl guide ===== -->
+      <section class="band" id="guide">
+        <h2>Crawl Guide</h2>
+        <p class="soon" data-guide></p>
+      </section>
+
+      <!-- ===== trick-or-treat routes ===== -->
+      <section class="band" id="treats">
+        <h2>Trick-or-Treat Routes</h2>
+        <p class="soon" data-treats></p>
       </section>
 
       <!-- ===== what's happening ===== -->
       <section class="band" id="spots">
-        <h2>What&rsquo;s happening</h2>
+        <h2>What&rsquo;s Happening</h2>
         <p class="lede">Every spot runs its own night: cocktail features, activations, entertainment.</p>
         <ul class="venue-list" id="venue-list"></ul>
       </section>
 
       <!-- ===== suggested crawls ===== -->
       <section class="band" id="routes">
-        <h2>Suggested crawls</h2>
+        <h2>Suggested Crawls</h2>
         <p class="lede">There is no official route. If you want one anyway, start here.</p>
         <ul class="route-list" id="route-list"></ul>
       </section>
@@ -245,6 +269,32 @@
         their own events, offers, service and premises.</p>
       <p class="drink"><strong>Please drink responsibly.</strong></p>
     </footer>
+
+    <!-- Spot card, opened by the wheel. Filled by js/crawl.js. -->
+    <dialog class="modal spot-card" id="spot-card" aria-labelledby="spot-name">
+      <p class="spot-kicker">Your next stop</p>
+      <h2 id="spot-name"></h2>
+      <a class="venue-street" id="spot-street" target="_blank" rel="noopener"></a>
+      <dl class="spot-details" id="spot-details"></dl>
+      <p class="spot-empty" id="spot-empty">Details drop day-of. Check their Instagram for the latest.</p>
+      <a class="ig-link" id="spot-ig" target="_blank" rel="noopener"></a>
+      <div class="modal-actions">
+        <button class="cta" type="button" id="spot-again">Spin again</button>
+        <button class="modal-close" type="button" id="spot-close">Close</button>
+      </div>
+    </dialog>
+
+    <!-- Age check. Shown once per visit; the answer lives only in this tab
+         (sessionStorage) and never leaves the device. -->
+    <dialog class="modal age-gate" id="age-gate" aria-labelledby="age-q">
+      <h2 id="age-q">Are you 21 or older?</h2>
+      <p class="age-note">The Fall Crawl is 21+.</p>
+      <div class="modal-actions">
+        <button class="cta" type="button" id="age-yes">Yes, I&rsquo;m 21+</button>
+        <button class="modal-close" type="button" id="age-no">Not yet</button>
+      </div>
+      <p class="age-denied" id="age-denied" hidden>Come back when you are. We&rsquo;ll save you a costume.</p>
+    </dialog>
 
     <script src="data/crawl.js"></script>
     <script src="js/crawl.js" defer></script>

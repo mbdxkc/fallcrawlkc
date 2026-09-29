@@ -10,8 +10,8 @@
 
     @project      fallcrawlkc
     @file         style.css
-    @version      1.0.0
-    @updated      2026-09-15
+    @version      1.1.0
+    @updated      2026-09-28
     @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
     @url          https://fallcrawlkc.com/
     @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -35,7 +35,8 @@
     IMPLEMENTATION NOTES
   ============================================================================
 
-    @desc         Mobile-first, one page, no framework and no webfont.
+    @desc         Mobile-first, one page, no framework. One self-hosted
+                  webfont (Antic); Gagalin pending its file.
     @color        --orange #C84008 sampled from the logo artwork measures
                   4.19:1 on black. That clears 3:1 for large text and FAILS
                   4.5:1 for body copy, so it is restricted to display type,
@@ -48,9 +49,20 @@
                   glyphs left by half the tracking.
 
   ============================================================================
-    Fall Crawl v1.0.0  ·  style.css  ·  mediaBrilliance
+    Fall Crawl v1.1.0  ·  style.css  ·  mediaBrilliance
   ============================================================================
 */
+
+/* Antic is self-hosted (SIL OFL, fonts/OFL-antic.txt), so no font is
+   fetched from another company and the privacy page stays true. Gagalin is
+   named first for display type and falls back until its file is added to
+   fonts/ with an @font-face here. */
+@font-face {
+  font-family: "Antic";
+  src: url("fonts/antic.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
 
 html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
 
@@ -62,11 +74,16 @@ html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
   --rule:    rgba(248, 248, 248, .18);
   --measure: 34rem;
   --pad:     clamp(1.25rem, 5vw, 2.5rem);
-  --sans:    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+  --sans:    "Antic", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
              "Helvetica Neue", Arial, sans-serif;
+  --display: "Gagalin", "Arial Black", "Helvetica Neue", Impact, sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+
+/* A class that sets display (.cta, .spin-skip) would otherwise beat the
+   hidden attribute the script uses to show and hide wheel controls. */
+[hidden] { display: none !important; }
 
 html { -webkit-text-size-adjust: 100%; }
 
@@ -290,7 +307,17 @@ a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
   font-size: clamp(1.05rem, 4vw, 1.35rem);
   line-height: 1.4;
 }
-.pitch span { color: var(--muted); }
+.pitch span { display: block; }
+.pitch-lead {
+  font-family: var(--display);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(1.25rem, 5vw, 1.75rem);
+  line-height: 1.15;
+  letter-spacing: .02em;
+  text-indent: .02em;
+}
+.pitch-sub { margin-top: .5rem; color: var(--muted); }
 
 /* primary call to action: Instagram */
 .cta {
@@ -354,10 +381,15 @@ a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
 .band h2 {
   margin: 0;
   color: var(--orange);
+  font-family: var(--display);
   font-size: clamp(1.35rem, 5.5vw, 2rem);
   font-weight: 800;
-  letter-spacing: .01em;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  text-indent: .03em;      /* cancels the tracking's trailing space */
 }
+.band h2.headline { font-size: clamp(1.6rem, 7vw, 2.6rem); line-height: 1.1; margin-bottom: clamp(1rem, 4vw, 1.5rem); }
+.band h2.headline + .lede { margin-top: -.5rem; }
 
 .lede {
   margin: .5rem auto clamp(1.25rem, 5vw, 2rem);
@@ -425,6 +457,7 @@ a.partner-name { display: inline-block; text-decoration: none; }
 
 .ig-link { display: inline-block; margin-top: .6rem; font-size: .9rem; text-decoration: none; color: var(--orange); }
 .ig-link:hover { text-decoration: underline; }
+.venue .ig-link { display: block; width: fit-content; }
 
 /* ---------- footer ---------- */
 .site-footer {
@@ -437,8 +470,66 @@ a.partner-name { display: inline-block; text-decoration: none; }
 .legal { margin: 0 auto; max-width: 42rem; }
 .drink { margin: .9rem 0 0; color: var(--ink); }
 
+/* ---------- what to expect ---------- */
+.expect-list {
+  list-style: none; margin: clamp(1.25rem, 5vw, 2rem) auto 0; padding: 0;
+  max-width: 62rem; display: grid; gap: 1rem; text-align: left;
+}
+.expect { padding: 1rem 1.1rem; border-left: 3px solid var(--orange); background: rgba(248,248,248,.04); }
+.expect-title {
+  margin: 0 0 .35rem; font-family: var(--display); font-weight: 800;
+  text-transform: uppercase; letter-spacing: .02em; font-size: 1.05rem;
+}
+.expect p { margin: 0; color: var(--muted); }
+.expect .expect-note { margin-top: .45rem; font-size: .85rem; font-style: italic; }
+
+/* ---------- coming soon ---------- */
+.soon { margin: .75rem 0 0; color: var(--muted); font-style: italic; }
+
+/* ---------- the wheel ---------- */
+.wheel-wrap { position: relative; width: min(100%, 24rem); margin: 0 auto; }
+.wheel { display: block; width: 100%; height: auto; }
+/* 4.2s here and the setTimeout in js/crawl.js are the same number. */
+.wheel-rotor { transition: transform 4.2s cubic-bezier(.12, .7, .08, 1); transform-origin: 0 0; }
+.wheel-label { fill: var(--ink); font-family: var(--sans); font-size: 7px; }
+.wheel-hub { fill: var(--orange); stroke: #000; stroke-width: 1.5; }
+.wheel-pointer {
+  position: absolute; top: -4px; left: 50%; transform: translateX(-50%); z-index: 1;
+  width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent;
+  border-top: 22px solid var(--ink);
+}
+.spin-btn { font-family: var(--display); text-transform: uppercase; letter-spacing: .06em; border: 0; cursor: pointer; }
+.spin-btn[disabled] { opacity: .6; cursor: default; }
+.spin-skip { display: block; margin-top: 1rem; color: var(--muted); font-size: .9rem; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- dialogs: spot card and age check ---------- */
+.modal {
+  width: min(92vw, 26rem); padding: 1.5rem 1.4rem; border: 1px solid var(--rule); border-top: 3px solid var(--orange);
+  background: #0b0b0b; color: var(--ink); text-align: left;
+}
+.modal::backdrop { background: rgba(0,0,0,.78); }
+.modal h2 {
+  margin: 0 0 .4rem; color: var(--orange); font-family: var(--display);
+  text-transform: uppercase; letter-spacing: .02em; font-size: 1.5rem; line-height: 1.1;
+}
+.spot-kicker { margin: 0 0 .25rem; color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .12em; }
+.spot-details { margin: 1rem 0 0; display: grid; grid-template-columns: auto 1fr; gap: .35rem .9rem; }
+.spot-details dt { color: var(--muted); font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; padding-top: .1rem; }
+.spot-details dd { margin: 0; }
+.spot-empty { margin: 1rem 0 0; color: var(--muted); font-style: italic; }
+.modal-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; margin-top: 1.25rem; }
+.modal-actions .cta { margin-top: 0; border: 0; cursor: pointer; font: inherit; }
+.modal-close { background: none; border: 0; color: var(--muted); font: inherit; text-decoration: underline; cursor: pointer; padding: 0; }
+.modal-close:hover, .modal-close:focus-visible { color: var(--orange); }
+.age-gate { text-align: center; }
+.age-gate .modal-actions { justify-content: center; }
+.age-note, .age-denied { margin: 0; color: var(--muted); }
+.age-denied { margin-top: 1rem; }
+
 /* ---------- 480 ---------- */
 @media (min-width: 480px) {
+  .expect-list { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ---------- 768 ---------- */
@@ -462,6 +553,7 @@ a.partner-name { display: inline-block; text-decoration: none; }
   .title-full  { display: inline; }
   .band { padding-left: clamp(2rem, 7vw, 5rem); padding-right: clamp(2rem, 7vw, 5rem); }
   .map-img { max-width: 46rem; margin-inline: auto; }
+  .expect-list { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* ---------- 900 ---------- */
@@ -531,4 +623,5 @@ a.partner-name { display: inline-block; text-decoration: none; }
   html { scroll-behavior: auto; }
   .cta, .social { transition: none; }
   .cta:hover, .cta:focus-visible { transform: none; }
+  .wheel-rotor { transition: none; }
 }

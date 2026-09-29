@@ -10,8 +10,8 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.0.0
- *   @updated      2026-09-15
+ *   @version      1.1.0
+ *   @updated      2026-09-28
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
  *   @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.0.0  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.1.0  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -112,23 +112,40 @@
     }
   }
 
-  /* ---- the block under the hero ---------------------------------------
-     Same rule as every list here: nothing to say removes the section
-     outright rather than leaving a heading with nothing under it.
-  --------------------------------------------------------------------- */
-  function about() {
-    var a = DATA.about || {};
-    var paras = (a.paragraphs || []).filter(function (t) { return t && t.trim(); });
-    if (!a.heading && !paras.length) return drop('about');
-
-    var h = document.querySelector('[data-about-heading]');
-    if (h) {
-      if (a.heading) h.textContent = a.heading;
-      else if (h.parentNode) h.parentNode.removeChild(h);
+  /* ---- the headline over the map ------------------------------------ */
+  function headline() {
+    var h = document.querySelector('[data-headline]');
+    if (h) h.textContent = DATA.headline || 'Where';
+    var b = document.querySelector('[data-blurb]');
+    if (b) {
+      if (DATA.blurb) b.textContent = DATA.blurb;
+      else if (b.parentNode) b.parentNode.removeChild(b);
     }
-    var host = document.getElementById('about-copy');
-    if (!host) return;
-    paras.forEach(function (t) { host.appendChild(el('p', null, t)); });
+  }
+
+  /* ---- what to expect -------------------------------------------------- */
+  function expect() {
+    var list = (DATA.expect || []).filter(function (x) { return x && x.title; });
+    if (!list.length) return drop('expect');
+    var ul = document.getElementById('expect-list');
+    if (!ul) return;
+    list.forEach(function (x) {
+      var li = el('li', 'expect');
+      li.appendChild(el('h3', 'expect-title', x.title));
+      if (x.text) li.appendChild(el('p', null, x.text));
+      if (x.note) li.appendChild(el('p', 'expect-note', x.note));
+      ul.appendChild(li);
+    });
+  }
+
+  /* ---- coming-soon sections: the text if there is any, else the promise */
+  function soon() {
+    [['[data-guide]', DATA.guide], ['[data-treats]', DATA.treats]].forEach(function (pair) {
+      var n = document.querySelector(pair[0]);
+      if (!n) return;
+      if (pair[1]) { n.textContent = pair[1]; n.className = ''; }
+      else n.textContent = 'Coming soon.';
+    });
   }
 
   /* ---- participating spots ---------------------------------------------
@@ -269,16 +286,18 @@
   var NAV = [
     /* Home is not a section, it is the crawl page itself, so it carries no
        anchor and is the one entry that shows unconditionally. */
-    { id: null,       label: 'Home',     on: function () { return true; } },
-    { id: 'map',      label: 'Where',    on: function () { return true; } },
-    { id: 'spots',    label: 'Spots',    on: function () {
-        return (DATA.venues || []).filter(function (v) {
-          return v && v.live !== false; }).length > 0; } },
-    { id: 'routes',   label: 'Crawls',   on: function () {
-        return (DATA.routes || []).length > 0; } },
-    { id: 'partners', label: 'Partners', on: function () {
-        return (DATA.partners || []).length > 0; } }
+    { id: null,     label: 'Home',   on: function () { return true; } },
+    { id: 'map',    label: 'Where',  on: function () { return true; } },
+    { id: 'expect', label: 'Expect', on: function () {
+        return (DATA.expect || []).length > 0; } },
+    { id: 'spin',   label: 'Spin',   on: function () { return true; } },
+    { id: 'spots',  label: 'Spots',  on: function () {
+        return liveVenues().length > 0; } }
   ];
+
+  function liveVenues() {
+    return (DATA.venues || []).filter(function (v) { return v && v.name && v.live !== false; });
+  }
 
   function nav() {
     var host = document.getElementById('bar-nav');
@@ -358,10 +377,174 @@
     });
   }
 
+  /* ---- spin for your next stop ----------------------------------------
+     A wheel of the live spots. Each spin lands on a random one, skipping
+     spots already landed on this visit (while the box is ticked), then
+     opens a card with whatever details the data file has so far. Missing
+     details are left off; a spot with none says details drop day-of.
+     Landed spots live in sessionStorage only, for this tab. */
+  var SEEN_KEY = 'fallcrawl-seen';
+  var COLORS = ['#c84008', '#1b1b1b', '#8a2b06', '#2b2b2b'];
+
+  function seen() {
+    try { return JSON.parse(sessionStorage.getItem(SEEN_KEY)) || []; } catch (e) { return []; }
+  }
+  function remember(name) {
+    try {
+      var s = seen(); if (s.indexOf(name) < 0) s.push(name);
+      sessionStorage.setItem(SEEN_KEY, JSON.stringify(s));
+    } catch (e) { /* storage blocked: the wheel still works, it just forgets */ }
+  }
+
+  function wheel() {
+    var svg = document.getElementById('wheel');
+    var btn = document.getElementById('spin-btn');
+    if (!svg || !btn) return;
+    var spots = liveVenues();
+    if (!spots.length) return;               // "Coming soon" stays up
+
+    document.getElementById('spin-soon').hidden = true;
+    document.getElementById('wheel-wrap').hidden = false;
+    document.getElementById('spin-skip-wrap').hidden = false;
+    btn.hidden = false;
+
+    // Draw one slice per spot, names along the radius.
+    var n = spots.length, R = 100, ns = 'http://www.w3.org/2000/svg';
+    var rotor = document.createElementNS(ns, 'g');
+    rotor.setAttribute('class', 'wheel-rotor');
+    spots.forEach(function (v, i) {
+      var a0 = (i / n) * 2 * Math.PI - Math.PI / 2, a1 = ((i + 1) / n) * 2 * Math.PI - Math.PI / 2;
+      var p = document.createElementNS(ns, 'path');
+      var large = a1 - a0 > Math.PI ? 1 : 0;
+      p.setAttribute('d', n === 1
+        ? 'M -100 0 A 100 100 0 1 1 100 0 A 100 100 0 1 1 -100 0 Z'
+        : 'M0 0 L' + (R * Math.cos(a0)).toFixed(2) + ' ' + (R * Math.sin(a0)).toFixed(2) +
+          ' A' + R + ' ' + R + ' 0 ' + large + ' 1 ' + (R * Math.cos(a1)).toFixed(2) + ' ' +
+          (R * Math.sin(a1)).toFixed(2) + ' Z');
+      p.setAttribute('fill', COLORS[i % COLORS.length]);
+      p.setAttribute('stroke', '#000');
+      p.setAttribute('stroke-width', '0.8');
+      rotor.appendChild(p);
+      var mid = ((i + 0.5) / n) * 360 - 90;
+      var t = document.createElementNS(ns, 'text');
+      t.setAttribute('transform', 'rotate(' + mid.toFixed(2) + ') translate(92 0)');
+      t.setAttribute('text-anchor', 'end');
+      t.setAttribute('dominant-baseline', 'middle');
+      t.setAttribute('class', 'wheel-label');
+      var label = v.name.length > 18 ? v.name.slice(0, 17) + '\u2026' : v.name;
+      t.textContent = label;
+      rotor.appendChild(t);
+    });
+    svg.appendChild(rotor);
+    var hub = document.createElementNS(ns, 'circle');
+    hub.setAttribute('r', '9'); hub.setAttribute('class', 'wheel-hub');
+    svg.appendChild(hub);
+
+    var angle = 0, spinning = false;
+    var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function pick() {
+      var skip = document.getElementById('spin-skip').checked;
+      var s = seen();
+      var pool = spots.map(function (v, i) { return i; })
+                      .filter(function (i) { return !skip || s.indexOf(spots[i].name) < 0; });
+      if (!pool.length) {                    // been everywhere: start the loop over
+        try { sessionStorage.removeItem(SEEN_KEY); } catch (e) {}
+        pool = spots.map(function (v, i) { return i; });
+      }
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function spin() {
+      if (spinning) return;
+      var i = pick();
+      // Land slice i's centre under the pointer at the top.
+      var centre = ((i + 0.5) / n) * 360;
+      var jitter = (Math.random() - 0.5) * (300 / n) * 0.6;
+      var target = angle - (angle % 360) + (still ? 0 : 360 * 5) + (360 - centre) + jitter;
+      if (target <= angle) target += 360;
+      angle = target;
+      spinning = true; btn.disabled = true;
+      rotor.style.transform = 'rotate(' + angle + 'deg)';
+      var done = function () {
+        spinning = false; btn.disabled = false;
+        remember(spots[i].name);
+        document.getElementById('spin-live').textContent = 'Landed on ' + spots[i].name;
+        showSpot(spots[i]);
+      };
+      if (still) done(); else setTimeout(done, 4200);   // matches the CSS transition
+    }
+
+    btn.addEventListener('click', spin);
+    var again = document.getElementById('spot-again');
+    if (again) again.addEventListener('click', function () {
+      closeModal(document.getElementById('spot-card'));
+      spin();
+    });
+    var close = document.getElementById('spot-close');
+    if (close) close.addEventListener('click', function () {
+      closeModal(document.getElementById('spot-card'));
+    });
+  }
+
+  function showSpot(v) {
+    var card = document.getElementById('spot-card');
+    if (!card) return;
+    document.getElementById('spot-name').textContent = v.name;
+    var st = document.getElementById('spot-street');
+    if (v.street) { st.textContent = v.street; st.href = MAPS + encodeURIComponent(v.street + ', Kansas City, MO'); st.hidden = false; }
+    else st.hidden = true;
+    var dl = document.getElementById('spot-details');
+    dl.textContent = '';
+    var any = false;
+    [['Drinks', v.drinks], ['Entertainment', v.entertainment], ['Menu', v.menu], ['Cover', v.cover],
+     ['Also', v.doing]].forEach(function (row) {
+      if (!row[1]) return;
+      any = true;
+      dl.appendChild(el('dt', null, row[0]));
+      dl.appendChild(el('dd', null, row[1]));
+    });
+    document.getElementById('spot-empty').hidden = any;
+    var ig = document.getElementById('spot-ig');
+    if (v.insta) { ig.textContent = '@' + v.insta; ig.href = 'https://www.instagram.com/' + v.insta; ig.hidden = false; }
+    else ig.hidden = true;
+    openModal(card);
+  }
+
+  function openModal(d) {
+    if (d.showModal) { if (!d.open) d.showModal(); }
+    else d.setAttribute('open', '');
+  }
+  function closeModal(d) {
+    if (d.close) d.close(); else d.removeAttribute('open');
+  }
+
+  /* ---- 21+ check ---------------------------------------------------------
+     Once per visit. The answer is kept in sessionStorage for this tab only,
+     so it asks again next time and nothing is remembered on the device.
+     Search engines never run it, so the page stays indexable. */
+  var AGE_KEY = 'fallcrawl-21';
+
+  function ageGate() {
+    var d = document.getElementById('age-gate');
+    if (!d) return;
+    try { if (sessionStorage.getItem(AGE_KEY) === 'yes') return; } catch (e) {}
+    d.addEventListener('cancel', function (e) { e.preventDefault(); });   // Escape does not skip it
+    document.getElementById('age-yes').addEventListener('click', function () {
+      try { sessionStorage.setItem(AGE_KEY, 'yes'); } catch (e) {}
+      closeModal(d);
+    });
+    document.getElementById('age-no').addEventListener('click', function () {
+      document.getElementById('age-denied').hidden = false;
+    });
+    openModal(d);
+  }
+
   function init() {
-    basics(); title(); about();
+    basics(); title(); headline(); expect(); soon();
     venues(); routes(); partners();
     nav(); socials(); menu();
+    wheel(); ageGate();
   }
 
   if (document.readyState === 'loading') {
