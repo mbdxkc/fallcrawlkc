@@ -629,15 +629,26 @@
     var cast = window.innerWidth < 768
       ? ['ghost', 'ghost', 'goblin']
       : ['ghost', 'ghost', 'ghost', 'goblin', 'monster'];
+    // Size and speed go together: tiny ones dart across, normal ones walk
+    // or drift at a medium pace, huge ones lumber. Each figure picks a size
+    // class, then a size and a crossing time inside it, on every page load.
+    var SIZES = [
+      { scale: [0.45, 0.65], cross: [4, 7]   },   // tiny, fast
+      { scale: [0.85, 1.1],  cross: [9, 14]  },   // normal, medium
+      { scale: [1.5, 1.85],  cross: [18, 26] }    // huge, slow
+    ];
     run.innerHTML = cast.map(function (kind, k) {
       var walker = kind !== 'ghost';
-      var loop = walker ? rnd(55, 90) : rnd(40, 75);   // seconds; travel is 60% of it
+      var sz = SIZES[Math.floor(Math.random() * SIZES.length)];
+      var scale = rnd(sz.scale[0], sz.scale[1]);
+      var cross = rnd(sz.cross[0], sz.cross[1]);        // seconds on screen
+      var loop = cross / 0.6 + rnd(0, 8);               // plus an offscreen pause
       var dir = Math.random() < 0.5 ? 1 : -1;           // 1 = right to left
       var art = kind === 'ghost' ? ghostSVG() : kind === 'goblin' ? goblinSVG() : monsterSVG();
       return '<span class="fig-lane ' + (walker ? 'walker' : 'floater') + (dir < 0 ? ' rev' : '') +
-        '" style="--dur:' + loop.toFixed(1) + 's;--delay:' + (k * rnd(4, 9) + rnd(0, 6)).toFixed(1) + 's;' +
-        '--y:' + (walker ? 0 : rnd(-0.25, 0.2)).toFixed(2) + 'rem;--scale:' + rnd(0.8, 1.1).toFixed(2) +
-        ';--bob:' + rnd(2.6, 4.2).toFixed(2) + 's">' + art + '</span>';
+        '" style="--dur:' + loop.toFixed(1) + 's;--delay:' + (k * rnd(1, 3) + rnd(0, 4)).toFixed(1) + 's;' +
+        '--y:' + (walker ? 0 : rnd(-0.25, 0.2)).toFixed(2) + 'rem;--scale:' + scale.toFixed(2) +
+        ';--bob:' + (rnd(1.6, 2.6) * scale).toFixed(2) + 's;--step:' + (0.9 * scale).toFixed(2) + 's">' + art + '</span>';
     }).join('');
     bar.insertBefore(run, bar.firstChild);
   }
