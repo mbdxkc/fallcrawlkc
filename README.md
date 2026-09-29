@@ -194,7 +194,7 @@ fog. The privacy page says so. If it fails, the sky stays clear.
       Registered 2026-09-14, nameservers at Squarespace, currently a "Coming Soon" page.
       Held there deliberately until the content is in. Change the Squarespace A records to
       GitHub Pages (185.199.108-111.153) **first**, then add `CNAME` — never the reverse
-- [ ] Add venues to `data/crawl.js`. The Spots section is absent until then
+- [ ] Venue details in `data/crawl.js`. All 13 names are in (29 Sep, A to Z, from the map); street, Instagram and the rest are still empty
 - [x] Replace `images/map.png` with the full map. Done 29 Sep from `Fall Crawl Unoffical Map.png`
 - [x] Remove `noindex` and the `robots.txt` disallow, across all three pages
 - [x] `favicon.ico`, `apple-touch-icon.png` and `favicon-32.png`, declared on
