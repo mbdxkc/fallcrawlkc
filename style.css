@@ -483,7 +483,27 @@ a.partner-name { display: inline-block; text-decoration: none; }
 
 /* ---------- night procession across the header ---------- */
 .site-header { overflow: hidden; }
-.site-header > *:not(.ghost-run):not(.fog-bank) { position: relative; z-index: 1; }
+.site-header > *:not(.ghost-run):not(.fog-bank):not(.moon) { position: relative; z-index: 1; }
+
+/* The moon: dark harvest yellow, a few soft craters, a faint glow, sat low
+   so the bar crops it like a moon coming up over a roofline. Placed in the
+   empty stretch between title and icon, so no text sits on it. */
+.moon {
+  position: absolute; z-index: 0; pointer-events: none;
+  width: 3.9rem; height: 3.9rem; left: 74%; top: -.2rem;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  /* Maria as large soft blotches, not crater dots; darker at the limb. */
+  background:
+    radial-gradient(ellipse 30% 22% at 36% 40%, rgba(92, 62, 8, .38), transparent 70%),
+    radial-gradient(ellipse 22% 28% at 60% 58%, rgba(92, 62, 8, .30), transparent 70%),
+    radial-gradient(ellipse 18% 14% at 62% 30%, rgba(92, 62, 8, .22), transparent 70%),
+    radial-gradient(ellipse 14% 12% at 30% 68%, rgba(92, 62, 8, .20), transparent 70%),
+    radial-gradient(circle at 40% 36%, #b98a1f, #9a6f14 58%, #6b4a0b);
+  box-shadow: 0 0 1.2rem .2rem rgba(170, 120, 25, .22), 0 0 3rem .8rem rgba(170, 120, 25, .10);
+  filter: blur(.4px);
+  opacity: .92;
+}
 
 /* Fog across the whole bar, thickest behind the title and a light haze
    over the links (strength --fa per puff, set in js/crawl.js). Puffs each drifting
@@ -638,6 +658,7 @@ a.partner-name { display: inline-block; text-decoration: none; }
   .band { padding-left: clamp(2rem, 7vw, 5rem); padding-right: clamp(2rem, 7vw, 5rem); }
   .map-img { max-width: 46rem; margin-inline: auto; }
   .expect-list { grid-template-columns: repeat(3, 1fr); }
+  .moon { left: 81%; width: 5.4rem; height: 5.4rem; top: -.5rem; }
   .fog-bank { opacity: .8; }   /* random puff layouts measured as low as 4.5:1 at full strength */
 }
 

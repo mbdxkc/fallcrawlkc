@@ -734,6 +734,13 @@
         '--fdl:-' + rnd(0, 20).toFixed(1) + 's"></i>';
     }).join('');
     bar.insertBefore(fog, bar.firstChild);
+
+    // A big low moon, cropped by the bar as if rising, sitting in the gap
+    // between the title and the Instagram icon. Under the fog and figures.
+    var moon = document.createElement('div');
+    moon.className = 'moon';
+    moon.setAttribute('aria-hidden', 'true');
+    bar.insertBefore(moon, bar.firstChild);
   }
 
   function init() {
