@@ -472,7 +472,29 @@ a.partner-name { display: inline-block; text-decoration: none; }
 
 /* ---------- night procession across the header ---------- */
 .site-header { overflow: hidden; }
-.site-header > *:not(.ghost-run) { position: relative; z-index: 1; }
+.site-header > *:not(.ghost-run):not(.fog-bank) { position: relative; z-index: 1; }
+
+/* Fog behind the title. Six soft puffs clustered under the title, each drifting
+   sideways and breathing in opacity on its own clock; negative delays start
+   them mid-cycle so the fog is already there on load. */
+.fog-bank { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; opacity: .55; }
+/* The puffs overlap more on a narrow bar, so phones run the bank at about
+   half strength: at full strength the title fell to 3.4:1 against the
+   brightest fog. Measured 2026-09-28; keep the title at 4.5:1 or better. */
+.fog-bank i {
+  position: absolute; left: calc(50% + var(--fx, 0%)); top: calc(50% + var(--fy, 0%));
+  width: var(--fw, 12rem); height: calc(var(--fw, 12rem) * .38);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(215, 222, 235, .34), rgba(215, 222, 235, .14) 55%, transparent);
+  filter: blur(5px);
+  animation: fog-drift var(--fd, 18s) ease-in-out var(--fdl, 0s) infinite alternate;
+}
+@keyframes fog-drift {
+  0%   { translate: -2.5rem 0; opacity: .45; }
+  50%  { opacity: 1; }
+  100% { translate: 2.5rem 1px; opacity: .6; }
+}
 .ghost-run { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
 .fig-lane {
   position: absolute; left: 0;
@@ -599,6 +621,7 @@ a.partner-name { display: inline-block; text-decoration: none; }
   .band { padding-left: clamp(2rem, 7vw, 5rem); padding-right: clamp(2rem, 7vw, 5rem); }
   .map-img { max-width: 46rem; margin-inline: auto; }
   .expect-list { grid-template-columns: repeat(3, 1fr); }
+  .fog-bank { opacity: .8; }   /* random puff layouts measured as low as 4.5:1 at full strength */
 }
 
 /* ---------- 900 ---------- */
@@ -670,4 +693,5 @@ a.partner-name { display: inline-block; text-decoration: none; }
   .cta:hover, .cta:focus-visible { transform: none; }
   .wheel-rotor { transition: none; }
   .ghost-run { display: none; }
+  .fog-bank i { animation: none; opacity: .7; }
 }

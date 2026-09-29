@@ -654,6 +654,19 @@
         ';--bob:' + (rnd(1.6, 2.6) * scale * PACE).toFixed(2) + 's;--step:' + (0.9 * scale * PACE).toFixed(2) + 's">' + art + '</span>';
     }).join('');
     bar.insertBefore(run, bar.firstChild);
+
+    // Low fog behind the title: a few blurred puffs drifting and breathing
+    // out of step. It sits under the figures and the text, and under
+    // reduced motion it stays as still mist rather than disappearing.
+    var fog = document.createElement('div');
+    fog.className = 'fog-bank';
+    fog.setAttribute('aria-hidden', 'true');
+    fog.innerHTML = [0, 1, 2, 3, 4, 5].map(function (i) {
+      return '<i style="--fx:' + ((i - 2.5) * 5.5 + rnd(-3, 3)).toFixed(1) + '%;--fy:' + rnd(-15, 15).toFixed(0) + '%;' +
+        '--fw:' + rnd(9, 15).toFixed(1) + 'rem;--fd:' + (rnd(14, 24) * PACE).toFixed(1) + 's;' +
+        '--fdl:-' + rnd(0, 20).toFixed(1) + 's"></i>';
+    }).join('');
+    bar.insertBefore(fog, bar.firstChild);
   }
 
   function init() {
