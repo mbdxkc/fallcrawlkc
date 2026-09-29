@@ -531,7 +531,14 @@ a.partner-name { display: inline-block; text-decoration: none; }
   width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent;
   border-top: 22px solid var(--ink);
 }
-.spin-btn { font-family: var(--display); text-transform: uppercase; letter-spacing: .06em; border: 0; cursor: pointer; }
+/* The page's main action on the night: a full-width target on a phone,
+   capped so it doesn't stretch into a banner on desktop. */
+.spin-btn {
+  display: flex; justify-content: center; width: min(100%, 20rem); margin: 1.5rem auto 0;
+  padding: 1.05rem 1.5rem; border: 0; cursor: pointer;
+  font-family: var(--display); font-size: clamp(1.25rem, 5vw, 1.5rem);
+  text-transform: uppercase; letter-spacing: .08em; text-indent: .08em;
+}
 .spin-btn[disabled] { opacity: .6; cursor: default; }
 .spin-skip { display: block; margin-top: 1rem; color: var(--muted); font-size: .9rem; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

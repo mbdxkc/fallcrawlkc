@@ -583,9 +583,11 @@
     // own speed, pause, height, size and direction on each page load, so the
     // header never repeats the same pattern.
     var lanes = [{ kind: 'chase', dur: 16, delay: 2, dir: 1, y: 0, scale: 1 }];
-    for (var k = 0; k < 6; k++) {
+    // A phone's header is a third as wide, so it gets half the extra lanes.
+    var extra = window.innerWidth < 768 ? 2 : 6;
+    for (var k = 0; k < extra; k++) {
       lanes.push({
-        kind:  k < 2 ? 'chase' : 'drift',
+        kind:  k < extra / 3 ? 'chase' : 'drift',
         dur:   rnd(11, 26),                  // seconds per loop, travel is half of it
         delay: rnd(0, 14),
         dir:   Math.random() < 0.5 ? 1 : -1, // 1 = right to left
