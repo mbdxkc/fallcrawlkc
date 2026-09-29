@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.5.3
+ *   @version      1.5.4
  *   @updated      2026-09-29
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.5.3  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.5.4  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -147,7 +147,7 @@
     var next = new Date(day); next.setDate(next.getDate() + 1);
     var title = DATA.title || 'East Crossroads Fall Crawl';
     var where = 'East Crossroads, Kansas City, MO';
-    var about = 'A build-your-own-adventure bar crawl. No tickets. No wristbands. No set route. 21+. ' +
+    var about = 'A choose-your-own-adventure bar crawl. No tickets. No wristbands. No set route. 21+. ' +
                 'Spots, specials and the spin wheel: https://fallcrawlkc.com/';
     // An all-day event: no official hours have been published.
     var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//fallcrawlkc//EN', 'BEGIN:VEVENT',
