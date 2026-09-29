@@ -168,7 +168,12 @@ last before the icon strip and stays off the page, nav link included, until
 real moon for Kansas City (position and phase computed in the browser); a bat
 drawn per frame from a 3D wing model about once a minute; and a flock of 1,000
 ravens on one canvas, first within a minute of arriving, then at random at least
-five minutes apart. All motion is off under
+five minutes apart; behind every page, a sparse, faint starfield (one canvas,
+drawn once, five twinkling stars) under a streetlight haze along the bottom of
+the window, the sky as it looks from downtown. The header reads "East Crossroads
+Fall Crawl - KCMO" (29 Sep, the only visible place the page names the city), and
+the nav stays behind the menu button below 1100px, where five links would run
+into the title. All motion is off under
 `prefers-reduced-motion`. Every header layer was contrast-checked against the
 title and links.
 

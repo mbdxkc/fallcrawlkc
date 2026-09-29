@@ -20,8 +20,8 @@ window.FALL_CRAWL = {
 
   /* ---- The basics --------------------------------------------------- */
 
-  title:      "East Crossroads Fall Crawl",
-  titleShort: "Fall Crawl",          // used on phones, where the full name will not fit
+  title:      "East Crossroads Fall Crawl - KCMO",
+  titleShort: "Fall Crawl - KCMO",   // used on phones, where the full name will not fit
   dateShort:  "10.24.26",            // the big orange date
   date:       "2026-10-24",          // the real date: runs the countdown and the calendar button
   wheelFrom:  "2026-10-17",          // the spin wheel stays hidden until this day. "" shows it now

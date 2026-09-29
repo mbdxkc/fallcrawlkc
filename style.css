@@ -10,8 +10,8 @@
 
     @project      fallcrawlkc
     @file         style.css
-    @version      1.4.0
-    @updated      2026-09-28
+    @version      1.5.0
+    @updated      2026-09-29
     @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
     @url          https://fallcrawlkc.com/
     @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -49,7 +49,7 @@
                   glyphs left by half the tracking.
 
   ============================================================================
-    Fall Crawl v1.4.0  ·  style.css  ·  mediaBrilliance
+    Fall Crawl v1.5.0  ·  style.css  ·  mediaBrilliance
   ============================================================================
 */
 
@@ -573,6 +573,38 @@ a.partner-name { display: inline-block; text-decoration: none; }
    while a flock is crossing. Same layer as the bat. */
 .ravens { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; }
 
+/* ---------- the starfield ----------
+   Drawn once in js/crawl.js, fixed behind everything. z-index -1 paints it
+   above the page's black (which belongs to the canvas root) and under all
+   content. Faint on purpose, like looking up from downtown Kansas City:
+   stars top out at .28 opacity and 1.25px, the twinkles at .3. */
+.stars, .stars-twinkle {
+  position: fixed; left: 0; top: 0; width: 100%;
+  height: 100vh; height: 100lvh;
+  z-index: -1; pointer-events: none;
+}
+/* Streetlight haze: the sodium glow a downtown sky holds along its horizon.
+   body::after paints after the stars in the same -1 layer, so it washes
+   out the lowest ones the way the real thing does. Peaks at 16% of a warm
+   brown; orange text measured 3.9:1 against its strongest point, white
+   and muted text above 9:1. */
+body::after {
+  content: ""; position: fixed; left: 0; right: 0; bottom: 0;
+  height: 100vh; height: 100lvh;
+  z-index: -1; pointer-events: none;
+  background: linear-gradient(to top, rgba(130, 66, 22, .16), rgba(110, 55, 18, .07) 22%, transparent 48%);
+}
+.stars-twinkle i {
+  position: absolute; width: 2px; height: 2px; border-radius: 50%;
+  background: #dfe6ff; box-shadow: 0 0 3px 1px rgba(223, 230, 255, .35);
+  opacity: .1;
+  animation: twinkle var(--tw, 5s) ease-in-out var(--twd, 0s) infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: .08; }
+  50%      { opacity: .3; }
+}
+
 /* ---------- what to expect ---------- */
 .expect-list {
   list-style: none; margin: clamp(1.25rem, 5vw, 2rem) auto 0; padding: 0;
@@ -657,12 +689,9 @@ a.partner-name { display: inline-block; text-decoration: none; }
     gap: 1rem;
     padding: .7rem var(--pad);
   }
-  .bar-toggle { display: none; }
-  .bar-nav    { display: block; grid-row: 1; grid-column: 1; justify-self: start; }
   .bar-title  { grid-row: 1; grid-column: 2; font-size: .95rem; }
   .bar-social { grid-row: 1; grid-column: 3; justify-self: end; }
-  .bar-nav ul { overflow-x: visible; }
-  /* The full name fits once the menu button is gone. */
+  /* The full name fits beside the menu button from here. */
   .title-short { display: none; }
   .title-full  { display: inline; }
   .band { padding-left: clamp(2rem, 7vw, 5rem); padding-right: clamp(2rem, 7vw, 5rem); }
@@ -735,6 +764,17 @@ a.partner-name { display: inline-block; text-decoration: none; }
 .footer-nav a:focus-visible { color: var(--orange); }
 .footer-nav a[aria-current='page'] { color: var(--ink); }
 
+/* ---------- 1100 ----------
+   The nav comes out of the menu button only here. With all five links
+   (Home, Where, Expect, Spots, Spin) it measures about 295px, and at 768px
+   it ran 78px into the centred title. 1100 leaves a 52px gap against the
+   full name; 1024 left 14. Measured 2026-09-29. */
+@media (min-width: 1100px) {
+  .bar-toggle { display: none; }
+  .bar-nav    { display: block; grid-row: 1; grid-column: 1; justify-self: start; }
+  .bar-nav ul { overflow-x: visible; }
+}
+
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -743,4 +783,5 @@ a.partner-name { display: inline-block; text-decoration: none; }
   .wheel-rotor { transition: none; }
   .ghost-run, .bat, .ravens { display: none; }
   .fog-bank i { animation: none; opacity: .7; }
+  .stars-twinkle i { animation: none; opacity: .18; }
 }

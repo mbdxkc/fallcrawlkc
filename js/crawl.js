@@ -10,8 +10,8 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.4.0
- *   @updated      2026-09-28
+ *   @version      1.5.0
+ *   @updated      2026-09-29
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
  *   @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.4.0  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.5.0  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -1159,8 +1159,63 @@
     next(true);
   }
 
+  /* The starfield behind every page: one canvas fixed to the window, drawn
+     once and redrawn only when the window's width or full height changes.
+     Stars are kept as fractions of the window, so a redraw repaints the same
+     sky rather than a new one. 100lvh keeps the phone URL bar showing and
+     hiding from resizing it. Five stars twinkle in CSS. */
+  function stars() {
+    if (document.querySelector('.stars')) return;
+    var cv = document.createElement('canvas');
+    cv.className = 'stars';
+    cv.setAttribute('aria-hidden', 'true');
+    document.body.insertBefore(cv, document.body.firstChild);
+
+    var sky = [], w = 0, h = 0;
+    function draw() {
+      var r = cv.getBoundingClientRect();
+      if (Math.round(r.width) === w && Math.round(r.height) === h) return;
+      w = Math.round(r.width); h = Math.round(r.height);
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      cv.width = w * dpr; cv.height = h * dpr;
+      // A downtown sky: light pollution washes out all but a scatter of
+      // stars. One per ~9,000 square px, so a phone and a desktop read
+      // equally sparse.
+      var want = Math.round(w * h / 9000);
+      while (sky.length < want) {
+        var a = Math.pow(Math.random(), 2.2);           // most faint, a few bright
+        sky.push({ x: Math.random(), y: Math.random(),
+                   s: 0.35 + a * 0.9,                    // radius in css px
+                   o: 0.05 + a * 0.23,                   // never past .28
+                   warm: Math.random() < 0.15 });
+      }
+      var g = cv.getContext('2d');
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      g.clearRect(0, 0, w, h);
+      for (var i = 0; i < want; i++) {
+        var st = sky[i];
+        g.fillStyle = (st.warm ? 'rgba(255,228,190,' : 'rgba(222,230,255,') + st.o.toFixed(2) + ')';
+        g.beginPath(); g.arc(st.x * w, st.y * h, st.s, 0, 6.2832); g.fill();
+      }
+    }
+    draw();
+    var t;
+    window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(draw, 200); });
+
+    var tw = document.createElement('div');
+    tw.className = 'stars-twinkle';
+    tw.setAttribute('aria-hidden', 'true');
+    var html = '';
+    for (var k = 0; k < 5; k++) {
+      html += '<i style="left:' + rnd(2, 98).toFixed(1) + '%;top:' + rnd(8, 98).toFixed(1) +
+        '%;--tw:' + rnd(3, 7).toFixed(1) + 's;--twd:-' + rnd(0, 7).toFixed(1) + 's"></i>';
+    }
+    tw.innerHTML = html;
+    document.body.insertBefore(tw, cv.nextSibling);
+  }
+
   function init() {
-    basics(); title(); countdown(); calendar(); headline(); expect(); soon();
+    stars(); basics(); title(); countdown(); calendar(); headline(); expect(); soon();
     venues(); routes(); partners(); spinWindow();
     nav(); socials(); menu();
     wheel(); ageGate(); ghosts(); bat(); ravens();
