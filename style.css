@@ -557,42 +557,17 @@ a.partner-name { display: inline-block; text-decoration: none; }
 @keyframes leg-swing { from { rotate: -14deg; } to { rotate: 14deg; } }
 
 /* ---------- the bat ---------- */
-/* Crosses the page under the sticky header (z-index 5) and the dialogs. A
-   black bat on a black page is carried by its orange line work. */
-.bat {
-  position: fixed; left: 0; top: 0; z-index: 4; pointer-events: none;
-  width: clamp(11rem, 30vw, 26rem); visibility: hidden;
-}
+/* Drawn and moved frame by frame in js/crawl.js. Under the sticky header
+   (z-index 5) and the dialogs; black shapes with orange line work, like the
+   logo, the far wing dimmer so the body reads in front of it. */
+.bat { position: fixed; left: 0; top: 0; z-index: 4; pointer-events: none; visibility: hidden; will-change: transform; }
+.bat.is-flying { visibility: visible; }
 .bat svg { display: block; width: 100%; height: auto; overflow: visible; }
-/* Drawn like the logo: black shapes with orange line work. */
-.bat-membrane { fill: #070506; stroke: var(--orange); stroke-width: 1.3; stroke-linejoin: round; }
-.bat-bone { fill: none; stroke: var(--orange); stroke-opacity: .75; stroke-width: 1; stroke-linecap: round; }
-.bat-claw { fill: var(--orange); }
-.bat-body { fill: #070506; stroke: var(--orange); stroke-width: 1.3; stroke-linejoin: round; }
-.bat.is-flying { visibility: visible; animation: bat-cross var(--dur, 7s) linear forwards; }
-/* A real downstroke is fast and the recovery slower, with the wing folding
-   a little on the way up: rotate about the shoulder, squash as it drops. */
-.bat-wing { transform-box: view-box; transform-origin: 93px 40px; }
-.bat.is-flying .bat-wing { animation: bat-flap .42s cubic-bezier(.5, 0, .3, 1) infinite; }
-.bat.is-flying .bat-torso { animation: bat-bob .42s ease-in-out infinite; }
-@keyframes bat-flap {
-  0%   { transform: rotate(-24deg) scale(.92, 1); }
-  35%  { transform: rotate(18deg) scale(1, .55); }
-  100% { transform: rotate(-24deg) scale(.92, 1); }
-}
-@keyframes bat-bob { 0%, 100% { transform: translateY(0); } 35% { transform: translateY(-2.5px); } }
-.bat-rev svg { transform: scaleX(-1); }
-@keyframes bat-cross {
-  0%   { transform: translate(-30vw, var(--y0)); }
-  50%  { transform: translate(35vw, calc((var(--y0) + var(--y1)) / 2 - 4vh)); }
-  100% { transform: translate(105vw, var(--y1)); }
-}
-.bat-rev.is-flying { animation-name: bat-cross-rev; }
-@keyframes bat-cross-rev {
-  0%   { transform: translate(105vw, var(--y0)); }
-  50%  { transform: translate(35vw, calc((var(--y0) + var(--y1)) / 2 - 4vh)); }
-  100% { transform: translate(-30vw, var(--y1)); }
-}
+.bat-membrane { fill: #070506; stroke: var(--orange); stroke-width: .7; stroke-linejoin: round; }
+.bat-bone { fill: none; stroke: var(--orange); stroke-opacity: .7; stroke-width: .55; stroke-linecap: round; }
+.bat-body { fill: #070506; stroke: var(--orange); stroke-width: .7; stroke-linejoin: round; }
+.bat-eye { fill: #f8f8f8; }
+.bat-far { opacity: .8; }
 
 /* ---------- what to expect ---------- */
 .expect-list {

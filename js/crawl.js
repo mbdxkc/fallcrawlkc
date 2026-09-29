@@ -876,49 +876,112 @@
   }
 
   /* ---- the bat ------------------------------------------------------------
-     A giant bat crosses the page window (not the header) about once a
-     minute, at a random moment, height and direction, flapping on a
-     slightly rising or dipping path. Fixed-position, click-through, under
-     the header and the dialogs, and never runs under reduced motion. */
-  // A bat seen from below in flight: forearm to the wrist, four finger bones
-  // fanning to the wingtip, the membrane scalloped between them, pointed
-  // ears, a tail membrane between the feet. The right wing is the left one
-  // mirrored. Line work in the site orange, like the logo.
-  var BAT_WING =
-    '<path class="bat-membrane" d="M93 40C84 30 72 21 58 17C44 13 24 16 4 26' +
-      'C9 32 11 40 12 51C18 49 25 55 30 63C36 57 44 59 50 66C57 58 70 58 80 62C84 55 88 50 92 49Z"/>' +
-    '<path class="bat-bone" d="M93 40L58 17M58 17L4 26M58 17L12 51M58 17L30 63M58 17L50 66"/>' +
-    '<path class="bat-claw" d="M58 17l-3-5 5 3z"/>';
-  var BAT = '<svg viewBox="0 0 200 90" aria-hidden="true" focusable="false">' +
-    '<g class="bat-wing bat-wing-l">' + BAT_WING + '</g>' +
-    '<g transform="translate(200 0) scale(-1 1)"><g class="bat-wing bat-wing-r">' + BAT_WING + '</g></g>' +
-    '<g class="bat-torso">' +
-      '<path class="bat-membrane" d="M92 62C95 72 98 80 100 84C102 80 105 72 108 62C104 66 96 66 92 62Z"/>' +
-      '<path class="bat-body" d="M100 26c-3 0-5 2-6 5l-3-11 7 7 2-1 2 1 7-7-3 11c-1-3-3-5-6-5z' +
-        'M100 31c7 0 10 7 10 16 0 10-4 17-10 19-6-2-10-9-10-19 0-9 3-16 10-16z"/>' +
-      '<path class="bat-body" d="M94 64l-3 7M106 64l3 7" stroke-width="2.2" fill="none"/>' +
-      '<circle cx="96.8" cy="35.5" r="1.3" fill="#f8f8f8"/><circle cx="103.2" cy="35.5" r="1.3" fill="#f8f8f8"/>' +
-    '</g></svg>';
+     A large bat crosses the page window (not the header) about once a
+     minute. It is drawn fresh every frame from a small 3D model seen from
+     below and a little to the side, the way bats are seen overhead: each wing is a membrane stretched over
+     four finger bones, it flaps about the shoulder with a fast downstroke
+     and a slower upstroke that half-folds the wing, and the far wing sits
+     behind the body, a little darker. The path is a bat's, not a glide: steady
+     headway, a quick jink up or down every half second or so, and the
+     body banks into each climb and dive. Black with orange line work, like
+     the logo. Fixed, click-through, under the header, off under reduced
+     motion. */
+
+  // The wing in its own plane: u runs forward along the body, v out along
+  // the span. Shoulder, wrist, four fingertips (leading to trailing), hip.
+  // Span is about three body lengths, as on a real bat.
+  var WING = { shoulder: [0, 0], wrist: [10, 30], tips: [[22, 58], [4, 62], [-12, 53], [-21, 36]], hip: [-15, 6] };
+  var TILT = 80 * RAD;                                  // seen mostly from below, the way bats are
+
+  // Project a wing point for flap angle th (radians, + is up) and span fold f.
+  function wingPt(p, th, f, near) {
+    var u = p[0], v = p[1] * f;
+    var y = v * Math.sin(th), z = v * Math.cos(th) * (near ? -1 : 1);
+    return [u, -(y * Math.cos(TILT) - z * Math.sin(TILT))];
+  }
+
+  function wingPath(th, f, near) {
+    var P = function (p) { return wingPt(p, th, f, near); };
+    var s = P(WING.shoulder), w = P(WING.wrist), h = P(WING.hip);
+    var t = WING.tips.map(P);
+    var pt = function (q) { return q[0].toFixed(1) + ' ' + q[1].toFixed(1); };
+    // Scalloped trailing edge: each span of membrane sags toward the wrist.
+    var sag = function (a, b) {
+      return [(a[0] + b[0]) / 2 * 0.72 + w[0] * 0.28, (a[1] + b[1]) / 2 * 0.72 + w[1] * 0.28];
+    };
+    var d = 'M' + pt(s) + 'L' + pt(w) + 'L' + pt(t[0]);
+    var edge = t.concat([h]);
+    for (var i = 1; i < edge.length; i++) d += 'Q' + pt(sag(edge[i - 1], edge[i])) + ' ' + pt(edge[i]);
+    d += 'Z';
+    var bones = 'M' + pt(s) + 'L' + pt(w) + t.map(function (q) { return 'M' + pt(w) + 'L' + pt(q); }).join('');
+    return { membrane: d, bones: bones };
+  }
+
+  // Flap cycle, c in [0, 1): 0-0.42 downstroke (fast), then the upstroke,
+  // wing half-folded at its middle. Returns [angle, fold].
+  function flap(c) {
+    if (c < 0.42) {
+      var k = c / 0.42, e = 0.5 - 0.5 * Math.cos(Math.PI * k);
+      return [(55 - 95 * e) * RAD, 1];
+    }
+    var k2 = (c - 0.42) / 0.58, e2 = 0.5 - 0.5 * Math.cos(Math.PI * k2);
+    return [(-40 + 95 * e2) * RAD, 1 - 0.32 * Math.sin(Math.PI * k2)];
+  }
+
+  // From below: a furry teardrop, ears splayed at the head, tail membrane.
+  var BODY = 'M-14 0C-12 -5 2 -6 9 -4.5C12 -4 13 -3 13 0C13 3 12 4 9 4.5C2 6 -12 5 -14 0Z' +       // furry body
+             'M12 0a4.6 4.2 0 1 0 9.2 0a4.6 4.2 0 1 0 -9.2 0Z' +                                    // round head
+             'M16 -3.2L19.5 -8.5L19.8 -2.6ZM16 3.2L19.5 8.5L19.8 2.6Z' +                          // ears
+             'M-13 -2.2Q-19 -6 -22 -5Q-20 0 -22 5Q-19 6 -13 2.2Z';                                // tail membrane
 
   function bat() {
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var el = document.createElement('div');
     el.className = 'bat';
     el.setAttribute('aria-hidden', 'true');
-    el.innerHTML = BAT;
+    el.innerHTML = '<svg viewBox="-75 -75 150 150" aria-hidden="true" focusable="false"><g class="bat-frame">' +
+      '<g class="bat-far"><path class="bat-membrane"/><path class="bat-bone"/></g>' +
+      '<path class="bat-body" d="' + BODY + '"/>' +
+      '<g class="bat-near"><path class="bat-membrane"/><path class="bat-bone"/></g>' +
+      '</g></svg>';
     document.body.appendChild(el);
+    var frame = el.querySelector('.bat-frame');
+    var far = el.querySelectorAll('.bat-far path'), near = el.querySelectorAll('.bat-near path');
+
     function fly() {
-      var dir = Math.random() < 0.5 ? 1 : -1;       // 1 = left to right
-      var y0 = rnd(18, 70), y1 = y0 + rnd(-18, 18);   // vh
-      var secs = rnd(5, 8) * PACE;
-      el.style.setProperty('--y0', y0.toFixed(1) + 'vh');
-      el.style.setProperty('--y1', y1.toFixed(1) + 'vh');
-      el.style.setProperty('--dur', secs.toFixed(1) + 's');
-      el.className = 'bat' + (dir < 0 ? ' bat-rev' : '');
-      void el.offsetWidth;                            // restart the animation
+      var W = window.innerWidth, H = window.innerHeight;
+      var dir = Math.random() < 0.5 ? 1 : -1;               // 1 = left to right
+      var size = Math.min(Math.max(W * 0.3, 170), 420);     // px, the drawn box
+      var secs = rnd(5.5, 8) * PACE;
+      var y = rnd(0.2, 0.7) * H, targetY = y, vy = 0, nextJink = 0;
+      var beat = rnd(0.2, 0.26);                            // seconds per wingbeat
+      var t0 = null;
+      el.style.width = size + 'px';
       el.classList.add('is-flying');
-      setTimeout(function () { el.classList.remove('is-flying'); }, secs * 1000 + 100);
-      setTimeout(fly, (rnd(45, 75) + secs) * 1000);   // about once a minute
+
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var t = (ts - t0) / 1000, p = t / secs;
+        if (p >= 1) { el.classList.remove('is-flying'); setTimeout(fly, (rnd(45, 75)) * 1000); return; }
+        // Headway with a little surge on each downstroke.
+        var cyc = (t / beat) % 1;
+        var x = dir > 0 ? -size + p * (W + 2 * size) : W + size - p * (W + 2 * size);
+        x += dir * 6 * Math.sin(cyc * 2 * Math.PI);
+        // Jinks: a new target height every 0.35-0.9s, chased with damping.
+        if (t >= nextJink) { targetY = Math.min(H * 0.85, Math.max(H * 0.12, y + rnd(-0.14, 0.14) * H)); nextJink = t + rnd(0.35, 0.9); }
+        vy += (targetY - y) * 0.012 - vy * 0.12;
+        y += vy;
+        var fl = flap(cyc);
+        var bob = -Math.sin(fl[0]) * 2.2;                   // the body rides opposite the wings
+        var bank = Math.max(-22, Math.min(22, -vy * 2.6)) * dir;
+        el.style.transform = 'translate(' + (x - size / 2).toFixed(1) + 'px,' + (y - size / 2).toFixed(1) + 'px)';
+        frame.setAttribute('transform', (dir < 0 ? 'scale(-1 1) ' : '') + 'rotate(' + (-bank).toFixed(1) + ') translate(0 ' + bob.toFixed(1) + ')');
+        var nw = wingPath(fl[0], fl[1], true), fw = wingPath(fl[0] * 0.92, fl[1] * 0.9, false);
+        near[0].setAttribute('d', nw.membrane); near[1].setAttribute('d', nw.bones);
+        far[0].setAttribute('d', fw.membrane); far[1].setAttribute('d', fw.bones);
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
     }
     setTimeout(fly, rnd(12, 30) * 1000);
   }
