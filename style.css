@@ -477,17 +477,28 @@ a.partner-name { display: inline-block; text-decoration: none; }
 .ghost-lane {
   position: absolute; top: 50%; left: 0; display: flex; align-items: center; gap: 2.2rem;
   transform: translate(-12rem, -50%);
-  animation: ghost-chase 16s linear 2s infinite;
+  animation: ghost-chase var(--dur, 16s) linear var(--delay, 2s) infinite;
 }
+/* A lane flying left to right is mirrored whole (in its keyframes), so the
+   scared ghost still leads. The faces are front-on, so mirroring is safe. */
+.ghost-lane-rev { animation-name: ghost-chase-rev; }
 .ghost { display: block; color: rgba(248, 248, 248, .5); }
-.ghost-scared { width: 1.35rem; animation: ghost-bob .35s ease-in-out infinite alternate; }
-.ghost-chaser { width: 2.1rem; color: rgba(248, 248, 248, .38); animation: ghost-bob .6s ease-in-out infinite alternate, ghost-lunge 1.6s ease-in-out infinite; }
-/* Order in the lane is scared first, chaser second, so the lane runs
-   right-to-left: the scared ghost leads, the chaser gains on it. */
+.ghost-scared { width: calc(1.35rem * var(--scale, 1)); animation: ghost-bob .35s ease-in-out infinite alternate; }
+.ghost-chaser { width: calc(2.1rem * var(--scale, 1)); color: rgba(248, 248, 248, .38); animation: ghost-bob .6s ease-in-out infinite alternate, ghost-lunge 1.6s ease-in-out infinite; }
+.ghost-drift  { width: calc(1.6rem * var(--scale, 1)); color: rgba(248, 248, 248, .28); animation: ghost-bob 1.1s ease-in-out infinite alternate; }
+/* Order in a lane is scared first, chaser second, so the default lane runs
+   right to left: the scared ghost leads, the chaser gains on it. Travel
+   takes the first half of each loop; the rest is an offscreen pause, so
+   lanes with different durations drift in and out of step. */
 @keyframes ghost-chase {
-  0%   { transform: translate(100vw, -50%); }
-  55%  { transform: translate(-12rem, -50%); }
-  100% { transform: translate(-12rem, -50%); }
+  0%   { transform: translate(100vw, calc(-50% + var(--y, 0rem))); }
+  50%  { transform: translate(-12rem, calc(-50% + var(--y, 0rem))); }
+  100% { transform: translate(-12rem, calc(-50% + var(--y, 0rem))); }
+}
+@keyframes ghost-chase-rev {
+  0%   { transform: translate(-12rem, calc(-50% + var(--y, 0rem))) scaleX(-1); }
+  50%  { transform: translate(100vw, calc(-50% + var(--y, 0rem))) scaleX(-1); }
+  100% { transform: translate(100vw, calc(-50% + var(--y, 0rem))) scaleX(-1); }
 }
 @keyframes ghost-bob   { from { translate: 0 -3px; } to { translate: 0 3px; } }
 @keyframes ghost-lunge { 0%, 100% { margin-left: 0; } 50% { margin-left: -1.4rem; } }

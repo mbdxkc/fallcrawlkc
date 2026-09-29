@@ -560,20 +560,47 @@
       '<path d="M20 2C9.5 2 3 10 3 20v24l5.5-5 5.5 5 6-5 6 5 5.5-5 5.5 5V20C37 10 30.5 2 20 2z" fill="currentColor"/>' +
       eyes + '</svg>';
   };
+  var FACES = {
+    scared: '<circle cx="14" cy="18" r="3.4" fill="#000"/><circle cx="26" cy="18" r="3.4" fill="#000"/>' +
+            '<ellipse cx="20" cy="29" rx="3" ry="4.2" fill="#000"/>',
+    chaser: '<path d="M10 15l8 4M30 15l-8 4" stroke="#000" stroke-width="2.6" stroke-linecap="round"/>' +
+            '<circle cx="14.5" cy="20" r="2.6" fill="#c84008"/><circle cx="25.5" cy="20" r="2.6" fill="#c84008"/>' +
+            '<path d="M12 29q8 7 16 0" stroke="#000" stroke-width="2.4" fill="none" stroke-linecap="round"/>',
+    drift:  '<ellipse cx="14" cy="19" rx="2.6" ry="3.4" fill="#000"/><ellipse cx="26" cy="19" rx="2.6" ry="3.4" fill="#000"/>' +
+            '<path d="M15 28q5 3 10 0" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round"/>'
+  };
+
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+
   function ghosts() {
     var bar = document.querySelector('.site-header');
     if (!bar || bar.querySelector('.ghost-run')) return;
     var run = document.createElement('div');
     run.className = 'ghost-run';
     run.setAttribute('aria-hidden', 'true');
-    run.innerHTML =
-      '<span class="ghost-lane">' +
-        GHOST('ghost-scared', '<circle cx="14" cy="18" r="3.4" fill="#000"/><circle cx="26" cy="18" r="3.4" fill="#000"/>' +
-                              '<ellipse cx="20" cy="29" rx="3" ry="4.2" fill="#000"/>') +
-        GHOST('ghost-chaser', '<path d="M10 15l8 4M30 15l-8 4" stroke="#000" stroke-width="2.6" stroke-linecap="round"/>' +
-                              '<circle cx="14.5" cy="20" r="2.6" fill="#c84008"/><circle cx="25.5" cy="20" r="2.6" fill="#c84008"/>' +
-                              '<path d="M12 29q8 7 16 0" stroke="#000" stroke-width="2.4" fill="none" stroke-linecap="round"/>') +
-      '</span>';
+
+    // The original chase keeps its fixed timing; every other lane draws its
+    // own speed, pause, height, size and direction on each page load, so the
+    // header never repeats the same pattern.
+    var lanes = [{ kind: 'chase', dur: 16, delay: 2, dir: 1, y: 0, scale: 1 }];
+    for (var k = 0; k < 6; k++) {
+      lanes.push({
+        kind:  k < 2 ? 'chase' : 'drift',
+        dur:   rnd(11, 26),                  // seconds per loop, travel is half of it
+        delay: rnd(0, 14),
+        dir:   Math.random() < 0.5 ? 1 : -1, // 1 = right to left
+        y:     rnd(-0.35, 0.35),              // rem off the centre line
+        scale: rnd(0.6, 1.05)
+      });
+    }
+    run.innerHTML = lanes.map(function (l) {
+      var inner = l.kind === 'chase'
+        ? GHOST('ghost-scared', FACES.scared) + GHOST('ghost-chaser', FACES.chaser)
+        : GHOST('ghost-drift', FACES.drift);
+      return '<span class="ghost-lane' + (l.dir < 0 ? ' ghost-lane-rev' : '') + '" style="' +
+        '--dur:' + l.dur.toFixed(1) + 's;--delay:' + l.delay.toFixed(1) + 's;' +
+        '--y:' + l.y.toFixed(2) + 'rem;--scale:' + l.scale.toFixed(2) + '">' + inner + '</span>';
+    }).join('');
     bar.insertBefore(run, bar.firstChild);
   }
 
