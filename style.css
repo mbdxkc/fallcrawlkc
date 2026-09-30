@@ -10,7 +10,7 @@
 
     @project      fallcrawlkc
     @file         style.css
-    @version      1.6.4
+    @version      1.6.5
     @updated      2026-09-29
     @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
     @url          https://fallcrawlkc.com/
@@ -49,7 +49,7 @@
                   glyphs left by half the tracking.
 
   ============================================================================
-    Fall Crawl v1.6.4  ·  style.css  ·  mediaBrilliance
+    Fall Crawl v1.6.5  ·  style.css  ·  mediaBrilliance
   ============================================================================
 */
 
@@ -387,7 +387,11 @@ a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
    rather than as a second line hanging under it. */
 .cta-handle { font-weight: 700; opacity: .95; }
 .cta-icon { width: 1.15em; height: 1.15em; flex: none; }
-.cta-ig .cta-icon { height: 1.55em; }   /* a full text line tall, so the button is its final height before the handle arrives */
+.cta-ig .cta-icon { height: 1.55em; }
+/* Wide enough for the icon plus "@fallcrawlkc" before the script writes the
+   handle in, so the centred button does not grow and slide sideways. A longer
+   handle, or a word in ig.button, simply widens it. */
+.cta-ig { min-width: 12.6rem; justify-content: center; }   /* a full text line tall, so the button is its final height before the handle arrives */
 .cta-handle:empty { display: none; }
 [data-ig-button]:empty { display: none; }   /* no word, no gap before the handle */
 
@@ -833,6 +837,10 @@ body::after {
    it ran 78px into the centred title. 1100 leaves a 52px gap against the
    full name; 1024 left 14. Measured 2026-09-29. */
 @media (min-width: 1100px) {
+  /* The nav, title and icons are all written in by the script, and with the
+     menu button gone nothing else holds the row open, so the bar started at
+     23px and jumped to 51. Reserve the finished height. */
+  .site-header { min-height: 51px; }
   .bar-toggle { display: none; }
   .bar-nav    { display: block; grid-row: 1; grid-column: 1; justify-self: start; }
   .bar-nav ul { overflow-x: visible; }
