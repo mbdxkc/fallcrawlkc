@@ -10,7 +10,7 @@
 
     @project      fallcrawlkc
     @file         style.css
-    @version      1.6.3
+    @version      1.6.4
     @updated      2026-09-29
     @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
     @url          https://fallcrawlkc.com/
@@ -49,7 +49,7 @@
                   glyphs left by half the tracking.
 
   ============================================================================
-    Fall Crawl v1.6.3  ·  style.css  ·  mediaBrilliance
+    Fall Crawl v1.6.4  ·  style.css  ·  mediaBrilliance
   ============================================================================
 */
 
@@ -309,7 +309,12 @@ a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
 }
 .date-link:hover .date-cal, .date-link:focus-visible .date-cal { opacity: 1; }
 .date-link:hover, .date-link:focus-visible { color: inherit; text-shadow: 0 0 1.2rem rgba(200, 64, 8, .6); }
+/* The date, countdown and Instagram handle are written in by js/crawl.js
+   from the data file, so the markup holds them empty. Each reserves the
+   height it will have, and the lines that may stay empty take none, so the
+   page does not jump when the script fills them in. */
 .date-big {
+  min-height: .95em;       /* one line at its own line-height */
   margin: 0;
   color: var(--orange);
   font-size: clamp(2.75rem, 14vw, 5.5rem);
@@ -358,6 +363,8 @@ a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
   text-transform: uppercase; letter-spacing: .12em; text-indent: .12em; font-size: clamp(.95rem, 3.4vw, 1.1rem);
 }
 .countdown.is-tonight { font-size: clamp(1.3rem, 5vw, 1.7rem); }
+.countdown { min-height: 1.55em; }
+.hours:empty, .cta-note:empty { display: none; }
 
 /* primary call to action: Instagram */
 .cta {
@@ -380,6 +387,7 @@ a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
    rather than as a second line hanging under it. */
 .cta-handle { font-weight: 700; opacity: .95; }
 .cta-icon { width: 1.15em; height: 1.15em; flex: none; }
+.cta-ig .cta-icon { height: 1.55em; }   /* a full text line tall, so the button is its final height before the handle arrives */
 .cta-handle:empty { display: none; }
 [data-ig-button]:empty { display: none; }   /* no word, no gap before the handle */
 

@@ -61,6 +61,17 @@ JOBS = [
 ]
 QUALITY = 90
 
+# Narrower copies for srcset, so a phone does not download the desktop
+# file. Widths cover each image's largest display size at 1x and a phone's
+# ~370px column at 1.75-2x. Named <stem>-<width>.webp beside the full file.
+# icons has none: its flat shapes compress so well losslessly at full size
+# (27 KB) that every downscale measured LARGER, 39-94 KB lossy or lossless,
+# because resampling adds the in-between colours the codec was not paying for.
+WIDTHS = {
+    "map.webp":   (480, 736),
+    "logo.webp":  (500, 700),
+}
+
 
 def main():
     for src_name, out_name, lossless, flatten in JOBS:
@@ -76,6 +87,15 @@ def main():
         how = "lossless" if lossless else f"q{QUALITY}"
         print(f"{out_name:12} {how:8} {was // 1024:5} KB -> {now // 1024:4} KB"
               f"  ({100 - now * 100 // was}% smaller)")
+        for width in WIDTHS.get(out_name, ()):
+            height = round(image.height * width / image.width)
+            small = image.resize((width, height), Image.LANCZOS)
+            dest = ROOT / f"{out.stem}-{width}.webp"
+            if lossless:
+                small.save(dest, "WEBP", lossless=True, method=6)
+            else:
+                small.save(dest, "WEBP", quality=QUALITY, method=6)
+            print(f"  {dest.name:16} {width}x{height} {dest.stat().st_size // 1024:4} KB")
 
 
 if __name__ == "__main__":

@@ -17,7 +17,7 @@
 
       @project      fallcrawlkc
       @file         index.html
-      @version      1.6.3
+      @version      1.6.4
       @updated      2026-09-29
       @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
       @url          https://fallcrawlkc.com/
@@ -63,7 +63,7 @@
                     system stack.
 
     ============================================================================
-      Fall Crawl v1.6.3  ·  index.html  ·  mediaBrilliance
+      Fall Crawl v1.6.4  ·  index.html  ·  mediaBrilliance
     ============================================================================
     -->
 
@@ -102,7 +102,7 @@
 
     <!-- crossorigin is required even same-origin, or the font is fetched twice. -->
     <link rel="preload" href="fonts/antic.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.min.css" />
 
     <script type="application/ld+json">
     {
@@ -167,6 +167,8 @@
       <!-- ===== hero ===== -->
       <section class="hero">
         <img class="logo" src="images/logo.webp" width="1000" height="489"
+             srcset="images/logo-500.webp 500w, images/logo-700.webp 700w, images/logo.webp 1000w"
+             sizes="(min-width: 600px) 34rem, calc(100vw - 2.5rem)"
              fetchpriority="high" decoding="sync"
              alt="East Crossroads Fall Crawl: a skeleton raising a cocktail over the Kansas City skyline." />
         <!-- The city, said out loud: the lockup names it only in the skyline. -->
@@ -206,6 +208,8 @@
         <h2 class="headline" data-headline></h2>
         <p class="lede" data-blurb></p>
         <img class="map-img" src="images/map.webp" width="1129" height="1133" loading="lazy" decoding="async"
+             srcset="images/map-480.webp 480w, images/map-736.webp 736w, images/map.webp 1129w"
+             sizes="(min-width: 800px) 46rem, calc(100vw - 2.5rem)"
              alt="Hand-drawn map of the East Crossroads, Main Street to Cherry Street and Truman Road to 19th Street, naming the 13 participating spots, each with a featured spirit: Tannin, The Belfry Collective, Cigar Box, Chartreuse Saloon, Beckett's, Ricochet, King G, Jade Jaguar, International Tap House, Mod Gallery, Grinder's, The Fold and Ted's Taproom." />
       </section>
 
@@ -315,6 +319,6 @@
     </dialog>
 
     <script src="data/crawl.js"></script>
-    <script src="js/crawl.js" defer></script>
+    <script src="js/crawl.min.js" defer></script>
   </body>
 </html>

@@ -18,7 +18,7 @@ To undo: **Commits** at the top of this page, find yours, **...**, **Revert**.
 
 # Notes for whoever maintains this
 
-Single-page event site. Static HTML, hand-rolled CSS, vanilla JS, no build step.
+Single-page event site. Static HTML, hand-rolled CSS, vanilla JS. One build step: `tools/build.sh` minifies the stylesheet and the page script, and must run after any edit to either (the data file is never minified).
 **by mediaBrilliance.io**
 
 The long-form date came off the page on 22 September at the client's request; the
@@ -58,20 +58,23 @@ Still missing its venue list, so the Spots section is absent by design.
 ├── index.html        # the page
 ├── privacy.html      # collects nothing, and says so specifically
 ├── terms.html        # plain language, not lawyer-reviewed
-├── style.css         # mobile-first, no build step
+├── style.css         # SOURCE, mobile-first. Pages load style.min.css
+├── style.min.css     # built by tools/build.sh, never edited by hand
 ├── robots.txt        # Allow: /, since launch
 ├── favicon.ico       # 16 / 32 / 48, built, not hand-cropped
 ├── data/
 │   └── crawl.js      # THE ONLY FILE THE CLIENT EDITS
 ├── js/
-│   └── crawl.js      # renders every list, the wheel, the header scene, the bat, the ravens
+│   ├── crawl.js      # SOURCE: renders every list, the wheel, the header scene, the bat, the ravens
+│   └── crawl.min.js  # built by tools/build.sh, what the pages load
 ├── fonts/
 │   ├── antic.woff2   # body face, self-hosted, SIL OFL
 │   └── OFL-antic.txt
 ├── tools/
 │   ├── make-icons.py # cuts every icon out of images/logo.png
 │   ├── make-og.py    # builds images/og.png, the 1200x630 share card
-│   └── make-webp.py  # rebuilds the three images the page loads
+│   ├── make-webp.py  # rebuilds the page images, plus the map and logo srcset widths
+│   └── build.sh      # minifies style.css and js/crawl.js; --check fails if either .min is stale
 └── images/
     ├── logo.webp     # the lockup, as the page loads it
     ├── icons.webp    # free / 21+ / no wristbands / costumes strip
@@ -99,7 +102,7 @@ re-derives it:
 | `images/icons.png` | `Fall Crawl Icons.pdf` (22 Sep) | Re-rendered 22 Sep and byte-identical to the file on the site |
 | `images/logo.png` | `Fall Crawl The Pitch.png` | Cropped lockup |
 | `images/map.png` | `Fall Crawl Unoffical Map.png` (29 Sep; her spelling) | 1158x1168 with a solid black frame of 10/15/15/17px (left/top/right/bottom), cropped to the 1129x1133 interior. Replaced the 24 Sep teaser |
-| `images/*.webp` | the `.png` beside each | Built 24 Sep by `tools/make-webp.py`. Re-run it rather than converting by hand |
+| `images/*.webp` | the `.png` beside each | Built by `tools/make-webp.py`, including `map-480`/`map-736` and `logo-500`/`logo-700` for srcset (29 Sep). Re-run it rather than converting by hand |
 | `images/mark.png`, `favicon.ico`, `apple-touch-icon.png`, `favicon-32.png` | `images/logo.png` | Built 22 Sep by `tools/make-icons.py`. Re-run it rather than re-cropping |
 
 **`Instagram logo.png` is deliberately unused.** Rendered beside the inline SVG
@@ -121,6 +124,17 @@ does not exist here, so each would have been a request rendering nothing.
 ---
 
 ## Decisions worth knowing
+
+**Nothing moves once the script runs.** The date, countdown and Instagram handle
+are written in from the data file, so the markup holds them empty and CSS reserves
+each one's final height; the hours and blurb lines take no space while empty.
+Without that the page jumped 85px on a phone and scored CLS 0.536 (29 Sep). Anything
+new that the script fills above the fold needs the same reservation.
+
+**Cache lifetime is GitHub Pages', not ours.** Pages serves everything with a
+10-minute `Cache-Control` and the repo cannot change it; Lighthouse flags it on
+every run. The only fix is a CDN or host in front of Pages, which is a hosting
+decision, not a code change.
 
 **Brand orange is `#C84008`**, sampled from the logo artwork rather than picked. It
 measures **4.19:1 on black**: clears 3:1 for large text, fails 4.5:1 for body copy.
