@@ -125,11 +125,16 @@ does not exist here, so each would have been a request rendering nothing.
 
 ## Decisions worth knowing
 
-**Nothing moves once the script runs.** The date, countdown and Instagram handle
-are written in from the data file, so the markup holds them empty and CSS reserves
-each one's final height; the hours and blurb lines take no space while empty.
-Without that the page jumped 85px on a phone and scored CLS 0.536 (29 Sep). Anything
-new that the script fills above the fold needs the same reservation.
+**Nothing moves once the script runs.** Most of the page is written in from the
+data file, so the markup holds it empty and CSS reserves the finished size: the
+date, countdown and Instagram handle their height, the Instagram button its width,
+the desktop header (script-built above 1100px) its 51px, and the What to Expect
+list a little under its smallest measured height, which keeps everything below it
+off screen until the cards land. The hours and blurb lines take no space while
+empty. Before this the page scored CLS 0.536 on a phone (29 Sep); after, five live
+mobile runs read 100/100/100/100 with CLS 0. Anything new the script fills above
+or inside the first screen needs the same reservation, checked by loading the
+page with js/crawl.min.js blocked and comparing positions.
 
 **Cache lifetime is GitHub Pages', not ours.** Pages serves everything with a
 10-minute `Cache-Control` and the repo cannot change it; Lighthouse flags it on
