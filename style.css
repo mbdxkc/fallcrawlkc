@@ -10,7 +10,7 @@
 
     @project      fallcrawlkc
     @file         style.css
-    @version      1.6.5
+    @version      1.6.6
     @updated      2026-09-29
     @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
     @url          https://fallcrawlkc.com/
@@ -49,7 +49,7 @@
                   glyphs left by half the tracking.
 
   ============================================================================
-    Fall Crawl v1.6.5  ·  style.css  ·  mediaBrilliance
+    Fall Crawl v1.6.6  ·  style.css  ·  mediaBrilliance
   ============================================================================
 */
 
@@ -676,6 +676,14 @@ body::after {
   list-style: none; margin: clamp(1.25rem, 5vw, 2rem) auto 0; padding: 0;
   max-width: 62rem; display: grid; gap: 1rem; text-align: left;
 }
+/* The cards are written in by the script. Until then the empty list holds
+   roughly their height, so everything below it starts off screen and never
+   visibly jumps when they arrive. Set a little UNDER the smallest finished
+   height measured at each width (819px+ single column, 513px+ two, 354px+
+   three), so the list never shrinks when filled. */
+.expect-list:empty { min-height: 800px; }
+@media (min-width: 480px) { .expect-list:empty { min-height: 500px; } }
+@media (min-width: 768px) { .expect-list:empty { min-height: 350px; } }
 .expect { padding: 1rem 1.1rem; border-left: 3px solid var(--orange); background: rgba(248,248,248,.04); }
 .expect-title {
   margin: 0 0 .35rem; font-family: var(--display); font-weight: 800;
