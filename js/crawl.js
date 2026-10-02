@@ -10,8 +10,8 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.6.6
- *   @updated      2026-09-29
+ *   @version      1.7.0
+ *   @updated      2026-10-02
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
  *   @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.6.6  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.7.0  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -74,6 +74,53 @@
     a.target = '_blank';
     a.rel = 'noopener';
     return a;
+  }
+
+  /* Featured-brand logos, by the name the data file uses. Sizes are the
+     WebP's own, printed by tools/make-brands.py; a name not listed here
+     shows as a text chip, so a brand with no logo yet still appears. */
+  var LOGOS = {
+    'Ben Holladay':               ['ben-holladay',   88, 88],
+    'Chica Chida':                ['chica-chida',    79, 88],
+    'Crystal Head Vodka':         ['crystal-head',   88, 88],
+    'Espolon':                    ['espolon',        90, 88],
+    'Fireball':                   ['fireball',       96, 88],
+    'Four Roses':                 ['four-roses',     87, 88],
+    'High Noon':                  ['high-noon',      89, 88],
+    "Jack Daniel's":              ['jack-daniels',  123, 88],
+    'Justin Winery':              ['justin',         70, 88],
+    'Old Forester 86':            ['old-forester',   88, 88],
+    'Ole Smoky':                  ['ole-smoky',      88, 88],
+    'Rosaluna Mezcal':            ['rosaluna',       68, 88],
+    "Tito's Handmade Vodka":      ['titos',          87, 88],
+    'Wild Turkey American Honey': ['american-honey', 88, 88],
+  };
+
+  /** A spot's featured brands as a row of white chips, or null if none. */
+  function brands(names) {
+    var list = (names || []).filter(Boolean);
+    if (!list.length) return null;
+    var ul = el('ul', 'brands');
+    ul.setAttribute('aria-label', 'Featured brands');
+    list.forEach(function (name) {
+      var li = el('li', 'brand');
+      var logo = LOGOS[name];
+      if (logo) {
+        var img = el('img');
+        img.src = 'images/brands/' + logo[0] + '.webp';
+        img.width = logo[1];
+        img.height = logo[2];
+        img.alt = name;
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        li.appendChild(img);
+      } else {
+        li.className = 'brand brand-text';
+        li.textContent = name;
+      }
+      ul.appendChild(li);
+    });
+    return ul;
   }
 
   /** Remove a section outright when it has nothing to show. */
@@ -255,6 +302,8 @@
         li.appendChild(a);
       }
       if (v.hours) li.appendChild(el('p', 'venue-hours', v.hours));
+      var b = brands(v.brands);
+      if (b) li.appendChild(b);
       if (v.doing) li.appendChild(el('p', 'venue-doing', v.doing));
 
       var ig = insta(v.insta);
@@ -583,6 +632,16 @@
     else st.hidden = true;
     var hrs = document.getElementById('spot-hours');
     if (hrs) { hrs.textContent = v.hours || ''; hrs.hidden = !v.hours; }
+    var box = document.getElementById('spot-brands');
+    if (box) {
+      box.textContent = '';
+      var row = brands(v.brands);
+      if (row) {
+        row.querySelectorAll('img').forEach(function (i) { i.loading = 'eager'; });
+        box.appendChild(row);
+      }
+      box.hidden = !row;
+    }
     var dl = document.getElementById('spot-details');
     dl.textContent = '';
     var any = false;

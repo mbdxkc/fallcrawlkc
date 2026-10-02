@@ -69,17 +69,20 @@ Still missing its venue list, so the Spots section is absent by design.
 │   └── crawl.min.js  # built by tools/build.sh, what the pages load
 ├── fonts/
 │   ├── antic.woff2   # body face, self-hosted, SIL OFL
+│   ├── gagalin.woff2 # display face, Basic Latin subset of Iordanis Passas's free Gagalin
 │   └── OFL-antic.txt
 ├── tools/
 │   ├── make-icons.py # cuts every icon out of images/logo.png
 │   ├── make-og.py    # builds images/og.png, the 1200x630 share card
 │   ├── make-webp.py  # rebuilds the page images, plus the map and logo srcset widths
+│   ├── make-brands.py # crops the featured-brand logos and builds their WebP
 │   └── build.sh      # minifies style.css and js/crawl.js; --check fails if either .min is stale
 └── images/
     ├── logo.webp     # the lockup, as the page loads it
     ├── icons.webp    # free / 21+ / no wristbands / costumes strip
     ├── map.webp      # the map with all 13 spots named
     ├── og.png        # share card (og/twitter/JSON-LD), built by make-og.py
+    ├── brands/       # featured-brand logos: <slug>.webp served, <slug>.png source
     ├── logo.png      # SOURCE, and a second JSON-LD image
     ├── icons.png     # SOURCE only, nothing links to it
     ├── map.png       # SOURCE only, nothing links to it
@@ -103,6 +106,7 @@ re-derives it:
 | `images/logo.png` | `Fall Crawl The Pitch.png` | Cropped lockup |
 | `images/map.png` | `Fall Crawl Unoffical Map.png` (29 Sep; her spelling) | 1158x1168 with a solid black frame of 10/15/15/17px (left/top/right/bottom), cropped to the 1129x1133 interior. Replaced the 24 Sep teaser |
 | `images/*.webp` | the `.png` beside each | Built by `tools/make-webp.py`, including `map-480`/`map-736` and `logo-500`/`logo-700` for srcset (29 Sep). Re-run it rather than converting by hand |
+| `images/brands/*` | `Brand Logos/` (Amy, 1 Oct): 17 Instagram-post PNGs, a small mark on a white 1080x1350 canvas | `tools/make-brands.py` crops each to its ink (palette kept) as the `.png` source, then builds an 88px-tall WebP, lossless or lossy by whichever is smaller. About 33 KB for all 14 |
 | `images/mark.png`, `favicon.ico`, `apple-touch-icon.png`, `favicon-32.png` | `images/logo.png` | Built 22 Sep by `tools/make-icons.py`. Re-run it rather than re-cropping |
 
 **`Instagram logo.png` is deliberately unused.** Rendered beside the inline SVG
@@ -152,10 +156,16 @@ alone was two thirds of the whole site. Settings differ per image and
 transparency compress better that way, 27 KB against 66 for lossy. Checked at 1:1
 against the originals before shipping.
 
-**One self-hosted webfont.** Body type is Antic (SIL OFL), served from `fonts/` and
-preloaded (without the preload its swap shifted the desktop layout 0.14 CLS).
-Display type names Gagalin first and falls back to a heavy system stack until the
-client sends the file; add it to `fonts/` with an `@font-face`. Distillery Strong
+**Two self-hosted webfonts.** Body type is Antic (SIL OFL), display type is
+Gagalin (2 Oct), both served from `fonts/` and preloaded (without the preload
+Antic's swap shifted the desktop layout 0.14 CLS; with both preloaded, three
+local mobile runs read CLS 0). Gagalin is Iordanis Passas's free display face,
+from the official FreeTypography zip; its `fsType` is 0 and the zip carries no
+license file, so written terms would have to come from him. It is subset to
+Basic Latin (40 KB) and declared at `font-weight: 100 900`, because it has one
+weight and the headings ask for 800: a narrower range makes the browser fake a
+bold. It has **no apostrophe and no hyphen**, so those two characters in a
+heading render from Arial Black, the next face in `--display`. Distillery Strong
 lives only in the logo artwork. Nothing is fetched from a font service.
 
 **Paths are relative, not root-absolute.** A GitHub Pages project site is served from
@@ -214,7 +224,9 @@ fog. The privacy page says so. If it fails, the sky stays clear.
       Registered 2026-09-14, nameservers at Squarespace, currently a "Coming Soon" page.
       Held there deliberately until the content is in. Change the Squarespace A records to
       GitHub Pages (185.199.108-111.153) **first**, then add `CNAME` — never the reverse
-- [ ] Venue details in `data/crawl.js`. All 13 are in by account name with street addresses (29 Sep, A to Z); `hours`, Instagram and the specials are still empty. The Fold is listed as The Den at its owner's request; the map image still says The Fold until Amy's final map arrives
+- [ ] Venue details in `data/crawl.js`. All 13 have address, hours, Instagram and featured brands (1 Oct); the specials (drinks, entertainment, menu, cover) are still empty, and King G's brand is TBD. The Fold is listed as The Den at its owner's request; the map image still says The Fold until Amy's final map arrives
+- [ ] Confirm two Instagram handles exactly as Amy typed them: `ricocherkcmo` (Ricochet; `ricochetkcmo`?) and `mod.gallery.space2`. Instagram serves the same page for real and made-up handles, so neither can be checked from outside
+- [ ] No Lucky One logo was sent; Beckett's and Ricochet show it as a text chip until one arrives. Rosaluna's mark is pale beige by design and barely reads at chip size
 - [x] Replace `images/map.png` with the full map. Done 29 Sep from `Fall Crawl Unoffical Map.png`
 - [x] Remove `noindex` and the `robots.txt` disallow, across all three pages
 - [x] `favicon.ico`, `apple-touch-icon.png` and `favicon-32.png`, declared on
@@ -228,18 +240,18 @@ fog. The privacy page says so. If it fails, the sky stays clear.
       profile. The website one is only correct once the domain stops serving
       Squarespace's "Coming Soon" page
 - [ ] Client asset fix: the pedicab promo reads "WINE & COCKAILS"
-- [ ] Gagalin font file from the client; headings use a fallback until then
+- [x] Gagalin, self-hosted 2 Oct from the designer's free release
 - [x] `Fall Crawl Unoffical Map.png` from the client (received 29 Sep)
 - [x] `showExamples: false`. Amy, 28 Sep: no made-up spots or specials, so
       nobody is disappointed when the real list lands. The wheel reads
       "Coming soon" until the first venue is added
 - [x] Trick-or-Treat Routes copy (Amy, 29 Sep). The line under the Instagram
       button is settled as none: the icon in the button carries it (`ig.blurb`
-      stays empty)
+      stays empty). Amy offered a two-sentence version on 1 Oct; still none
 - [ ] Client copy still to write: the headline blurb under the map heading;
       Crawl Guide is hidden (`guide: false`)
-- [ ] Amy to approve the Play It Safe draft (`safety` in the data file), and
-      confirm Beckett's vs Becketts and Grinders vs Grinder's
+- [x] Play It Safe is Amy's own copy (1 Oct), five items. Spellings
+      confirmed: Beckett's and Grinder's
 - [ ] Amy's final map, with The Fold relabelled The Den
 
 Page order (29 Sep): hero, What to Expect, map, Fall Crawl Roulette,

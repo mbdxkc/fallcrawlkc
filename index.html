@@ -17,8 +17,8 @@
 
       @project      fallcrawlkc
       @file         index.html
-      @version      1.6.6
-      @updated      2026-09-29
+      @version      1.7.0
+      @updated      2026-10-02
       @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
       @url          https://fallcrawlkc.com/
       @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -63,7 +63,7 @@
                     system stack.
 
     ============================================================================
-      Fall Crawl v1.6.6  ·  index.html  ·  mediaBrilliance
+      Fall Crawl v1.7.0  ·  index.html  ·  mediaBrilliance
     ============================================================================
     -->
 
@@ -102,6 +102,7 @@
 
     <!-- crossorigin is required even same-origin, or the font is fetched twice. -->
     <link rel="preload" href="fonts/antic.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="fonts/gagalin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="style.min.css" />
 
     <script type="application/ld+json">
@@ -296,6 +297,7 @@
       <h2 id="spot-name"></h2>
       <a class="venue-street" id="spot-street" target="_blank" rel="noopener"></a>
       <p class="venue-hours" id="spot-hours" hidden></p>
+      <div class="spot-brands" id="spot-brands" hidden></div>
       <dl class="spot-details" id="spot-details"></dl>
       <p class="spot-empty" id="spot-empty">Details coming soon.</p>
       <a class="ig-link" id="spot-ig" target="_blank" rel="noopener"></a>

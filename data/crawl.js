@@ -78,12 +78,16 @@ window.FALL_CRAWL = {
      Same shape as What to Expect: one block per item.                     */
 
   safety: [
-    { title: "Get Home Safe",
-      text:  "Don't drink and drive. Walk between spots, call a pedicab or grab a rideshare, and plan your ride home before the first drink." },
-    { title: "Match Your ID",
-      text:  "Spots check IDs at the door, so your face has to match yours. Keep masks, makeup and prosthetics easy to lift or take off." },
+    { title: "Plan a Safe Ride Home",
+      text:  "Do not drink and drive. Walk between participating locations and plan a safe ride home before you start the crawl. Rideshare and other transportation options are encouraged." },
+    { title: "Bring Your ID",
+      text:  "Participating venues will be checking IDs. Bring a valid, government-issued photo ID and be prepared to show it at each location. Costumes, masks, makeup or prosthetics must not prevent staff from verifying your identity." },
     { title: "No Weapons",
-      text:  "No weapons, real or fake. Prop swords, guns, knives and blasters stay home, even as part of a costume." },
+      text:  "No weapons, real or fake. This includes costume or prop guns, knives, swords and other items that could reasonably be mistaken for a weapon." },
+    { title: "Look Out for Each Other",
+      text:  "Stay with your people and keep an eye on each other. Know your limits, don't leave anyone behind, and if something doesn't feel right, say something or let bartenders and staff know." },
+    { title: "Costume Guidelines",
+      text:  "Go all out, but use good judgment. Each venue reserves the right to refuse entry based on costumes, props or attire they consider offensive, unsafe or inappropriate. Individual venue policies and staff decisions apply." },
   ],
 
   /* ---- Social icons, top right ---------------------------------------
@@ -103,6 +107,9 @@ window.FALL_CRAWL = {
        street        no city. "Kansas City, MO" is added for the map link
        hours         e.g. "4 p.m. to 1:30 a.m.", shown under the address
        insta         handle only, no @. "" if they have none
+       brands        featured brands, e.g. ["Ole Smoky", "High Noon"]. A
+                     name with a logo on file shows the logo; any other
+                     name shows as text
        doing         one line for the list, e.g. "Spooky cocktail menu"
        drinks        drink specials
        entertainment DJs, bands, costume contests, anything happening
@@ -115,32 +122,45 @@ window.FALL_CRAWL = {
     //   doing: "Spooky cocktail menu", drinks: "$8 spiced old fashioneds",
     //   entertainment: "DJ from 9 p.m.", menu: "", cover: "No cover", live: true },
 
-    // The 13, A to Z, by account name and address (29 Sep).
-    { name: "Beckett's",                street: "1701 McGee St",    hours: "", insta: "",
+    // The 13, A to Z (29 Sep). Hours, Instagram and brands from Amy, 1 Oct.
+    { name: "Beckett's",                street: "1701 McGee St",    hours: "11 a.m. to 1:30 a.m.", insta: "beckettskcmo",
+      brands: ["Ole Smoky", "High Noon", "Lucky One"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "The Belfry",               street: "1532 Grand Blvd",  hours: "", insta: "",
+    { name: "The Belfry",               street: "1532 Grand Blvd",  hours: "4 p.m. to midnight", insta: "thebelfrycollective",
+      brands: ["Fireball", "Four Roses"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Chartreuse Saloon",        street: "1627 Oak St",      hours: "", insta: "",
+    { name: "Chartreuse Saloon",        street: "1627 Oak St",      hours: "4 p.m. to 1:30 a.m.", insta: "chartreusesaloonkc",
+      brands: ["Old Forester 86"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Cigar Box",                street: "1519 Grand Blvd",  hours: "", insta: "",
+    { name: "Cigar Box",                street: "1519 Grand Blvd",  hours: "5 p.m. to 3 a.m.", insta: "thecigarbox",
+      brands: ["Tito's Handmade Vodka"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "The Den",                  street: "1830 Walnut St",   hours: "", insta: "",
+    { name: "The Den",                  street: "1830 Walnut St",   hours: "6 p.m. to 1 a.m.", insta: "thefoldkcmo",
+      brands: ["Crystal Head Vodka"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Grinders",                 street: "417 E 18th St",    hours: "", insta: "",
+    { name: "Grinder's",                 street: "417 E 18th St",    hours: "11 a.m. to midnight", insta: "grinderskc",
+      brands: ["Wild Turkey American Honey"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "International Tap House",  street: "403 E 18th St",    hours: "", insta: "",
+    { name: "International Tap House",  street: "403 E 18th St",    hours: "11 a.m. to 1 a.m.", insta: "itapxroads",
+      brands: ["Chica Chida"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Jade Jaguar",              street: "1800 Walnut St",   hours: "", insta: "",
+    { name: "Jade Jaguar",              street: "1800 Walnut St",   hours: "5 p.m. to 1:30 a.m.", insta: "jadejaguarkc",
+      brands: ["Rosaluna Mezcal"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "King G",                   street: "500 E 18th St",    hours: "", insta: "",
+    { name: "King G",                   street: "500 E 18th St",    hours: "11 a.m. to 1:30 a.m.", insta: "king.g.kc",
+      brands: [],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "MOD Gallery",              street: "1809 McGee St",    hours: "", insta: "",
+    { name: "MOD Gallery",              street: "1809 McGee St",    hours: "7 p.m. to 1 a.m.", insta: "mod.gallery.space2",
+      brands: ["Jack Daniel's"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Ricochet",                 street: "1720 McGee St",    hours: "", insta: "",
+    { name: "Ricochet",                 street: "1720 McGee St",    hours: "11 a.m. to 1:30 a.m.", insta: "ricocherkcmo",
+      brands: ["Espolon", "High Noon", "Lucky One"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Tannin",                   street: "1526 Walnut St",   hours: "", insta: "",
+    { name: "Tannin",                   street: "1526 Walnut St",   hours: "4 p.m. to 1:30 a.m.", insta: "tanninkc",
+      brands: ["Justin Winery"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Ted's Taproom",            street: "1829 McGee St",    hours: "", insta: "",
+    { name: "Ted's Taproom",            street: "1829 McGee St",    hours: "5 p.m. to 1 a.m.", insta: "teds_taproom",
+      brands: ["Ben Holladay"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
   ],
 

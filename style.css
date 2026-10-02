@@ -10,8 +10,8 @@
 
     @project      fallcrawlkc
     @file         style.css
-    @version      1.6.6
-    @updated      2026-09-29
+    @version      1.7.0
+    @updated      2026-10-02
     @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
     @url          https://fallcrawlkc.com/
     @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -35,8 +35,8 @@
     IMPLEMENTATION NOTES
   ============================================================================
 
-    @desc         Mobile-first, one page, no framework. One self-hosted
-                  webfont (Antic); Gagalin pending its file.
+    @desc         Mobile-first, one page, no framework. Two self-hosted
+                  webfonts (Antic, Gagalin).
     @color        --orange #C84008 sampled from the logo artwork measures
                   4.19:1 on black. That clears 3:1 for large text and FAILS
                   4.5:1 for body copy, so it is restricted to display type,
@@ -49,18 +49,27 @@
                   glyphs left by half the tracking.
 
   ============================================================================
-    Fall Crawl v1.6.6  ·  style.css  ·  mediaBrilliance
+    Fall Crawl v1.7.0  ·  style.css  ·  mediaBrilliance
   ============================================================================
 */
 
-/* Antic is self-hosted (SIL OFL, fonts/OFL-antic.txt), so no font is
-   fetched from another company and the privacy page stays true. Gagalin is
-   named first for display type and falls back until its file is added to
-   fonts/ with an @font-face here. */
+/* Both faces are self-hosted, so no font is fetched from another company
+   and the privacy page stays true. Antic is SIL OFL (fonts/OFL-antic.txt).
+   Gagalin is Iordanis Passas's free display face, subset to Basic Latin.
+   It has one weight, declared across the whole range so the 800-weight
+   headings use it as drawn instead of a synthesized bold. It has no
+   apostrophe or hyphen; those two fall through to the next face in
+   --display. */
 @font-face {
   font-family: "Antic";
   src: url("fonts/antic.woff2") format("woff2");
   font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gagalin";
+  src: url("fonts/gagalin.woff2") format("woff2");
+  font-weight: 100 900;
   font-display: swap;
 }
 
@@ -518,6 +527,15 @@ a.partner-name { display: inline-block; text-decoration: none; }
 .venue-street { display: inline-block; color: var(--muted); font-size: .9rem; text-decoration: none; border-bottom: 1px solid var(--rule); }
 .venue-street:hover { color: var(--orange); }
 .venue-hours { margin: .35rem 0 0; color: var(--muted); font-size: .9rem; }
+
+/* Featured brands. White chips rather than logos knocked out onto the page:
+   several marks (Jack Daniel's, Crystal Head, Ole Smoky) are black. */
+.brands { display: flex; flex-wrap: wrap; gap: .4rem; margin: .6rem 0 0; padding: 0; list-style: none; }
+.brand { display: flex; align-items: center; height: 44px; padding: 3px; background: #fff; border-radius: 6px; }
+.brand img { display: block; width: auto; height: 38px; }
+.brand-text { padding: 0 .6rem; color: #111; font-size: .8rem; font-weight: 700; letter-spacing: .02em; }
+.spot-brands { margin: .9rem 0 0; }
+.spot-brands .brands { margin: 0; }
 .venue-doing, .route p, .partner p { margin: .5rem 0 0; color: var(--muted); }
 
 .partner-phone {
