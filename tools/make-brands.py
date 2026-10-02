@@ -59,7 +59,8 @@ QUALITY = 90
 
 # slug -> client file. Where she sent two versions, the one that holds up
 # at chip size: the round Old Forester and Tito's badges, and the Chica
-# Chida mark that carries the name.
+# Chida mark that carries the name. Rosaluna is the darker badge she sent
+# 2 Oct; the pale 1 Oct file is kept beside it, unused.
 BRANDS = {
     "ben-holladay":   "Ben Holladay Logo.png",
     "chica-chida":    "Chica Chida Logo.png",
@@ -70,6 +71,7 @@ BRANDS = {
     "high-noon":      "High Noon Logo.png",
     "jack-daniels":   "Jack Daniel's Logo.png",
     "justin":         "Justin Winery Logo.png",
+    "lucky-one":      "Lucky One Logo.png",
     "old-forester":   "Old Forester Logo.png",
     "ole-smoky":      "Ole Smoky Logo.png",
     "rosaluna":       "Rosaluna Logo.png",
@@ -78,10 +80,21 @@ BRANDS = {
 }
 
 
+def on_white(image):
+    """Flatten onto white. A file with transparency would otherwise turn its
+    clear pixels black on conversion, and the chips are white."""
+    if image.mode in ("RGBA", "LA") or "transparency" in image.info:
+        rgba = image.convert("RGBA")
+        base = Image.new("RGBA", rgba.size, "white")
+        base.alpha_composite(rgba)
+        return base.convert("RGB")
+    return image.convert("RGB")
+
+
 def crop(path):
-    """The logo without its white canvas. Rosaluna is pale beige on white,
-    so anything short of near-white counts as ink."""
-    image = Image.open(path).convert("RGB")
+    """The logo without its white canvas. Anything short of near-white
+    counts as ink, so a pale mark is not cropped into."""
+    image = on_white(Image.open(path))
     ink = ImageChops.difference(image, Image.new("RGB", image.size, "white"))
     box = ink.convert("L").point(lambda v: 255 if v > 10 else 0).getbbox()
     if box is None:
@@ -116,7 +129,7 @@ def main():
             crop(CLIENT / name).save(OUT / f"{slug}.png", optimize=True)
     for slug in BRANDS:
         src = OUT / f"{slug}.png"
-        image = Image.open(src).convert("RGB")
+        image = on_white(Image.open(src))
         width = round(image.width * HEIGHT / image.height)
         image = image.resize((width, HEIGHT), Image.LANCZOS)
         lossless, buf = smallest(image)

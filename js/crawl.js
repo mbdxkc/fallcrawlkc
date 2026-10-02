@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.7.0
+ *   @version      1.7.1
  *   @updated      2026-10-02
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.7.0  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.7.1  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -89,9 +89,10 @@
     'High Noon':                  ['high-noon',      89, 88],
     "Jack Daniel's":              ['jack-daniels',  123, 88],
     'Justin Winery':              ['justin',         70, 88],
+    'Lucky One':                  ['lucky-one',      73, 88],
     'Old Forester 86':            ['old-forester',   88, 88],
     'Ole Smoky':                  ['ole-smoky',      88, 88],
-    'Rosaluna Mezcal':            ['rosaluna',       68, 88],
+    'Rosaluna Mezcal':            ['rosaluna',       88, 88],
     "Tito's Handmade Vodka":      ['titos',          87, 88],
     'Wild Turkey American Honey': ['american-honey', 88, 88],
   };
