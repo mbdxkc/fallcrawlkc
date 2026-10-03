@@ -153,7 +153,7 @@ window.FALL_CRAWL = {
     { name: "MOD Gallery",              street: "1809 McGee St",    hours: "7 p.m. to 1 a.m.", insta: "mod.gallery.space2",
       brands: ["Jack Daniel's"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Ricochet",                 street: "1720 McGee St",    hours: "11 a.m. to 1:30 a.m.", insta: "ricocherkcmo",
+    { name: "Ricochet",                 street: "1720 McGee St",    hours: "11 a.m. to 1:30 a.m.", insta: "ricochetkcmo",
       brands: ["Espolon", "High Noon", "Lucky One"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
     { name: "Tannin",                   street: "1526 Walnut St",   hours: "4 p.m. to 1:30 a.m.", insta: "tanninkc",

@@ -225,7 +225,7 @@ fog. The privacy page says so. If it fails, the sky stays clear.
       Held there deliberately until the content is in. Change the Squarespace A records to
       GitHub Pages (185.199.108-111.153) **first**, then add `CNAME` — never the reverse
 - [ ] Venue details in `data/crawl.js`. All 13 have address, hours, Instagram and featured brands (1 Oct); the specials (drinks, entertainment, menu, cover) are still empty, and King G's brand is TBD. The Fold is listed as The Den at its owner's request, and the final map (2 Oct) says so too
-- [ ] Confirm two Instagram handles exactly as Amy typed them: `ricocherkcmo` (Ricochet; `ricochetkcmo`?) and `mod.gallery.space2`. Instagram serves the same page for real and made-up handles, so neither can be checked from outside
+- [ ] Confirm `mod.gallery.space2` exactly as Amy typed it. Ricochet was `ricocherkcmo` as typed and is `ricochetkcmo` (confirmed 3 Oct). Instagram serves the same page for real and made-up handles, so neither can be checked from outside
 - [x] Lucky One logo and a darker Rosaluna badge (2 Oct). Every brand now has a logo; the text chip only appears for a name not in `LOGOS`
 - [x] Replace `images/map.png` with the full map. Done 29 Sep from `Fall Crawl Unoffical Map.png`
 - [x] Remove `noindex` and the `robots.txt` disallow, across all three pages
