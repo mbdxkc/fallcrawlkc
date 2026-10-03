@@ -10,7 +10,7 @@
 
     @project      fallcrawlkc
     @file         style.css
-    @version      1.7.2
+    @version      1.7.3
     @updated      2026-10-03
     @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
     @url          https://fallcrawlkc.com/
@@ -49,7 +49,7 @@
                   glyphs left by half the tracking.
 
   ============================================================================
-    Fall Crawl v1.7.2  ·  style.css  ·  mediaBrilliance
+    Fall Crawl v1.7.3  ·  style.css  ·  mediaBrilliance
   ============================================================================
 */
 
@@ -564,6 +564,14 @@ a.partner-name { display: inline-block; text-decoration: none; }
 }
 .legal { margin: 0 auto; max-width: 42rem; }
 .drink { margin: .9rem 0 0; color: var(--ink); }
+
+/* Studio credit: one quiet line under the legal copy, the mB mark at text
+   height so it reads as a signature rather than an advert. */
+.credit { margin: 1.4rem 0 0; font-size: .75rem; letter-spacing: .02em; }
+.credit a { display: inline-flex; align-items: center; gap: .4rem; margin-left: .2rem;
+  color: var(--muted); text-decoration: none; vertical-align: middle; }
+.credit img { display: block; width: 22px; height: 22px; }
+.credit a:hover, .credit a:focus-visible { color: var(--orange); }
 
 /* ---------- night procession across the header ---------- */
 .site-header { overflow: hidden; }
