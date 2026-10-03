@@ -18,7 +18,7 @@ To undo: **Commits** at the top of this page, find yours, **...**, **Revert**.
 
 # Notes for whoever maintains this
 
-Single-page event site. Static HTML, hand-rolled CSS, vanilla JS. One build step: `tools/build.sh` minifies the stylesheet and the page script, then stamps each page's reference to them with `?v=` plus eight hex of the built file's SHA-256, and must run after any edit to either (the data file is never minified or stamped). GitHub Pages lets a browser reuse a file for 10 minutes, so an unstamped stylesheet can pair new HTML with old CSS; `--check` fails on a stale stamp as well as a stale build.
+Single-page event site. Static HTML, hand-rolled CSS, vanilla JS. One build step: `tools/build.sh` minifies the stylesheet and the page script, then stamps each page's reference to them with `?v=` plus eight hex of the built file's SHA-256, and must run after any edit to either (the data file is never minified or stamped; each page loads it as `data/crawl.js?m=<current minute>` instead, so a client edit reaches every browser within about a minute). GitHub Pages lets a browser reuse a file for 10 minutes, so an unstamped stylesheet can pair new HTML with old CSS; `--check` fails on a stale stamp as well as a stale build.
 **by mediaBrilliance.io**
 
 The long-form date came off the page on 22 September at the client's request; the

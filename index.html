@@ -17,7 +17,7 @@
 
       @project      fallcrawlkc
       @file         index.html
-      @version      1.7.3
+      @version      1.7.4
       @updated      2026-10-03
       @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
       @url          https://fallcrawlkc.com/
@@ -63,7 +63,7 @@
                     system stack.
 
     ============================================================================
-      Fall Crawl v1.7.3  ·  index.html  ·  mediaBrilliance
+      Fall Crawl v1.7.4  ·  index.html  ·  mediaBrilliance
     ============================================================================
     -->
 
@@ -323,7 +323,13 @@
       <p class="age-denied" id="age-denied" hidden>Come back when you are. We&rsquo;ll save you a costume.</p>
     </dialog>
 
-    <script src="data/crawl.js"></script>
+    <!-- The client's data file, with the current minute as its query. Pages
+         lets a browser reuse a file for 10 minutes and her edits skip
+         tools/build.sh, so a content stamp cannot reach this one. A per-minute
+         URL makes an edit show within about a minute. document.write keeps it
+         parser-blocking, so it still runs before the deferred page script;
+         the file is same-origin, which no browser intervenes on. -->
+    <script>document.write('<script src="data/crawl.js?m=' + Math.floor(Date.now() / 6e4) + '"><\/script>');</script>
     <script src="js/crawl.min.js?v=14c7f59c" defer></script>
   </body>
 </html>

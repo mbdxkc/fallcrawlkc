@@ -155,7 +155,13 @@
            width="22" height="22" alt="" />mediaBrilliance digitalxtudio</a></p>
     </footer>
 
-    <script src="data/crawl.js"></script>
+    <!-- The client's data file, with the current minute as its query. Pages
+         lets a browser reuse a file for 10 minutes and her edits skip
+         tools/build.sh, so a content stamp cannot reach this one. A per-minute
+         URL makes an edit show within about a minute. document.write keeps it
+         parser-blocking, so it still runs before the deferred page script;
+         the file is same-origin, which no browser intervenes on. -->
+    <script>document.write('<script src="data/crawl.js?m=' + Math.floor(Date.now() / 6e4) + '"><\/script>');</script>
     <script src="js/crawl.min.js?v=14c7f59c" defer></script>
   </body>
 </html>
