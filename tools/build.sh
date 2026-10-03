@@ -63,6 +63,28 @@ for pair in "style.min.css:style.min.css" "crawl.min.js:js/crawl.min.js"; do
   fi
 done
 
+# Cache stamps. Each page loads the minified files as `file?v=<hash>`, where
+# the hash is the first 8 hex of the built file's SHA-256. GitHub Pages lets a
+# browser reuse a file for 10 minutes, so an unstamped stylesheet can pair new
+# HTML with old CSS: on 3 Oct the footer credit rendered unstyled that way.
+# A changed file is a changed URL; an unchanged one keeps its cached copy.
+for pair in "style.min.css:style.min.css" "crawl.min.js:js/crawl.min.js"; do
+  dest="${pair#*:}"
+  hash="$(shasum -a 256 "$tmp/${pair%%:*}" | cut -c1-8)"
+  for page in index.html privacy.html terms.html; do
+    want="$dest?v=$hash"
+    if grep -q "\"$want\"" "$page"; then
+      continue
+    elif (( CHECK )); then
+      echo "stale  $page ($dest stamp)"; stale=1
+    else
+      sed -i '' -E "s#\"$dest(\\?v=[0-9a-f]+)?\"#\"$want\"#" "$page"
+      grep -q "\"$want\"" "$page" || { echo "error: no $dest reference in $page" >&2; exit 1; }
+      echo "stamp  $page -> $want"
+    fi
+  done
+done
+
 if (( stale )); then
   echo "Build is out of date. Run tools/build.sh" >&2
   exit 1
