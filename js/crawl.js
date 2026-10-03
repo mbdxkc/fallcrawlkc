@@ -10,8 +10,8 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.7.1
- *   @updated      2026-10-02
+ *   @version      1.7.2
+ *   @updated      2026-10-03
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
  *   @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -48,7 +48,7 @@
  *                 able to inject markup.
  *
  * ============================================================================
- *   Fall Crawl v1.7.1  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.7.2  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -303,12 +303,11 @@
         li.appendChild(a);
       }
       if (v.hours) li.appendChild(el('p', 'venue-hours', v.hours));
+      var ig = insta(v.insta);
+      if (ig) li.appendChild(ig);
       var b = brands(v.brands);
       if (b) li.appendChild(b);
       if (v.doing) li.appendChild(el('p', 'venue-doing', v.doing));
-
-      var ig = insta(v.insta);
-      if (ig) li.appendChild(ig);
       ul.appendChild(li);
     });
   }
@@ -341,15 +340,22 @@
       li.appendChild(head);
       if (p.blurb) li.appendChild(el('p', null, p.blurb));
 
-      // tap-to-call rather than text on a page people read on a phone
+      // Opens a text, not a call: the client asked for it on 3 Oct, and a
+      // text is what a pedicab dispatcher can answer mid-ride.
       if (p.phone) {
         var d = String(p.phone).replace(/\D/g, '');
         if (d.length === 10) {
           var t = el('a', 'partner-phone',
-            '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6));
-          t.href = 'tel:+1' + d;
+            'Text (' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6));
+          t.href = 'sms:+1' + d;
           li.appendChild(t);
         }
+      }
+      // The website as visible words, not only as the linked name.
+      if (p.url) {
+        var w = el('a', 'partner-phone', p.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''));
+        w.href = p.url; w.target = '_blank'; w.rel = 'noopener';
+        li.appendChild(w);
       }
 
       var ig = insta(p.insta);
@@ -657,14 +663,15 @@
     var ig = document.getElementById('spot-ig');
     if (v.insta) { ig.textContent = '@' + v.insta; ig.href = 'https://www.instagram.com/' + v.insta; ig.hidden = false; }
     else ig.hidden = true;
-    // A ride for the long walks: the first partner with a phone number.
+    // A ride for the long walks: the first partner with a phone number,
+    // as a text rather than a call (client, 3 Oct).
     var ride = document.getElementById('spot-ride');
     var cab = (DATA.partners || []).filter(function (p) { return p && p.phone; })[0];
     var digits = cab ? String(cab.phone).replace(/\D/g, '') : '';
     if (ride && digits.length === 10) {
       ride.textContent = 'Too far to walk? ';
-      var call = el('a', null, 'Call ' + cab.name);
-      call.href = 'tel:+1' + digits;
+      var call = el('a', null, 'Text ' + cab.name);
+      call.href = 'sms:+1' + digits;
       ride.appendChild(call);
       ride.hidden = false;
     }

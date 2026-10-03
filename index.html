@@ -17,8 +17,8 @@
 
       @project      fallcrawlkc
       @file         index.html
-      @version      1.7.1
-      @updated      2026-10-02
+      @version      1.7.2
+      @updated      2026-10-03
       @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
       @url          https://fallcrawlkc.com/
       @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -63,7 +63,7 @@
                     system stack.
 
     ============================================================================
-      Fall Crawl v1.7.1  ·  index.html  ·  mediaBrilliance
+      Fall Crawl v1.7.2  ·  index.html  ·  mediaBrilliance
     ============================================================================
     -->
 
@@ -263,9 +263,9 @@
         <ul class="expect-list" id="safety-list"></ul>
       </section>
 
-      <!-- ===== partners ===== -->
-      <section class="band" id="partners">
-        <h2>Partners</h2>
+      <!-- ===== partners. No heading: the client wants the card to stand
+           on its own (3 Oct), so the label lives in aria-label instead ===== -->
+      <section class="band" id="partners" aria-label="Getting around">
         <ul class="partner-list" id="partner-list"></ul>
       </section>
 
@@ -297,10 +297,10 @@
       <h2 id="spot-name"></h2>
       <a class="venue-street" id="spot-street" target="_blank" rel="noopener"></a>
       <p class="venue-hours" id="spot-hours" hidden></p>
+      <a class="ig-link" id="spot-ig" target="_blank" rel="noopener"></a>
       <div class="spot-brands" id="spot-brands" hidden></div>
       <dl class="spot-details" id="spot-details"></dl>
       <p class="spot-empty" id="spot-empty">Details coming soon.</p>
-      <a class="ig-link" id="spot-ig" target="_blank" rel="noopener"></a>
       <p class="spot-ride" id="spot-ride" hidden></p>
       <div class="modal-actions">
         <button class="cta" type="button" id="spot-again">Spin again</button>

@@ -83,7 +83,7 @@ window.FALL_CRAWL = {
     { title: "Bring Your ID",
       text:  "Participating venues will be checking IDs. Bring a valid, government-issued photo ID and be prepared to show it at each location. Costumes, masks, makeup or prosthetics must not prevent staff from verifying your identity." },
     { title: "No Weapons",
-      text:  "No weapons, real or fake. This includes costume or prop guns, knives, swords and other items that could reasonably be mistaken for a weapon." },
+      text:  "No weapons, real or fake. This includes costume or prop guns, knives, swords and other items that could be mistaken for a weapon." },
     { title: "Look Out for Each Other",
       text:  "Stay with your people and keep an eye on each other. Know your limits, don't leave anyone behind, and if something doesn't feel right, say something or let bartenders and staff know." },
     { title: "Costume Guidelines",
