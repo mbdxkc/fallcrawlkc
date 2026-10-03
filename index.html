@@ -17,7 +17,7 @@
 
       @project      fallcrawlkc
       @file         index.html
-      @version      1.7.5
+      @version      1.7.6
       @updated      2026-10-03
       @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
       @url          https://fallcrawlkc.com/
@@ -49,21 +49,23 @@
                     served from /fallcrawlkc/, where /images/... resolves outside
                     the project and 404s. Relative works at both a subpath and a
                     custom domain, so the hosting decision stops mattering.
-      @seo          NOINDEX while in development, see the block below the
-                    viewport tag. canonical, og:url and og:image point at the
-                    Pages URL because
-                    fallcrawlkc.com is NOT REGISTERED yet. Pointing them at a
-                    domain with no DNS is worse than leaving them off. One
-                    find-and-replace when the domain resolves.
+      @seo          Indexed. canonical, og:url, og:image and the Event JSON-LD
+                    all point at https://fallcrawlkc.com/. The <title>, meta
+                    description and JSON-LD dates are written here, not read
+                    from data/crawl.js, so a date change means both files.
       @a11y         Skip link, semantic landmarks, one h1. Brand orange #C84008
                     measures 4.19:1 on black: it clears 3:1 for large text and
                     fails 4.5:1 for body copy, so it is display and accent only.
-      @fonts        No webfont. The display face in the artwork is not licensed
-                    here, so the lockup ships as artwork and live type uses a
-                    system stack.
+      @fonts        Two self-hosted webfonts, both preloaded: Antic for body
+                    copy and Gagalin for headings. The lockup's own display
+                    face is not licensed here, so it ships only as artwork.
+      @cache        GitHub Pages lets a browser keep any file for 10 minutes.
+                    The stylesheet and page script carry a content-hash ?v=
+                    written by tools/build.sh; the data file is requested with
+                    the current minute instead, since edits to it skip the build.
 
     ============================================================================
-      Fall Crawl v1.7.5  ·  index.html  ·  mediaBrilliance
+      Fall Crawl v1.7.6  ·  index.html  ·  mediaBrilliance
     ============================================================================
     -->
 
@@ -103,7 +105,7 @@
     <!-- crossorigin is required even same-origin, or the font is fetched twice. -->
     <link rel="preload" href="fonts/antic.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="fonts/gagalin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="style.min.css?v=63f06fc8" />
+    <link rel="stylesheet" href="style.min.css?v=6d629dda" />
 
     <script type="application/ld+json">
     {
@@ -263,8 +265,8 @@
         <ul class="expect-list" id="safety-list"></ul>
       </section>
 
-      <!-- ===== partners. No heading: the client wants the card to stand
-           on its own (3 Oct), so the label lives in aria-label instead ===== -->
+      <!-- ===== partners. No visible heading: the card stands on its own,
+           and aria-label keeps the section a named region ===== -->
       <section class="band" id="partners" aria-label="Getting around">
         <ul class="partner-list" id="partner-list"></ul>
       </section>
@@ -323,13 +325,13 @@
       <p class="age-denied" id="age-denied" hidden>Come back when you are. We&rsquo;ll save you a costume.</p>
     </dialog>
 
-    <!-- The client's data file, with the current minute as its query. Pages
-         lets a browser reuse a file for 10 minutes and her edits skip
-         tools/build.sh, so a content stamp cannot reach this one. A per-minute
-         URL makes an edit show within about a minute. document.write keeps it
-         parser-blocking, so it still runs before the deferred page script;
-         the file is same-origin, which no browser intervenes on. -->
+    <!-- The event data, requested with the current minute as its query.
+         Edits to data/crawl.js skip tools/build.sh, so no content stamp can
+         reach it, and a per-minute URL shows a change within about a minute.
+         document.write keeps it parser-blocking, so it runs before the
+         deferred page script; the file is same-origin, which browsers do not
+         intervene on. -->
     <script>document.write('<script src="data/crawl.js?m=' + Math.floor(Date.now() / 6e4) + '"><\/script>');</script>
-    <script src="js/crawl.min.js?v=14c7f59c" defer></script>
+    <script src="js/crawl.min.js?v=2fe2555f" defer></script>
   </body>
 </html>

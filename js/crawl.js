@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.7.5
+ *   @version      1.7.6
  *   @updated      2026-10-03
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -43,12 +43,13 @@
  *                 Sections whose list is empty are removed from the DOM, not
  *                 hidden, so a screen reader does not announce an empty
  *                 heading while the event is still being assembled.
- *   @security     Every value is written with textContent, never innerHTML.
- *                 Venue copy arrives from a hand-edited file and must not be
- *                 able to inject markup.
+ *   @security     Every value from data/crawl.js is written with textContent,
+ *                 never innerHTML. Venue copy arrives from a hand-edited file
+ *                 and must not be able to inject markup. innerHTML carries
+ *                 only this script's own SVG.
  *
  * ============================================================================
- *   Fall Crawl v1.7.5  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.7.6  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -340,8 +341,8 @@
       li.appendChild(head);
       if (p.blurb) li.appendChild(el('p', null, p.blurb));
 
-      // Opens a text, not a call: the client asked for it on 3 Oct, and a
-      // text is what a pedicab dispatcher can answer mid-ride.
+      // Opens a text message rather than a call: a pedicab dispatcher can
+      // answer a text mid-ride.
       if (p.phone) {
         var d = String(p.phone).replace(/\D/g, '');
         if (d.length === 10) {
@@ -538,16 +539,8 @@
     var svg = document.getElementById('wheel');
     var btn = document.getElementById('spin-btn');
     if (!svg || !btn) return;
-    var spots = liveVenues(), example = false;
-    if (!spots.length && DATA.showExamples) {
-      spots = (DATA.examples || []).filter(function (v) { return v && v.name; });
-      example = true;
-    }
+    var spots = liveVenues();
     if (!spots.length) return;               // "Coming soon" stays up
-    if (example) {
-      var lede = document.getElementById('spin-lede');
-      if (lede) lede.textContent = 'Try it out. These spots are made up until the real list lands.';
-    }
 
     document.getElementById('spin-soon').hidden = true;
     document.getElementById('wheel-wrap').hidden = false;
@@ -611,7 +604,7 @@
       var done = function () {
         spinning = false; btn.disabled = false;
         document.getElementById('spin-live').textContent = 'Landed on ' + spots[i].name;
-        showSpot(spots[i], example);
+        showSpot(spots[i]);
       };
       if (still) done(); else setTimeout(done, 5040);   // matches the CSS transition
     }
@@ -628,11 +621,9 @@
     });
   }
 
-  function showSpot(v, example) {
+  function showSpot(v) {
     var card = document.getElementById('spot-card');
     if (!card) return;
-    var k = card.querySelector('.spot-kicker');
-    if (k) k.textContent = example ? 'Example spot' : 'Your next stop';
     document.getElementById('spot-name').textContent = v.name;
     var st = document.getElementById('spot-street');
     if (v.street) { st.textContent = v.street; st.href = MAPS + encodeURIComponent(v.street + ', Kansas City, MO'); st.hidden = false; }
@@ -663,8 +654,8 @@
     var ig = document.getElementById('spot-ig');
     if (v.insta) { ig.textContent = '@' + v.insta; ig.href = 'https://www.instagram.com/' + v.insta; ig.hidden = false; }
     else ig.hidden = true;
-    // A ride for the long walks: the first partner with a phone number,
-    // as a text rather than a call (client, 3 Oct).
+    // A ride for the long walks: a text to the first partner with a phone
+    // number.
     var ride = document.getElementById('spot-ride');
     var cab = (DATA.partners || []).filter(function (p) { return p && p.phone; })[0];
     var digits = cab ? String(cab.phone).replace(/\D/g, '') : '';

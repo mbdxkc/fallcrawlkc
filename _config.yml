@@ -1,0 +1,6 @@
+# GitHub Pages builds this site with Jekyll. Everything here is served as it
+# is, except what is listed below: maintainer notes and build tools stay in
+# the repo and off the site.
+exclude:
+  - README.md
+  - tools/

@@ -19,8 +19,6 @@ To undo: **Commits** at the top of this page, find yours, **...**, **Revert**.
 # Notes for whoever maintains this
 
 Single-page event site. Static HTML, hand-rolled CSS, vanilla JS. One build step: `tools/build.sh` minifies the stylesheet and the page script, then stamps each page's reference to them with `?v=` plus eight hex of the built file's SHA-256, and must run after any edit to either (the data file is never minified or stamped; each page loads it as `data/crawl.js?m=<current minute>` instead, so a client edit reaches every browser within about a minute). GitHub Pages lets a browser reuse a file for 10 minutes, so an unstamped stylesheet can pair new HTML with old CSS; `--check` fails on a stale stamp as well as a stale build.
-**by mediaBrilliance.io**
-
 The long-form date came off the page on 22 September at the client's request; the
 big `10.24.26` carries it now. `data/crawl.js` has a `date` field (added 28 Sep)
 that drives the countdown and the add-to-calendar date, but the `<title>`, meta
@@ -36,18 +34,16 @@ dead anchor behind.
 
 ## Status: live at https://fallcrawlkc.com
 
-Client first look 15 September: positive on the build. The site is still missing
-its venue list and running an unverified Instagram handle, so that covers the
-shape, not the content.
-
-
 Went live 22 September 2026. DNS moved off Squarespace to GitHub Pages
 (`185.199.108-111.153`, `www` CNAMEd to `mbdxkc.github.io`), the `CNAME` file
 went in after the A records, and Let's Encrypt issued the certificate the same
 afternoon. `noindex` and the `robots.txt` disallow came off once the domain
 answered publicly.
 
-Still missing its venue list, so the Spots section is absent by design.
+All 13 spots are listed with address, hours, Instagram and featured brands
+(1 Oct). Specials, entertainment, menus and cover charges are still to come and
+appear on each spot's wheel card as they are added. Crawl Guide and Suggested
+Crawls stay hidden until they have content.
 
 ---
 
@@ -76,7 +72,7 @@ Still missing its venue list, so the Spots section is absent by design.
 │   ├── make-og.py    # builds images/og.png, the 1200x630 share card
 │   ├── make-webp.py  # rebuilds the page images, plus the map and logo srcset widths
 │   ├── make-brands.py # crops the featured-brand logos and builds their WebP
-│   └── build.sh      # minifies style.css and js/crawl.js; --check fails if either .min is stale
+│   └── build.sh      # minifies style.css and js/crawl.js and stamps their ?v=; --check fails if either is stale
 └── images/
     ├── logo.webp     # the lockup, as the page loads it
     ├── icons.webp    # free / 21+ / no wristbands / costumes strip
@@ -87,6 +83,7 @@ Still missing its venue list, so the Spots section is absent by design.
     ├── icons.png     # SOURCE only, nothing links to it
     ├── map.png       # SOURCE only, nothing links to it
     ├── mark.png      # the skeleton lady alone, for a social avatar
+    ├── mb-mark.svg   # studio credit mark, a copy of mbdx/images/mb-mark.svg
     ├── apple-touch-icon.png
     └── favicon-32.png
 ```
@@ -142,8 +139,12 @@ page with js/crawl.min.js blocked and comparing positions.
 
 **Cache lifetime is GitHub Pages', not ours.** Pages serves everything with a
 10-minute `Cache-Control` and the repo cannot change it; Lighthouse flags it on
-every run. The only fix is a CDN or host in front of Pages, which is a hosting
-decision, not a code change.
+every run. Two workarounds keep it from showing stale content (3 Oct): the
+stylesheet and page script carry a content-hash `?v=` from `tools/build.sh`, so a
+changed file is a new URL, and each page requests the data file as
+`data/crawl.js?m=<current minute>`, so an edit reaches every visitor within about
+a minute. Images and fonts still take up to 10 minutes. Anything beyond that
+needs a CDN or host in front of Pages.
 
 **Brand orange is `#C84008`**, sampled from the logo artwork rather than picked. It
 measures **4.19:1 on black**: clears 3:1 for large text, fails 4.5:1 for body copy.
@@ -190,9 +191,9 @@ spec's 1024-byte limit for the charset declaration.
 per tab); a countdown; the big date as the add-to-calendar link, marked with a
 calendar-plus icon (the calendar file, or Google Calendar on Android, which
 cannot open one); the Fall Crawl Roulette wheel, right under the map,
-of live spots, whose card shows drinks, entertainment, menu and cover where known
-and "details drop day-of" otherwise, with 13 made-up example spots while the venue
-list is empty (`showExamples`, off since 28 Sep at Amy's request); the wheel sits
+of live spots, whose card shows the address, hours, Instagram, brands, then
+drinks, entertainment, menu and cover where known and "Details coming soon."
+otherwise, with a text link to EZ Pedicabs for the long walks; the wheel sits
 under the map and shows now (29 Sep, for the weekend launch); a date in
 `wheelFrom` would take it off the page until that day, nav link included; a header scene of ghosts, a goblin and a monster
 (size sets speed, randomised per load), fog thickest behind the title, and the
@@ -237,14 +238,13 @@ fog. The privacy page says so. If it fails, the sky stays clear.
 - [ ] Decide the QR destination. The pedicab promo's QR currently points at
       Instagram, not this site. **Two codes generated 2026-09-22** and verified
       by decoding them back: one to `fallcrawlkc.com`, one to the Instagram
-      profile. The website one is only correct once the domain stops serving
-      Squarespace's "Coming Soon" page
+      profile. Both are usable now that the domain serves the live site
 - [ ] Client asset fix: the pedicab promo reads "WINE & COCKAILS"
 - [x] Gagalin, self-hosted 2 Oct from the designer's free release
 - [x] `Fall Crawl Unoffical Map.png` from the client (received 29 Sep)
-- [x] `showExamples: false`. Amy, 28 Sep: no made-up spots or specials, so
-      nobody is disappointed when the real list lands. The wheel reads
-      "Coming soon" until the first venue is added
+- [x] No made-up spots or specials (Amy, 28 Sep). The 13 example spots and
+      `showExamples` were deleted on 3 Oct once the real list was in, so an
+      invented special can no longer reach the page
 - [x] Trick-or-Treat Routes copy (Amy, 29 Sep). The line under the Instagram
       button is settled as none: the icon in the button carries it (`ig.blurb`
       stays empty). Amy offered a two-sentence version on 1 Oct; still none
@@ -254,9 +254,11 @@ fog. The privacy page says so. If it fails, the sky stays clear.
       confirmed: Beckett's and Grinder's
 - [x] Amy's final map, with The Den (2 Oct)
 
-Page order (29 Sep): hero, What to Expect, map, Fall Crawl Roulette,
-Trick-or-Treat Routes, What's Happening, Play It Safe, Partners, icon strip.
-The menu follows it: Home, Expect, Where, Spin, Spots.
+Page order (3 Oct): hero, What to Expect, map, Fall Crawl Roulette,
+Trick-or-Treat Routes, What's Happening, Play It Safe, the EZ Pedicabs card (no
+heading since 3 Oct), icon strip, footer with the studio credit. Crawl Guide
+and Suggested Crawls sit in the markup and stay hidden while empty. The menu
+follows the page: Home, Expect, Where, Spin, Spots.
 
 ---
 

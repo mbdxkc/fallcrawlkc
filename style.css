@@ -10,7 +10,7 @@
 
     @project      fallcrawlkc
     @file         style.css
-    @version      1.7.5
+    @version      1.7.6
     @updated      2026-10-03
     @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
     @url          https://fallcrawlkc.com/
@@ -42,14 +42,14 @@
                   4.5:1 for body copy, so it is restricted to display type,
                   rules and hover. Body copy uses --ink at roughly 18:1.
                   If the orange ever moves to a paragraph, raise its value.
-    @layout       Breakpoints 480 / 768 / 900. Sizing via clamp().
+    @layout       Breakpoints 480 / 768 / 900 / 1100. Sizing via clamp().
     @a11y         Centred elements carrying letter-spacing also carry a
                   matching text-indent, because tracking appends a trailing
                   space that centring counts in the line box and shifts the
                   glyphs left by half the tracking.
 
   ============================================================================
-    Fall Crawl v1.7.5  ·  style.css  ·  mediaBrilliance
+    Fall Crawl v1.7.6  ·  style.css  ·  mediaBrilliance
   ============================================================================
 */
 
@@ -659,7 +659,6 @@ a.partner-name { display: inline-block; text-decoration: none; }
 .bat-membrane { fill: #070506; stroke: var(--orange); stroke-width: .7; stroke-linejoin: round; }
 .bat-bone { fill: none; stroke: var(--orange); stroke-opacity: .7; stroke-width: .55; stroke-linecap: round; }
 .bat-body { fill: #070506; stroke: var(--orange); stroke-width: .7; stroke-linejoin: round; }
-.bat-eye { fill: #f8f8f8; }
 .bat-far { opacity: .8; }
 
 /* The ravens: one full-window canvas, drawn in js/crawl.js, present only

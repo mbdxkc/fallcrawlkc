@@ -1,3 +1,4 @@
-# macOS writes these into every folder it opens. Nothing here is built, so
-# this file exists for that one reason.
+# macOS writes these into every folder it opens. The built files
+# (style.min.css, js/crawl.min.js) are committed on purpose: GitHub Pages
+# serves the repo as it is, with no build step of its own.
 .DS_Store

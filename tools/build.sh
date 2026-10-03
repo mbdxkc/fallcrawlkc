@@ -7,7 +7,7 @@
 # ============================================================================
 #   @project      fallcrawlkc
 #   @file         tools/build.sh
-#   @updated      2026-09-29
+#   @updated      2026-10-03
 #   @author       Valdez Campos <dez@mediabrilliance.io>
 #   @studio       mediaBrilliance - https://www.mediabrilliance.io
 #

@@ -13,7 +13,7 @@
  *
  *  To undo anything: Commits, find yours, "..." on the right, Revert.
  *
- *  Adding the bars? That is "Participating spots", near the bottom.
+ *  The bars are under "Participating spots", near the bottom.
  */
 
 window.FALL_CRAWL = {
@@ -122,7 +122,7 @@ window.FALL_CRAWL = {
     //   doing: "Spooky cocktail menu", drinks: "$8 spiced old fashioneds",
     //   entertainment: "DJ from 9 p.m.", menu: "", cover: "No cover", live: true },
 
-    // The 13, A to Z (29 Sep). Hours, Instagram and brands from Amy, 1 Oct.
+    // The 13 participating spots, A to Z.
     { name: "Beckett's",                street: "1701 McGee St",    hours: "11 a.m. to 1:30 a.m.", insta: "beckettskcmo",
       brands: ["Ole Smoky", "High Noon", "Lucky One"],
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
@@ -164,29 +164,6 @@ window.FALL_CRAWL = {
       doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
   ],
 
-  /* ---- Wheel preview ------------------------------------------------
-     Made-up spots so the wheel can be tried before the real list exists.
-     They only appear while "venues" above is empty, are marked "Example" on
-     the card, and never show in the spots list. Set to false to turn off.  */
-
-  showExamples: false,
-
-  examples: [
-    { name: "The Hollow Tap",   street: "1601 Grand Blvd", drinks: "$6 black-cherry sours",       entertainment: "Costume contest at 10 p.m.", cover: "No cover" },
-    { name: "Bone Dry Bar",     street: "1614 Walnut St",  drinks: "Smoked old fashioned, $9",   menu: "Graveyard nachos",           cover: "$5 after 9 p.m." },
-    { name: "Crypt & Keg",      street: "1700 Grand Blvd", drinks: "Pumpkin ale on tap",          entertainment: "Live punk trio" },
-    { name: "Midnight Mortuary",street: "1722 McGee St",   drinks: "Blood-orange margaritas",     entertainment: "Tarot readings",           cover: "No cover" },
-    { name: "Wicked Pour",      street: "1805 Oak St",     drinks: "$7 witch's brew shots" },
-    { name: "The Screaming Pint",street: "1812 Grand Blvd",entertainment: "Horror-movie karaoke",     cover: "$10 after 9 p.m." },
-    { name: "Candlewax Lounge", street: "1820 Walnut St",  drinks: "Candy-corn espresso martini", menu: "Late-night churros" },
-    { name: "Ghoul Hall",       street: "1901 McGee St",   entertainment: "DJ from 9 p.m.",          cover: "$5" },
-    { name: "Haunt & Hops",     street: "1906 Oak St" },
-    { name: "Skeleton Key",     street: "1615 Locust St",  drinks: "Mezcal \"bone marrow\" shot", entertainment: "Speakeasy password at the door" },
-    { name: "Coffin Club",      street: "1733 Grand Blvd", drinks: "Cider on draft",              menu: "Coffin-shaped pizza slices", cover: "No cover" },
-    { name: "Poltergeist Pub",  street: "1840 McGee St",   entertainment: "Ghost-story open mic" },
-    { name: "The Last Rites",   street: "1918 Walnut St",  drinks: "$8 absinthe drip",            cover: "$10" },
-  ],
-
   /* ---- Suggested crawls ----------------------------------------------
      Optional routes, not official. Hidden until the // come off.         */
 
@@ -197,8 +174,10 @@ window.FALL_CRAWL = {
   ],
 
   /* ---- Partners -------------------------------------------------------
-       url     full address starting https://. "" leaves the name unlinked
-       phone   any 10 digit number. Dashes and brackets are fine
+       url     full address starting https://. Links the name and shows
+               the address as its own link. "" leaves both off
+       phone   any 10 digit number. Dashes and brackets are fine. Tapping
+               it opens a text message, here and on the wheel's card
        insta   handle only, no @. "" if they have none                    */
 
   partners: [
