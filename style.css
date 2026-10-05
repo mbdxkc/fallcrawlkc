@@ -589,6 +589,8 @@ a.partner-name { display: inline-block; text-decoration: none; }
   transition: opacity 2s ease;
 }
 .moon svg { display: block; width: 100%; height: 100%; }
+/* Eased to each minute's position over the minute, so it moves at the real moon's pace. */
+.moon.is-gliding { transition: opacity 2s ease, left 60s linear, top 60s linear; }
 .fog-bank.is-thick { opacity: .8; }
 
 /* Fog across the whole bar, thickest behind the title and a light haze
@@ -666,7 +668,8 @@ a.partner-name { display: inline-block; text-decoration: none; }
 .ravens { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; }
 
 /* ---------- the starfield ----------
-   Drawn once in js/crawl.js, fixed behind everything. z-index -1 paints it
+   The real sky over Kansas City, drawn in js/crawl.js each minute and fixed
+   behind everything. z-index -1 paints it
    above the page's black (which belongs to the canvas root) and under all
    content. Faint on purpose, like looking up from downtown Kansas City:
    stars top out at .28 opacity and 1.25px, the twinkles at .3. */
@@ -889,4 +892,5 @@ body::after {
   .ghost-run, .bat, .ravens { display: none; }
   .fog-bank i { animation: none; opacity: .7; }
   .stars-twinkle i { animation: none; opacity: .18; }
+  .moon.is-gliding { transition: opacity 2s ease; }
 }

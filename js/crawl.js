@@ -10,8 +10,8 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.7.6
- *   @updated      2026-10-03
+ *   @version      1.8.0
+ *   @updated      2026-10-05
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
  *   @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -948,9 +948,13 @@
       moon.style.opacity = (0.95 * dim).toFixed(2);
       moon.style.setProperty('--glow', (0.28 * m.lit * dim).toFixed(2));
     }
-    place();
-    setInterval(place, 5 * 60000);
-    window.addEventListener('resize', place);
+    // The moon glides: each minute it is placed where it is now and eases
+    // there over the next minute, so it crosses the bar at its real pace
+    // with no jumps. A resize places it at once.
+    function jump() { moon.classList.remove('is-gliding'); place(); void moon.offsetWidth; moon.classList.add('is-gliding'); }
+    jump();
+    setInterval(place, 60000);
+    window.addEventListener('resize', jump);
     weather(function (w) {
       wx = w;
       if (w && w.code != null) {
@@ -1230,59 +1234,67 @@
     next(true);
   }
 
-  /* The starfield behind every page: one canvas fixed to the window, drawn
-     once and redrawn only when the window's width or full height changes.
-     Stars are kept as fractions of the window, so a redraw repaints the same
-     sky rather than a new one. 100lvh keeps the phone URL bar showing and
-     hiding from resizing it. Five stars twinkle in CSS. */
+  /* ---- the starfield: the real sky over Kansas City ------------------------
+     STARS holds every star of magnitude 3.5 and brighter, about what a
+     downtown sky lets through (d3-celestial's catalog, after Hipparcos), as
+     [right ascension, declination, magnitude, 1 if orange-red], brightest
+     first. The window is the southern sky as someone facing south sees it:
+     east at the left edge, west at the right (the same mapping as the moon
+     in the header), the horizon at the bottom and 75 degrees up at the top.
+     One canvas fixed behind every page, redrawn each minute because the sky
+     turns a degree every four. Brightness follows magnitude and stays faint;
+     in daylight the stars keep their places at a third of their strength.
+     The five brightest in view twinkle in CSS. */
+  var STARS = [[101.29,-16.72,-1.4],[95.99,-52.70,-0.6],[213.92,19.18,-0.1,1],[219.90,-60.83,-0.0],[279.23,38.78,0.0],[79.17,46.00,0.1],[78.63,-8.20,0.2],[114.83,5.22,0.4],[24.43,-57.24,0.5],[88.79,7.41,0.5,1],[210.96,-60.37,0.6],[297.70,8.87,0.8],[186.65,-63.10,0.8],[68.98,16.51,0.9,1],[201.30,-11.16,1.0],[247.35,-26.43,1.1,1],[116.33,28.03,1.2],[344.41,-29.62,1.2],[191.93,-59.69,1.2],[310.36,45.28,1.2],[219.90,-60.84,1.4],[152.09,11.97,1.4],[104.66,-28.97,1.5],[113.65,31.89,1.6],[187.79,-57.11,1.6,1],[263.40,-37.10,1.6],[81.28,6.35,1.6],[81.57,28.61,1.6],[138.30,-69.72,1.7],[84.05,-1.20,1.7],[332.06,-46.96,1.7],[85.19,-1.94,1.7],[122.38,-47.34,1.8],[193.51,55.96,1.8],[51.08,49.86,1.8],[276.04,-34.38,1.8],[165.93,61.75,1.8,1],[107.10,-26.39,1.8],[206.89,49.31,1.9],[125.63,-59.51,1.9,1],[264.33,-43.00,1.9],[89.88,44.95,1.9],[252.17,-69.03,1.9,1],[99.43,16.40,1.9],[131.18,-54.71,1.9],[306.41,-56.74,1.9],[37.95,89.26,2.0],[95.67,-17.96,2.0],[141.90,-8.66,2.0,1],[31.79,23.46,2.0,1],[154.99,19.84,2.0,1],[10.90,-17.99,2.0,1],[283.82,-26.30,2.0],[211.67,-36.37,2.1,1],[2.10,29.09,2.1],[17.43,35.62,2.1,1],[86.94,-9.67,2.1],[222.68,74.16,2.1,1],[340.67,-46.88,2.1,1],[263.73,12.56,2.1],[47.04,40.96,2.1],[30.97,42.33,2.1,1],[177.26,14.57,2.1],[14.18,60.72,2.1],[190.38,-48.96,2.2],[120.90,-40.00,2.2],[139.27,-59.28,2.2],[233.67,26.71,2.2],[137.00,-43.43,2.2,1],[200.98,54.93,2.2],[305.56,40.26,2.2],[10.13,56.54,2.2,1],[269.15,51.49,2.2,1],[83.00,-0.30,2.2],[2.29,59.15,2.3],[204.97,-53.47,2.3],[240.08,-22.62,2.3],[252.54,-34.29,2.3,1],[220.48,-47.39,2.3],[218.88,-42.16,2.3],[165.46,56.38,2.3],[221.25,27.07,2.4],[326.05,9.88,2.4,1],[265.62,-39.03,2.4],[6.57,-42.31,2.4,1],[178.46,53.69,2.4],[257.59,-15.72,2.4],[345.94,28.08,2.4,1],[111.02,-29.30,2.5],[319.64,62.59,2.5],[140.53,-55.01,2.5],[311.55,33.97,2.5,1],[346.19,15.21,2.5],[45.57,4.09,2.5,1],[249.29,-10.57,2.5],[208.88,-47.29,2.5],[168.53,20.52,2.6],[241.36,-19.81,2.6],[83.18,-17.82,2.6],[182.09,-50.72,2.6],[183.95,-17.54,2.6],[285.65,-29.88,2.6],[229.25,-9.38,2.6],[236.07,6.43,2.6,1],[28.66,20.81,2.6],[84.91,-34.07,2.6],[89.93,37.21,2.6],[188.60,-23.40,2.6],[21.45,60.24,2.7],[208.67,18.40,2.7],[224.63,-43.13,2.7],[74.25,33.17,2.7,1],[161.69,-49.42,2.7],[189.30,-69.14,2.7],[262.69,-37.30,2.7],[109.29,-37.10,2.7,1],[275.25,-29.83,2.7,1],[296.56,10.61,2.7,1],[243.59,-3.69,2.7,1],[246.00,61.51,2.7],[160.74,-64.39,2.7],[190.42,-1.45,2.7],[83.86,-5.91,2.8],[200.15,-36.71,2.8],[222.72,-16.04,2.8],[265.87,4.57,2.8,1],[76.96,-5.09,2.8],[247.56,21.49,2.8],[258.66,14.39,2.8,1],[183.79,-58.75,2.8],[262.61,52.30,2.8],[233.79,-41.17,2.8],[82.06,-20.76,2.8],[250.32,31.60,2.8],[6.44,-77.25,2.8],[248.97,-28.22,2.8],[276.99,-25.42,2.8,1],[3.31,15.18,2.8],[121.89,-24.30,2.8],[238.79,-63.43,2.8],[58.53,31.88,2.8],[261.32,-55.53,2.8,1],[262.96,-49.88,2.8],[56.87,24.11,2.9],[195.54,10.96,2.9],[326.76,-16.13,2.9],[29.69,-61.57,2.9],[296.24,45.13,2.9],[95.74,22.51,2.9,1],[229.73,-68.68,2.9],[334.63,-60.26,2.9,1],[44.57,-40.30,2.9],[287.44,-21.02,2.9],[111.79,8.29,2.9],[194.01,38.32,2.9],[239.71,-26.11,2.9],[59.46,40.01,2.9],[245.30,-25.59,2.9],[322.89,-5.57,2.9],[46.20,53.51,2.9],[146.78,-65.07,2.9],[340.75,30.22,2.9],[102.48,-50.61,2.9,1],[187.47,-16.52,2.9],[331.45,-0.32,3.0],[59.51,-13.51,3.0,1],[84.41,21.14,3.0],[146.46,23.77,3.0],[271.45,-30.42,3.0],[199.73,-23.17,3.0],[266.90,-40.13,3.0],[286.35,13.86,3.0],[32.39,34.99,3.0],[167.42,44.50,3.0,1],[230.18,71.83,3.0],[252.97,-38.05,3.0],[328.48,-37.36,3.0],[55.73,47.79,3.0],[95.08,-30.06,3.0],[105.76,-23.83,3.0],[182.53,-22.62,3.0,1],[75.49,43.82,3.0],[191.57,-68.11,3.0],[218.02,38.31,3.0],[292.68,27.96,3.0,1],[305.25,-14.78,3.0],[100.98,25.13,3.1,1],[155.58,41.50,3.1,1],[288.14,67.66,3.1],[274.41,-36.76,3.1,1],[133.85,5.95,3.1],[162.41,-16.19,3.1,1],[173.95,-63.02,3.1],[309.39,-47.29,3.1],[87.74,-35.77,3.1,1],[134.80,48.04,3.1],[254.66,-55.99,3.1,1],[258.76,24.84,3.1],[224.79,-42.10,3.1],[140.26,34.39,3.1,1],[142.81,-57.03,3.2,1],[258.76,36.81,3.2,1],[99.44,-43.20,3.2],[143.21,51.68,3.2],[257.20,65.71,3.2],[281.41,-26.99,3.2],[76.63,41.23,3.2],[220.63,-64.98,3.2],[72.46,6.96,3.2],[76.37,-22.37,3.2,1],[254.42,9.38,3.2,1],[267.46,-37.04,3.2,1],[318.23,30.23,3.2],[354.84,77.63,3.2,1],[230.34,-40.65,3.2],[244.58,-4.69,3.2],[275.33,-2.90,3.2],[322.17,70.56,3.2],[102.05,-61.94,3.2],[302.83,-0.82,3.2],[112.31,-43.30,3.2,1],[211.59,-26.68,3.2,1],[226.02,-25.28,3.2,1],[284.74,32.69,3.2],[56.81,-74.24,3.3,1],[9.83,30.86,3.3,1],[260.50,-25.00,3.3],[343.66,-15.82,3.3],[78.23,-16.21,3.3],[153.43,-70.04,3.3],[231.23,58.97,3.3,1],[68.50,-55.05,3.3],[158.01,-61.69,3.3],[93.72,22.51,3.3,1],[261.35,-56.38,3.3],[16.52,-46.72,3.3],[46.29,38.84,3.3,1],[183.86,57.03,3.3],[258.04,-43.24,3.3],[269.76,-9.77,3.3],[286.74,-27.67,3.3,1],[63.61,-62.47,3.3],[168.56,15.43,3.3],[117.32,-24.86,3.3,1],[28.60,63.67,3.4],[81.12,-2.40,3.4],[101.32,12.90,3.4],[127.57,60.72,3.4],[291.37,3.11,3.4],[230.67,-44.69,3.4],[131.69,6.42,3.4],[203.67,-0.60,3.4],[83.78,9.93,3.4],[154.27,-61.33,3.4,1],[193.90,3.40,3.4,1],[332.71,58.20,3.4,1],[67.17,15.87,3.4],[22.09,-43.32,3.4,1],[60.17,12.49,3.4],[207.38,-41.69,3.4],[228.07,-52.10,3.4],[311.32,61.84,3.4],[340.37,10.83,3.4],[28.27,29.58,3.4],[240.03,-38.40,3.4],[266.61,27.72,3.4],[311.24,-66.20,3.4],[137.74,-58.97,3.4],[154.17,23.42,3.4],[286.56,-4.88,3.4],[154.27,42.91,3.5],[12.28,57.82,3.5],[17.15,-10.18,3.5,1],[119.19,-52.98,3.5],[228.88,33.31,3.5],[40.83,3.24,3.5],[207.40,-42.47,3.5],[151.83,16.76,3.5],[250.72,38.92,3.5],[26.02,-15.94,3.5],[105.43,-27.93,3.5,1],[169.62,33.09,3.5,1],[225.49,40.39,3.5],[276.74,-45.97,3.5],[342.14,-51.32,3.5],[102.46,-32.51,3.5],[110.03,21.98,3.5],[342.42,66.20,3.5,1]];
+
+  // Altitude and compass bearing, in degrees, for a right ascension and
+  // declination (radians) at day number d.
+  function altBearing(ra, dc, d) {
+    var phi = RAD * KC.lat, H = RAD * (280.16 + 360.9856235 * d) - RAD * -KC.lng - ra;
+    var alt = Math.asin(Math.sin(phi) * Math.sin(dc) + Math.cos(phi) * Math.cos(dc) * Math.cos(H));
+    var az = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(phi) - Math.tan(dc) * Math.cos(phi));
+    return { alt: alt / RAD, bearing: (az / RAD + 180 + 360) % 360 };
+  }
+
   function stars() {
     if (document.querySelector('.stars')) return;
     var cv = document.createElement('canvas');
     cv.className = 'stars';
     cv.setAttribute('aria-hidden', 'true');
     document.body.insertBefore(cv, document.body.firstChild);
-
-    var sky = [], w = 0, h = 0;
-    function draw() {
-      var r = cv.getBoundingClientRect();
-      if (Math.round(r.width) === w && Math.round(r.height) === h) return;
-      w = Math.round(r.width); h = Math.round(r.height);
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      cv.width = w * dpr; cv.height = h * dpr;
-      // A downtown sky: light pollution washes out all but a scatter of
-      // stars. One per ~9,000 square px, so a phone and a desktop read
-      // equally sparse.
-      var want = Math.round(w * h / 9000);
-      while (sky.length < want) {
-        var a = Math.pow(Math.random(), 2.2);           // most faint, a few bright
-        sky.push({ x: Math.random(), y: Math.random(),
-                   s: 0.35 + a * 0.9,                    // radius in css px
-                   o: 0.05 + a * 0.23,                   // never past .28
-                   warm: Math.random() < 0.15 });
-      }
-      var g = cv.getContext('2d');
-      g.setTransform(dpr, 0, 0, dpr, 0, 0);
-      g.clearRect(0, 0, w, h);
-      for (var i = 0; i < want; i++) {
-        var st = sky[i];
-        g.fillStyle = (st.warm ? 'rgba(255,228,190,' : 'rgba(222,230,255,') + st.o.toFixed(2) + ')';
-        g.beginPath(); g.arc(st.x * w, st.y * h, st.s, 0, 6.2832); g.fill();
-      }
-    }
-    draw();
-    var t;
-    window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(draw, 200); });
-
     var tw = document.createElement('div');
     tw.className = 'stars-twinkle';
     tw.setAttribute('aria-hidden', 'true');
-    var html = '';
-    for (var k = 0; k < 5; k++) {
-      html += '<i style="left:' + rnd(2, 98).toFixed(1) + '%;top:' + rnd(8, 98).toFixed(1) +
-        '%;--tw:' + rnd(3, 7).toFixed(1) + 's;--twd:-' + rnd(0, 7).toFixed(1) + 's"></i>';
-    }
-    tw.innerHTML = html;
     document.body.insertBefore(tw, cv.nextSibling);
+
+    function draw() {
+      var r = cv.getBoundingClientRect(), w = Math.round(r.width), h = Math.round(r.height);
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      cv.width = w * dpr; cv.height = h * dpr;
+      var g = cv.getContext('2d');
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      g.clearRect(0, 0, w, h);
+      var day = toDays(new Date()), sun = sunCoords(day);
+      var dim = altBearing(sun.ra, sun.dec, day).alt > -6 ? 0.35 : 1;   // brighter than civil twilight
+      var shown = [];
+      for (var i = 0; i < STARS.length; i++) {
+        var st = STARS[i], p = altBearing(RAD * st[0], RAD * st[1], day);
+        if (p.alt < 0 || p.alt > 75 || p.bearing < 60 || p.bearing > 300) continue;
+        var x = (p.bearing - 60) / 240, y = 1 - p.alt / 75, k = Math.max(0, 3.5 - st[2]);
+        var o = Math.min(0.5, 0.1 + k * 0.09) * dim;
+        g.fillStyle = (st[3] ? 'rgba(255,214,170,' : 'rgba(222,230,255,') + o.toFixed(2) + ')';
+        g.beginPath(); g.arc(x * w, y * h, Math.min(1.7, 0.4 + k * 0.3), 0, 6.2832); g.fill();
+        if (shown.length < 5) shown.push([x, y]);
+      }
+      tw.innerHTML = shown.map(function (q, n) {
+        return '<i style="left:' + (q[0] * 100).toFixed(2) + '%;top:' + (q[1] * 100).toFixed(2) +
+          '%;--tw:' + (3.5 + n * 0.8).toFixed(1) + 's;--twd:-' + (n * 1.3).toFixed(1) + 's"></i>';
+      }).join('');
+    }
+    draw();
+    setInterval(draw, 60000);
+    var t;
+    window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(draw, 200); });
   }
 
   function init() {

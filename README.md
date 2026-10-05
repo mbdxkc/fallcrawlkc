@@ -197,12 +197,16 @@ otherwise, with a text link to EZ Pedicabs for the long walks; the wheel sits
 under the map and shows now (29 Sep, for the weekend launch); a date in
 `wheelFrom` would take it off the page until that day, nav link included; a header scene of ghosts, a goblin and a monster
 (size sets speed, randomised per load), fog thickest behind the title, and the
-real moon for Kansas City (position and phase computed in the browser); a bat
+real moon for Kansas City (position and phase computed in the browser, gliding
+along its real path at the moon's own pace); a bat
 drawn per frame from a 3D wing model about once a minute; and a flock of 1,000
 ravens on one canvas, first within a minute of arriving, then at random at least
-five minutes apart; behind every page, a sparse, faint starfield (one canvas,
-drawn once, five twinkling stars) under a streetlight haze along the bottom of
-the window, the sky as it looks from downtown. The header reads "East Crossroads
+five minutes apart; behind every page, the real sky over Kansas City (5 Oct):
+the 288 stars of magnitude 3.5 and brighter placed for the visitor's current
+time, the southern sky with east at the left edge, redrawn each minute as it
+turns, the five brightest in view twinkling, all under a streetlight haze along
+the bottom of the window. The star list is built into `js/crawl.js`; nothing is
+fetched. The header reads "East Crossroads
 Fall Crawl - KCMO" (29 Sep), and "Kansas City" sits between the lockup and the
 date in wide white caps, flanked by the lockup's orange sparkles. The nav stays
 behind the menu button below 1100px, where five links would run into the title.
