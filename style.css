@@ -10,7 +10,7 @@
 
     @project      fallcrawlkc
     @file         style.css
-    @version      1.9.0
+    @version      1.9.1
     @updated      2026-10-10
     @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
     @url          https://fallcrawlkc.com/
@@ -49,7 +49,7 @@
                   glyphs left by half the tracking.
 
   ============================================================================
-    Fall Crawl v1.9.0  ·  style.css  ·  mediaBrilliance
+    Fall Crawl v1.9.1  ·  style.css  ·  mediaBrilliance
   ============================================================================
 */
 
@@ -438,13 +438,31 @@ a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
   margin: clamp(1.5rem, 6vw, 2.25rem) auto 0;
 }
 
-/* The sentence under the Instagram button. */
+/* The sentence over the Instagram button. It takes the button's gap from
+   the pitch, and the button sits close under it, so the pair adds one line
+   to the hero rather than a line and a gap. */
 .cta-note {
-  margin: .9rem auto 0;
+  margin: clamp(1.5rem, 6vw, 2.25rem) auto 0;
   max-width: 32rem;
   color: var(--muted);
   font-size: .95rem;
   line-height: 1.5;
+}
+.cta-note:not(:empty) + .cta-ig { margin-top: .6rem; }
+
+/* Short desktop windows: a laptop browser leaves about 780px of page, and
+   the hero sized by width alone ran its Instagram button 80px under the fold
+   there. Each cap is a min() against the old size, so it takes over only
+   when the height is the tighter limit: windows under about 1130px tall get
+   a smaller logo, date and gaps, and taller ones render as before. Measured
+   2026-10-10 down to 1024x700. */
+@media (min-width: 768px) {
+  .hero      { padding-top: min(3rem, 3svh); }
+  .logo      { width: min(100%, 34rem, 48svh); margin-bottom: min(1.75rem, 2.5svh); }
+  .city      { font-size: min(2.5rem, 5svh); }
+  .date-big  { font-size: min(5.5rem, 10svh); }
+  .pitch     { margin-top: min(2.25rem, 3svh); }
+  .cta-note  { margin-top: min(2.25rem, 3svh); }
 }
 
 /* Body copy inside a band, measure-limited like .lede so paragraphs do not

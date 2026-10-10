@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.9.0
+ *   @version      1.9.1
  *   @updated      2026-10-10
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -49,7 +49,7 @@
  *                 only this script's own SVG.
  *
  * ============================================================================
- *   Fall Crawl v1.9.0  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.9.1  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
