@@ -32,7 +32,7 @@ window.FALL_CRAWL = {
 
   ig: {
     button: "",                      // a word before the @handle, e.g. "Follow". Empty shows the handle alone
-    blurb:  "",                      // the line under the button. Empty hides it
+    blurb:  "Tag us! We want to see where you end up.",   // the line under the button. Empty hides it
   },
 
   /* ---- The headline over the map ------------------------------------- */
@@ -100,88 +100,173 @@ window.FALL_CRAWL = {
   ],
 
   /* ---- Participating spots -------------------------------------------
-     Every spot here also goes on the Fall Crawl Roulette wheel. Anything
-     left as "" is simply left off, and a spot with no details yet says
-     "Details coming soon." Fill in what you know, add the rest later.
+     Every spot here shows in the Fall Crawl Guide and goes on the Fall
+     Crawl Roulette wheel, in this order. Anything left as "" or [] is
+     simply left off.
 
+       name          the business, e.g. "Beckett's"
+       collab        the guide's heading, e.g. "Beckett's X Ole Smoky".
+                     "" uses the name
+       event         the night's event name, under the heading and on the
+                     wheel. "" puts the business name on the wheel
        street        no city. "Kansas City, MO" is added for the map link
        hours         e.g. "4 p.m. to 1:30 a.m.", shown under the address
        insta         handle only, no @. "" if they have none
        brands        featured brands, e.g. ["Ole Smoky", "High Noon"]. A
                      name with a logo on file shows the logo; any other
                      name shows as text
-       doing         one line for the list, e.g. "Spooky cocktail menu"
-       drinks        drink specials
-       entertainment DJs, bands, costume contests, anything happening
-       menu          feature menu or food
-       cover         e.g. "$10 after 9 p.m." or "No cover"
+       about         the write-up. One line per paragraph, in quotes, each
+                     followed by a comma
+       lists         titled lists, e.g. featured drinks:
+                       { title: "Featured Drinks", items: ["One", "Two"] },
+       prize         lines shown only when the wheel lands on this spot
        live          false hides a spot without deleting it              */
 
   venues: [
-    // { name: "Example Bar", street: "1234 Grand Blvd", insta: "examplebar",
-    //   doing: "Spooky cocktail menu", drinks: "$8 spiced old fashioneds",
-    //   entertainment: "DJ from 9 p.m.", menu: "", cover: "No cover", live: true },
-
-    // The 13 participating spots, A to Z.
-    { name: "Beckett's",                street: "1701 McGee St",    hours: "11 a.m. to 1:30 a.m.", insta: "beckettskcmo",
+    { name: "Beckett's", street: "1701 McGee St", hours: "11 a.m. to 1:30 a.m.", insta: "beckettskcmo",
+      collab: "Beckett's X Lucky One X Ole Smoky",
+      event:  "The Haunted Tailgate",
       brands: ["Ole Smoky", "High Noon", "Lucky One"],
-      doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "The Belfry Collective",    street: "1532 Grand Blvd",  hours: "4 p.m. to midnight", insta: "thebelfrycollective",
-      brands: ["Fireball", "Four Roses"],
-      doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Chartreuse Saloon",        street: "1627 Oak St",      hours: "4 p.m. to 1:30 a.m.", insta: "chartreusesaloonkc",
+      about: [
+        "Game day gets a spooky twist at Beckett's! Test your arm with Ole Smoky's football toss from 1-4pm, grab a caramel apple slushie, and sip on Lucky Ones while you get into the Halloween spirit.",
+      ],
+      lists: [
+        { title: "Featured Drinks", items: ["Nut Up or Shut Up Shots", "Caramel Apple Slushies"] },
+      ] },
+
+    { name: "Chartreuse Saloon", street: "1627 Oak St", hours: "4 p.m. to 1:30 a.m.", insta: "chartreusesaloonkc",
+      collab: "Chartreuse Saloon X Old Forester",
+      event:  "Your Fortune Awaits",
       brands: ["Old Forester 86"],
-      doing: "Your Fortune Awaits",
-      drinks: "Fall Old Fashioned, Lions Tale and Vampire Juice",
-      entertainment: "Your Old Forester cocktail comes with an offering. Make the offering and your fortune awaits.",
-      menu: "", cover: "" },
-    { name: "Cigar Box",                street: "1519 Grand Blvd",  hours: "5 p.m. to 3 a.m.", insta: "thecigarbox",
+      about: [
+        "Your Old Forester cocktail comes with an offering. Make the offering and your fortune awaits…",
+      ],
+      lists: [
+        { title: "Featured Cocktails", items: ["Fall Old Fashioned", "Lion’s Tale", "Vampire Juice"] },
+      ] },
+
+    { name: "Cigar Box", street: "1519 Grand Blvd", hours: "5 p.m. to 3 a.m.", insta: "thecigarbox",
+      collab: "Cigar Box X Tito’s Handmade Vodka",
+      event:  "",
       brands: ["Tito's Handmade Vodka"],
-      doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "The Den",                  street: "1830 Walnut St",   hours: "6 p.m. to 1 a.m.", insta: "thefoldkcmo",
-      brands: ["Crystal Head Vodka"],
-      doing: "Den of the Dead",
-      drinks: "A one-night-only spooky cocktail menu worth losing your head over",
-      entertainment: "", menu: "", cover: "" },
-    { name: "Grinder's",                 street: "417 E 18th St",    hours: "11 a.m. to midnight", insta: "grinderskc",
+      about: ["More coming soon…"],
+      lists: [] },
+
+    { name: "Grinder's", street: "417 E 18th St", hours: "11 a.m. to midnight", insta: "grinderskc",
+      collab: "Grinder’s X Wild Turkey American Honey",
+      event:  "",
       brands: ["Wild Turkey American Honey"],
-      doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "International Tap House",  street: "403 E 18th St",    hours: "11 a.m. to 1 a.m.", insta: "itapxroads",
+      about: ["More coming soon…"],
+      lists: [] },
+
+    { name: "International Tap House", street: "403 E 18th St", hours: "11 a.m. to 1 a.m.", insta: "itapxroads",
+      collab: "International Tap House X Chica-Chida",
+      event:  "",
       brands: ["Chica Chida"],
-      doing: "", drinks: "", entertainment: "", menu: "", cover: "" },
-    { name: "Jade Jaguar",              street: "1800 Walnut St",   hours: "5 p.m. to 1:30 a.m.", insta: "jadejaguarkc",
+      about: ["More coming soon…"],
+      lists: [] },
+
+    { name: "Jade Jaguar", street: "1800 Walnut St", hours: "5 p.m. to 1:30 a.m.", insta: "jadejaguarkc",
+      collab: "Jade Jaguar X Rosaluna Mezcal",
+      event:  "Mezcal is Magic",
       brands: ["Rosaluna Mezcal"],
-      doing: "Mezcal is Magic",
-      drinks: "A one-night-only Rosaluna Mezcal cocktail menu. Follow the moon to discover the magic of mezcal",
-      entertainment: "Giveaways and raffles", menu: "", cover: "" },
-    { name: "King G",                   street: "500 E 18th St",    hours: "11 a.m. to 1:30 a.m.", insta: "king.g.kc",
-      brands: ["Campari"],
-      doing: "The Midnight Matinee",
-      drinks: "Boulevardier",
-      entertainment: "A little spooky, a little boozy and plenty of Halloween classics", menu: "", cover: "" },
-    { name: "MOD Gallery",              street: "1809 McGee St",    hours: "7 p.m. to 1 a.m.", insta: "mod.gallery.space2",
+      about: [
+        "Follow the moon to discover the magic of mezcal featuring a one-night-only cocktail menu featuring Rosaluna Mezcal.",
+        "Giveaways and Raffles!",
+      ],
+      lists: [
+        { title: "Featured Cocktails", items: ["Coming soon…"] },
+      ] },
+
+    { name: "King G", street: "500 E 18th St", hours: "11 a.m. to 1:30 a.m.", insta: "king.g.kc",
+      collab: "King G X Wild Turkey",
+      event:  "The Midnight Matinee",
+      brands: ["Wild Turkey"],
+      about: [
+        "A little spooky, a little boozy, and plenty of Halloween classics.",
+      ],
+      lists: [
+        { title: "Featured Cocktail", items: ["Boulevardier"] },
+      ] },
+
+    { name: "MOD Gallery", street: "1809 McGee St", hours: "7 p.m. to 1 a.m.", insta: "mod.gallery.space2",
+      collab: "MOD Gallery X Jack Daniel’s",
+      event:  "Late Night Freaks",
       brands: ["Jack Daniel's"],
-      doing: "Late Night Freaks",
-      drinks: "",
-      entertainment: "DJs from 8 p.m.: lotek, clockwerk and j. curtis. Polaroid photos and giveaways 8 to 10 p.m.",
-      menu: "", cover: "$5" },
-    { name: "Ricochet",                 street: "1720 McGee St",    hours: "11 a.m. to 1:30 a.m.", insta: "ricochetkcmo",
+      about: [
+        "DJ’s start at 8pm. lotek. clockwerk. j. curtis. $5 cover. Polaroid photos and giveaways.",
+      ],
+      lists: [
+        { title: "Featured Cocktails", items: ["Coming soon…"] },
+      ] },
+
+    { name: "Ricochet", street: "1720 McGee St", hours: "11 a.m. to 1:30 a.m.", insta: "ricochetkcmo",
+      collab: "Ricochet X High Noon X Espolon",
+      event:  "Play at Your Own Risk",
       brands: ["Espolon", "High Noon", "Lucky One"],
-      doing: "Play at Your Own Risk",
-      drinks: "Peach Cobbler Margarita and Pumpkin Spice shots",
-      entertainment: "High Noon Skee-Ball tournament, 2 to 4 p.m. Highest score wins a prize",
-      menu: "", cover: "" },
-    { name: "Tannin",                   street: "1526 Walnut St",   hours: "4 p.m. to 1:30 a.m.", insta: "tanninkc",
+      about: [
+        "High Noon Skee-Ball Tournament | 2–4 PM",
+        "Think you've got the highest score? Prove it! Top scorer takes home a prize.",
+        "Keep the Games Going with Espolòn!",
+        "Yard games, giveaways, and Halloween cocktails to keep the fun going into the night.",
+      ],
+      lists: [
+        { title: "Featured Cocktails", items: ["Peach Cobbler Margarita", "Pumpkin Spice Shots"] },
+      ] },
+
+    { name: "Tannin", street: "1526 Walnut St", hours: "4 p.m. to 1:30 a.m.", insta: "tanninkc",
+      collab: "Tannin X Justin Winery",
+      event:  "Into the Vines",
       brands: ["Justin Winery"],
-      doing: "Into the Vines",
-      drinks: "A complimentary walk-up guided wine tasting, 5:30 to 7:30 p.m., with Justin Winery's Stephanie Kritchell",
-      entertainment: "", menu: "", cover: "" },
-    { name: "Ted's Taproom",            street: "1829 McGee St",    hours: "5 p.m. to 1 a.m.", insta: "teds_taproom",
+      about: [
+        "A special JUSTIN Winery takeover",
+        "From 5:30–7:30 PM, enjoy a complimentary guided tasting with JUSTIN Winery’s own Stephanie Kritchell and explore a special selection from one of Paso Robles’ most recognized estates.",
+        "Can’t make the guided tasting? The JUSTIN lineup will be available all evening by the taste, flight, glass, and bottle.",
+        "Complimentary guided tasting | 5:30–7:30 PM",
+        "JUSTIN wines available all night",
+      ],
+      lists: [] },
+
+    { name: "Ted's Taproom", street: "1829 McGee St", hours: "5 p.m. to 1 a.m.", insta: "teds_taproom",
+      collab: "Ted’s Taproom X Holladay Bourbon",
+      event:  "The Forbidden Era",
       brands: ["Ben Holladay"],
-      doing: "The Forbidden Era",
-      drinks: "Blood & Smoke and The Black Cat, both made with Holladay Soft Red Wheat bourbon",
-      entertainment: "Slip into the 1920s for live jazz. 8 to 11 p.m.: Danny Jensen Electronic Swing Band. 11 p.m. to 1 a.m.: Tyree The Drummer and Vincent Orsolini Trio. 5 to 7 p.m.: to be announced",
-      menu: "", cover: "$10. Spin Fall Crawl Roulette for a chance at free cover" },
+      about: [
+        "Slip into the 1920’s for Jazz & Bourbon Cocktails. Featuring locally crafted Holladay Bourbon from Weston, Missouri.",
+        "$10 Cover - (Chance to win Free Cover in Fall Crawl Roulette)",
+      ],
+      lists: [
+        { title: "Live Jazz Music", items: [
+            "5pm-7pm TBD",
+            "8pm-11pm Danny Jensen Electronic Swing Band",
+            "11pm-1am Tyree The Drummer & Vincent Orsolini Trio",
+          ] },
+        { title: "Featured Cocktails", items: ["The Black Cat", "Blood & Smoke"] },
+      ],
+      prize: ["YOU WON FREE COVER AT TED’S TAPROOM!", "10.24.26 | SCREENSHOT TO REDEEM"] },
+
+    { name: "The Belfry Collective", street: "1532 Grand Blvd", hours: "4 p.m. to midnight", insta: "thebelfrycollective",
+      collab: "The Belfry X Four Roses X Fireball",
+      event:  "Heaven or Hell",
+      brands: ["Fireball", "Four Roses"],
+      about: [
+        "Ascend into heaven at The Belfry for angelic cocktails, or descend into Ground Control for a Fireball-fueled Disco Inferno. Over-the-top decorations, wicked cocktails, and a little temptation around every corner.",
+      ],
+      lists: [
+        { title: "Drinks in The Belfry", items: ["Oh My Gourd!", "Cinn & Spice", "Send me an Angel Shot"] },
+        { title: "Ground Control Menu", items: ["Type O Negative Sangria", "The Harvest Fireball"] },
+      ] },
+
+    { name: "The Den", street: "1830 Walnut St", hours: "6 p.m. to 1 a.m.", insta: "thefoldkcmo",
+      collab: "The Den X Crystal Head Vodka",
+      event:  "Den of the Dead",
+      brands: ["Crystal Head Vodka"],
+      about: [
+        "Step into The Den for a one-night-only spooky cocktail experience worth losing your head over.",
+      ],
+      lists: [
+        { title: "Featured Cocktails", items: ["Drop Dead Gorgeous", "Blood Money", "Grave Mistake"] },
+      ] },
   ],
 
   /* ---- Suggested crawls ----------------------------------------------

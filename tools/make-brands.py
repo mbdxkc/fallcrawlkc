@@ -77,6 +77,7 @@ BRANDS = {
     "rosaluna":       "Rosaluna Logo.png",
     "titos":          "Tito's Handmade Vodka.png",
     "american-honey": "Wild Turkey American Honey Logo.png",
+    "wild-turkey":    "Wild Turkey Logo.jpg",
 }
 
 

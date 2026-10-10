@@ -129,7 +129,7 @@ does not exist here, so each would have been a request rendering nothing.
 **Nothing moves once the script runs.** Most of the page is written in from the
 data file, so the markup holds it empty and CSS reserves the finished size: the
 date, countdown and Instagram handle their height, the Instagram button its width,
-the desktop header (script-built above 1100px) its 51px, and the What to Expect
+the desktop header (script-built above 1200px) its 51px, and the What to Expect
 list a little under its smallest measured height, which keeps everything below it
 off screen until the cards land. The hours and blurb lines take no space while
 empty. Before this the page scored CLS 0.536 on a phone (29 Sep); after, five live
@@ -191,9 +191,10 @@ spec's 1024-byte limit for the charset declaration.
 per tab); a countdown; the big date as the add-to-calendar link, marked with a
 calendar-plus icon (the calendar file, or Google Calendar on Android, which
 cannot open one); the Fall Crawl Roulette wheel, right under the map,
-of live spots, whose card shows the address, hours, Instagram, brands, then
-drinks, entertainment, menu and cover where known and "Details coming soon."
-otherwise, with a text link to EZ Pedicabs for the long walks; the wheel sits
+of live spots (each labelled with its event name, or the business name until it
+has one), whose card shows the collab heading, event, address, hours, Instagram,
+brands, any prize (Ted's free cover), then the same write-up and lists as the
+Crawl Guide, or "Details coming soon." otherwise, with a text link to EZ Pedicabs for the long walks; the wheel sits
 under the map and shows now (29 Sep, for the weekend launch); a date in
 `wheelFrom` would take it off the page until that day, nav link included; a header scene of ghosts, a goblin and a monster
 (size sets speed, randomised per load), fog thickest behind the title, and the
@@ -209,7 +210,7 @@ the bottom of the window. The star list is built into `js/crawl.js`; nothing is
 fetched. The header reads "East Crossroads
 Fall Crawl - KCMO" (29 Sep), and "Kansas City" sits between the lockup and the
 date in wide white caps, flanked by the lockup's orange sparkles. The nav stays
-behind the menu button below 1100px, where five links would run into the title.
+behind the menu button below 1200px, where five links would run into the title.
 The Instagram button is the icon and handle in a glowing orange ring
 (`.cta-ig`), filling on hover; `ig.button` in the data file can put a word in
 front of the handle. Play It Safe (getting home, ID-recognizable costumes, no
@@ -229,7 +230,7 @@ fog. The privacy page says so. If it fails, the sky stays clear.
       Registered 2026-09-14, nameservers at Squarespace, currently a "Coming Soon" page.
       Held there deliberately until the content is in. Change the Squarespace A records to
       GitHub Pages (185.199.108-111.153) **first**, then add `CNAME` — never the reverse
-- [ ] Venue details in `data/crawl.js`. All 13 have address, hours, Instagram and featured brands (1 Oct); the specials (drinks, entertainment, menu, cover) are still empty, and King G's brand is TBD. The Fold is listed as The Den at its owner's request, and the final map (2 Oct) says so too
+- [ ] Venue details in `data/crawl.js`. All 13 have address, hours, Instagram and featured brands; ten have Amy's full write-ups (10 Oct, entered verbatim as `collab`, `event`, `about` and `lists`). Cigar Box, Grinder's and International Tap House still read "More coming soon" and have no event name. King G is Wild Turkey (10 Oct). The Fold is listed as The Den at its owner's request, and the final map (2 Oct) says so too
 - [ ] Confirm `mod.gallery.space2` exactly as Amy typed it. Ricochet was `ricocherkcmo` as typed and is `ricochetkcmo` (confirmed 3 Oct). Instagram serves the same page for real and made-up handles, so neither can be checked from outside
 - [x] Lucky One logo and a darker Rosaluna badge (2 Oct). Every brand now has a logo; the text chip only appears for a name not in `LOGOS`
 - [x] Replace `images/map.png` with the full map. Done 29 Sep from `Fall Crawl Unoffical Map.png`

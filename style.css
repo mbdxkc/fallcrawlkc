@@ -10,7 +10,7 @@
 
     @project      fallcrawlkc
     @file         style.css
-    @version      1.8.2
+    @version      1.9.0
     @updated      2026-10-10
     @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
     @url          https://fallcrawlkc.com/
@@ -42,14 +42,14 @@
                   4.5:1 for body copy, so it is restricted to display type,
                   rules and hover. Body copy uses --ink at roughly 18:1.
                   If the orange ever moves to a paragraph, raise its value.
-    @layout       Breakpoints 480 / 768 / 900 / 1100. Sizing via clamp().
+    @layout       Breakpoints 480 / 768 / 900 / 1200. Sizing via clamp().
     @a11y         Centred elements carrying letter-spacing also carry a
                   matching text-indent, because tracking appends a trailing
                   space that centring counts in the line box and shifts the
                   glyphs left by half the tracking.
 
   ============================================================================
-    Fall Crawl v1.8.2  ·  style.css  ·  mediaBrilliance
+    Fall Crawl v1.9.0  ·  style.css  ·  mediaBrilliance
   ============================================================================
 */
 
@@ -536,8 +536,13 @@ a.partner-name { display: inline-block; text-decoration: none; }
 .brand-text { padding: 0 .6rem; color: #111; font-size: .8rem; font-weight: 700; letter-spacing: .02em; }
 .spot-brands { margin: .9rem 0 0; }
 .spot-brands .brands { margin: 0; }
-.venue-doing, .route p, .partner p { margin: .5rem 0 0; color: var(--muted); }
-.venue-drinks { margin: .25rem 0 0; color: var(--muted); font-style: italic; }
+.route p, .partner p { margin: .5rem 0 0; color: var(--muted); }
+
+/* A spot's event name sits straight under the heading, above the address. */
+.venue-event { margin: 0 0 .45rem; font-style: italic; font-weight: 700; }
+.venue-about { margin: .55rem 0 0; color: var(--muted); }
+.venue-list-title { margin: .9rem 0 .2rem; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; }
+.venue-items { margin: 0; padding-left: 1.1rem; color: var(--muted); }
 
 .partner-phone {
   display: inline-block;
@@ -761,9 +766,11 @@ body::after {
   text-transform: uppercase; letter-spacing: .02em; font-size: 1.5rem; line-height: 1.1;
 }
 .spot-kicker { margin: 0 0 .25rem; color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .12em; }
-.spot-details { margin: 1rem 0 0; display: grid; grid-template-columns: auto 1fr; gap: .35rem .9rem; }
-.spot-details dt { color: var(--muted); font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; padding-top: .1rem; }
-.spot-details dd { margin: 0; }
+.spot-details { margin: .4rem 0 0; }
+/* A win, shown only when the wheel lands on a spot that offers one. */
+.spot-prize { margin: 1rem 0 0; padding: .75rem .9rem; background: var(--orange); color: #fff; font-weight: 700; text-align: center; border-radius: 6px; }
+.spot-prize p { margin: 0; }
+.spot-prize p + p { margin-top: .3rem; font-size: .85rem; letter-spacing: .06em; }
 .spot-empty { margin: 1rem 0 0; color: var(--muted); font-style: italic; }
 .spot-ride { margin: 1rem 0 0; padding-top: .8rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .92rem; }
 .spot-ride a { color: var(--orange); font-weight: 700; }
@@ -869,12 +876,12 @@ body::after {
 .footer-nav a:focus-visible { color: var(--orange); }
 .footer-nav a[aria-current='page'] { color: var(--ink); }
 
-/* ---------- 1100 ----------
+/* ---------- 1200 ----------
    The nav comes out of the menu button only here. With all five links
-   (Home, Where, Expect, Spots, Spin) it measures about 295px, and at 768px
-   it ran 78px into the centred title. 1100 leaves a 52px gap against the
-   full name; 1024 left 14. Measured 2026-09-29. */
-@media (min-width: 1100px) {
+   (Home, Expect, Where, Spin, Crawl Guide) it ends at 384px, and at 1100px
+   it came within 3px of the centred title. 1200 leaves 53px against the
+   full name. Measured 2026-10-10. */
+@media (min-width: 1200px) {
   /* The nav, title and icons are all written in by the script, and with the
      menu button gone nothing else holds the row open, so the bar started at
      23px and jumped to 51. Reserve the finished height. */

@@ -10,7 +10,7 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.8.2
+ *   @version      1.9.0
  *   @updated      2026-10-10
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
@@ -49,7 +49,7 @@
  *                 only this script's own SVG.
  *
  * ============================================================================
- *   Fall Crawl v1.8.2  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.9.0  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -96,6 +96,7 @@
     'Rosaluna Mezcal':            ['rosaluna',       88, 88],
     "Tito's Handmade Vodka":      ['titos',          87, 88],
     'Wild Turkey American Honey': ['american-honey', 88, 88],
+    'Wild Turkey':                ['wild-turkey',   127, 88],
   };
 
   /** A spot's featured brands as a row of white chips, or null if none. */
@@ -294,7 +295,8 @@
 
     list.forEach(function (v) {
       var li = el('li', 'venue');
-      li.appendChild(el('h3', 'venue-name', v.name || ''));
+      li.appendChild(el('h3', 'venue-name', v.collab || v.name || ''));
+      if (v.event) li.appendChild(el('p', 'venue-event', v.event));
 
       if (v.street) {
         var a = el('a', 'venue-street', v.street);
@@ -308,12 +310,27 @@
       if (ig) li.appendChild(ig);
       var b = brands(v.brands);
       if (b) li.appendChild(b);
-      if (v.doing) li.appendChild(el('p', 'venue-doing', v.doing));
-      // Drinks and entertainment show here too, not only on the wheel's card.
-      if (v.drinks) li.appendChild(el('p', 'venue-drinks', v.drinks));
-      if (v.entertainment) li.appendChild(el('p', 'venue-drinks', v.entertainment));
+      li.appendChild(details(v));
       ul.appendChild(li);
     });
+  }
+
+  /* A spot's write-up and titled lists, as the client wrote them. Shared by
+     the Crawl Guide and the Roulette card so the two cannot disagree. */
+  function details(v) {
+    var f = document.createDocumentFragment();
+    (v.about || []).filter(Boolean).forEach(function (line) {
+      f.appendChild(el('p', 'venue-about', line));
+    });
+    (v.lists || []).forEach(function (l) {
+      var items = (l && l.items || []).filter(Boolean);
+      if (!items.length) return;
+      if (l.title) f.appendChild(el('h4', 'venue-list-title', l.title));
+      var ul = el('ul', 'venue-items');
+      items.forEach(function (t) { ul.appendChild(el('li', null, t)); });
+      f.appendChild(ul);
+    });
+    return f;
   }
 
   /* ---- suggested crawls ------------------------------------------------- */
@@ -429,7 +446,7 @@
         return (DATA.expect || []).length > 0; } },
     { id: 'map',    label: 'Where',  on: function () { return true; } },
     { id: 'spin',   label: 'Spin',   on: wheelOpen },
-    { id: 'spots',  label: 'Spots',  on: function () {
+    { id: 'spots',  label: 'Crawl Guide', on: function () {
         return liveVenues().length > 0; } }
   ];
 
@@ -572,8 +589,10 @@
       t.setAttribute('text-anchor', 'end');
       t.setAttribute('dominant-baseline', 'middle');
       t.setAttribute('class', 'wheel-label');
-      var label = v.name.length > 18 ? v.name.slice(0, 17) + '\u2026' : v.name;
-      t.textContent = label;
+      var name = v.event || v.name;
+      // Long names step down a size rather than lose their ending.
+      if (name.length > 20) t.style.fontSize = '6px';
+      t.textContent = name.length > 26 ? name.slice(0, 25) + '\u2026' : name;
       rotor.appendChild(t);
     });
     svg.appendChild(rotor);
@@ -627,7 +646,15 @@
   function showSpot(v) {
     var card = document.getElementById('spot-card');
     if (!card) return;
-    document.getElementById('spot-name').textContent = v.name;
+    document.getElementById('spot-name').textContent = v.collab || v.name;
+    var ev = document.getElementById('spot-event');
+    if (ev) { ev.textContent = v.event || ''; ev.hidden = !v.event; }
+    var prize = document.getElementById('spot-prize');
+    if (prize) {
+      prize.textContent = '';
+      (v.prize || []).filter(Boolean).forEach(function (line) { prize.appendChild(el('p', null, line)); });
+      prize.hidden = !prize.childNodes.length;
+    }
     var st = document.getElementById('spot-street');
     if (v.street) { st.textContent = v.street; st.href = MAPS + encodeURIComponent(v.street + ', Kansas City, MO'); st.hidden = false; }
     else st.hidden = true;
@@ -643,17 +670,10 @@
       }
       box.hidden = !row;
     }
-    var dl = document.getElementById('spot-details');
-    dl.textContent = '';
-    var any = false;
-    [['Drinks', v.drinks], ['Entertainment', v.entertainment], ['Menu', v.menu], ['Cover', v.cover],
-     ['Also', v.doing]].forEach(function (row) {
-      if (!row[1]) return;
-      any = true;
-      dl.appendChild(el('dt', null, row[0]));
-      dl.appendChild(el('dd', null, row[1]));
-    });
-    document.getElementById('spot-empty').hidden = any;
+    var box2 = document.getElementById('spot-details');
+    box2.textContent = '';
+    box2.appendChild(details(v));
+    document.getElementById('spot-empty').hidden = box2.childNodes.length > 0;
     var ig = document.getElementById('spot-ig');
     if (v.insta) { ig.textContent = '@' + v.insta; ig.href = 'https://www.instagram.com/' + v.insta; ig.hidden = false; }
     else ig.hidden = true;
