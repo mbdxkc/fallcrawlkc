@@ -10,8 +10,8 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.8.0
- *   @updated      2026-10-05
+ *   @version      1.8.1
+ *   @updated      2026-10-10
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
  *   @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -49,7 +49,7 @@
  *                 only this script's own SVG.
  *
  * ============================================================================
- *   Fall Crawl v1.7.6  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.8.1  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -309,6 +309,8 @@
       var b = brands(v.brands);
       if (b) li.appendChild(b);
       if (v.doing) li.appendChild(el('p', 'venue-doing', v.doing));
+      // The drinks show here too, not only on the wheel's card.
+      if (v.drinks) li.appendChild(el('p', 'venue-drinks', v.drinks));
       ul.appendChild(li);
     });
   }
