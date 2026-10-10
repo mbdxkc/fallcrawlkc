@@ -32,7 +32,7 @@ window.FALL_CRAWL = {
 
   ig: {
     button: "",                      // a word before the @handle, e.g. "Follow". Empty shows the handle alone
-    blurb:  "Tag #fallcrawlkc, we want to see where you end up.",   // the line under the button. Empty hides it
+    blurb:  "Tag #fallcrawlkc, we want to see where you end up!",   // the line under the button. Empty hides it
   },
 
   /* ---- The headline over the map ------------------------------------- */
