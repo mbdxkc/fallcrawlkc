@@ -172,7 +172,7 @@ window.FALL_CRAWL = {
       brands: ["Rosaluna Mezcal"],
       about: [
         "Follow the moon to discover the magic of mezcal featuring a one-night-only cocktail menu featuring Rosaluna Mezcal.",
-        "Giveaways and Raffles!",
+        "Giveaways!",
       ],
       lists: [
         { title: "Featured Cocktails", items: ["Coming soon…"] },
