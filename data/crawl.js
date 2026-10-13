@@ -88,6 +88,8 @@ window.FALL_CRAWL = {
       text:  "Stay with your people and keep an eye on each other. Know your limits, don't leave anyone behind, and if something doesn't feel right, say something or let bartenders and staff know." },
     { title: "Costume Guidelines",
       text:  "Go all out, but use good judgment. Each venue reserves the right to refuse entry based on costumes, props or attire they consider offensive, unsafe or inappropriate. Individual venue policies and staff decisions apply." },
+    { title: "Additional Information",
+      text:  "Event details, activities and participating locations are subject to change without notice. Giveaways, promotional items and special offers are available while supplies last. Follow @fallcrawlkc on Instagram for the latest updates and real-time event information." },
   ],
 
   /* ---- Social icons, top right ---------------------------------------
