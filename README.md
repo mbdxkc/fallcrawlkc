@@ -259,11 +259,16 @@ fog. The privacy page says so. If it fails, the sky stays clear.
       confirmed: Beckett's and Grinder's
 - [x] Amy's final map, with The Den (2 Oct)
 
-Page order (3 Oct): hero, What to Expect, map, Fall Crawl Roulette,
-Trick-or-Treat Routes, What's Happening, Play It Safe, the EZ Pedicabs card (no
-heading since 3 Oct), icon strip, footer with the studio credit. Crawl Guide
-and Suggested Crawls sit in the markup and stay hidden while empty. The menu
-follows the page: Home, Expect, Where, Spin, Spots.
+Page order (12 Oct): hero, map, Fall Crawl Roulette, Trick-or-Treat Routes,
+Fall Crawl Guide, What to Expect (moved below the guide at Amy's request), Play It
+Safe, the EZ Pedicabs card (no heading since 3 Oct), icon strip, footer with the
+studio credit. Suggested Crawls sits in the markup and stays hidden while empty.
+The menu follows the page: Home, Where, Spin, Crawl Guide, Expect.
+
+- [x] All 13 spots named (12 Oct): Cigar Box "The Afterlife Lounge," Grinder's
+      "The Devils Backyard," International Tap House "Permanent Damage"; MOD
+      Gallery's cocktails. "Corspeopolitan" shipped as Corpsepolitan and
+      "Bloody Tennesse" as Bloody Tennessee
 
 ---
 

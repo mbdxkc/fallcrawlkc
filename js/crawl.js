@@ -10,8 +10,8 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.9.1
- *   @updated      2026-10-10
+ *   @version      1.9.2
+ *   @updated      2026-10-12
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
  *   @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -442,12 +442,12 @@
     /* Home is not a section, it is the crawl page itself, so it carries no
        anchor and is the one entry that shows unconditionally. */
     { id: null,     label: 'Home',   on: function () { return true; } },
-    { id: 'expect', label: 'Expect', on: function () {
-        return (DATA.expect || []).length > 0; } },
     { id: 'map',    label: 'Where',  on: function () { return true; } },
     { id: 'spin',   label: 'Spin',   on: wheelOpen },
     { id: 'spots',  label: 'Crawl Guide', on: function () {
-        return liveVenues().length > 0; } }
+        return liveVenues().length > 0; } },
+    { id: 'expect', label: 'Expect', on: function () {
+        return (DATA.expect || []).length > 0; } }
   ];
 
   function liveVenues() {

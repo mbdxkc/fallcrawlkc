@@ -147,24 +147,37 @@ window.FALL_CRAWL = {
 
     { name: "Cigar Box", street: "1519 Grand Blvd", hours: "5 p.m. to 3 a.m.", insta: "thecigarbox",
       collab: "Cigar Box X Tito’s Handmade Vodka",
-      event:  "",
+      event:  "The Afterlife Lounge",
       brands: ["Tito's Handmade Vodka"],
-      about: ["More coming soon…"],
-      lists: [] },
+      about: [
+        "Step into the afterlife for late-night jazz, hauntingly good cocktails, and a spirited evening featuring Tito’s Handmade Vodka.",
+      ],
+      lists: [
+        { title: "Featured Cocktails", items: ["Corpsepolitan", "Dead Man Walking Martini"] },
+      ] },
 
     { name: "Grinder's", street: "417 E 18th St", hours: "11 a.m. to midnight", insta: "grinderskc",
       collab: "Grinder’s X Wild Turkey American Honey",
-      event:  "",
+      event:  "The Devils Backyard",
       brands: ["Wild Turkey American Honey"],
-      about: ["More coming soon…"],
-      lists: [] },
+      about: [
+        "Head out to Grinder’s patio for campfires, Halloween cocktails, and Wild Turkey shots.",
+      ],
+      lists: [
+        { title: "Featured Cocktails", items: ["Campfire Mule", "Haunted Lemonade", "Wild Turkey and American Honey Shot Specials"] },
+      ] },
 
     { name: "International Tap House", street: "403 E 18th St", hours: "11 a.m. to 1 a.m.", insta: "itapxroads",
       collab: "International Tap House X Chica-Chida",
-      event:  "",
+      event:  "Permanent Damage",
       brands: ["Chica Chida"],
-      about: ["More coming soon…"],
-      lists: [] },
+      about: [
+        "Temporary tattoos, Chica Chida cocktails, and giveaways. No permanent decisions required… yet.",
+        "Chica-Chida Flash Tattoo Pop-Up Coming Soon!",
+      ],
+      lists: [
+        { title: "Featured Cocktails", items: ["Coming soon…"] },
+      ] },
 
     { name: "Jade Jaguar", street: "1800 Walnut St", hours: "5 p.m. to 1:30 a.m.", insta: "jadejaguarkc",
       collab: "Jade Jaguar X Rosaluna Mezcal",
@@ -197,7 +210,7 @@ window.FALL_CRAWL = {
         "DJ’s start at 8pm. lotek. clockwerk. j. curtis. $5 cover. Polaroid photos and giveaways.",
       ],
       lists: [
-        { title: "Featured Cocktails", items: ["Coming soon…"] },
+        { title: "Featured Cocktails", items: ["Haunted Sour", "Bloody Tennessee", "Poison Apple", "Blackberry Lemonade Seltzer"] },
       ] },
 
     { name: "Ricochet", street: "1720 McGee St", hours: "11 a.m. to 1:30 a.m.", insta: "ricochetkcmo",
