@@ -71,7 +71,7 @@ done
 for pair in "style.min.css:style.min.css" "crawl.min.js:js/crawl.min.js"; do
   dest="${pair#*:}"
   hash="$(shasum -a 256 "$tmp/${pair%%:*}" | cut -c1-8)"
-  for page in index.html privacy.html terms.html; do
+  for page in index.html privacy.html terms.html accessibility.html; do
     want="$dest?v=$hash"
     if grep -q "\"$want\"" "$page"; then
       continue

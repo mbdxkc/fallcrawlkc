@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- charset sits ABOVE the file header on purpose. The spec wants it inside
+         the first 1024 bytes and the header block below is longer than that.
+         Do not tidy it down among the other meta tags. -->
+    <meta charset="utf-8" />
+    <!--
+    ============================================================================
+
+      EAST CROSSROADS FALL CRAWL
+      Accessibility
+
+    ============================================================================
+
+      @project      fallcrawlkc
+      @file         accessibility.html
+      @updated      2026-10-13
+      @client       East Crossroads Fall Crawl, Kansas City, MO
+      @repository   https://github.com/mbdxkc/fallcrawlkc
+
+      @author       Valdez Campos <dez@mediabrilliance.io>
+      @studio       mediaBrilliance - https://www.mediabrilliance.io
+
+      Copyright (c) 2026 mediaBrilliance. All rights reserved.
+
+    ============================================================================
+      IMPLEMENTATION NOTES
+    ============================================================================
+
+      @desc         The accessibility statement. Every measure listed is true of
+                    the site as built; re-check the list when a section, image
+                    or control is added, and move the date at the bottom.
+
+      @scope        Not a certification. No body certifies a site as ADA
+                    compliant, so the page states a target (WCAG 2.1 AA), what
+                    was done and how to report a problem.
+
+    ============================================================================
+    -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+    <title>Accessibility - East Crossroads Fall Crawl</title>
+    <meta name="description" content="Accessibility statement for the East Crossroads Fall Crawl site: what it does for people using screen readers, keyboards and other assistive technology, and how to report a problem." />
+    <link rel="canonical" href="https://fallcrawlkc.com/accessibility.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Accessibility - East Crossroads Fall Crawl" />
+    <meta property="og:description" content="Accessibility statement for the East Crossroads Fall Crawl site: what it does for people using screen readers, keyboards and other assistive technology, and how to report a problem." />
+    <meta property="og:url" content="https://fallcrawlkc.com/accessibility.html" />
+    <meta property="og:image" content="https://fallcrawlkc.com/images/og.png" />
+    <meta property="og:image:alt" content="East Crossroads Fall Crawl, 10.24.26, Kansas City" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Accessibility - East Crossroads Fall Crawl" />
+    <meta name="twitter:description" content="Accessibility statement for the East Crossroads Fall Crawl site: what it does for people using screen readers, keyboards and other assistive technology, and how to report a problem." />
+    <meta name="twitter:image" content="https://fallcrawlkc.com/images/og.png" />
+    <meta name="theme-color" content="#000000" />
+
+    <!-- The .ico carries the skull and the glass alone. The whole figure
+         turns to grey below about 48px; her profile still reads. Built by
+         tools/make-icons.py from images/logo.png. -->
+    <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+
+    <!-- crossorigin is required even same-origin, or the font is fetched twice. -->
+    <link rel="preload" href="fonts/antic.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="fonts/gagalin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="style.min.css?v=756a2839" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="site-header">
+      <button class="bar-toggle" id="bar-toggle" type="button"
+              aria-expanded="false" aria-controls="bar-nav" aria-label="Menu">
+        <span class="bar-toggle-bars" aria-hidden="true"></span>
+      </button>
+      <nav class="bar-nav" id="bar-nav" aria-label="Sections"></nav>
+      <a class="bar-title" href="./" data-title><span class="title-full"></span><span class="title-short" aria-hidden="true"></span></a>
+      <ul class="bar-social" id="bar-social"></ul>
+    </header>
+
+    <main id="main">
+      <section class="band legal-page">
+        <h1 class="legal-title">Accessibility</h1>
+        <div class="prose">
+          <p class="lede">The Fall Crawl is for everyone 21 and up, and so is
+            this site. It aims to meet the Web Content Accessibility Guidelines
+            (WCAG) 2.1 at level AA.</p>
+
+          <h2>What the site does</h2>
+          <ul>
+            <li>Every image that carries information has a text description,
+              including the words in the icon graphic and every spot named on
+              the map.</li>
+            <li>Every spot on the map is also listed as text in the Fall Crawl
+              Guide.</li>
+            <li>Text and buttons are high contrast against the background.</li>
+            <li>Menus, buttons, the spin wheel and pop-ups are standard controls
+              that work with a keyboard and a screen reader. A skip link jumps
+              past the header.</li>
+            <li>Animation stops when your device is set to reduce motion.</li>
+            <li>Pages are built with headings and labeled sections, so screen
+              readers can move through them.</li>
+          </ul>
+
+          <h2>How it is checked</h2>
+          <p>The site scored 100 for accessibility in Google Lighthouse on
+            phones and computers in September 2026. Automated tests catch only
+            part of what matters, so pages are also checked by hand when
+            content changes.</p>
+
+          <h2>Participating venues</h2>
+          <p>Each venue is an independent business and is responsible for the
+            accessibility of its own space. For questions about entrances,
+            seating or restrooms, check with that venue directly.</p>
+
+          <h2>Something not working?</h2>
+          <p>If any part of this site is hard to use, message
+            <a href="https://www.instagram.com/fallcrawlkc" target="_blank"
+             rel="noopener">@fallcrawlkc</a> on Instagram. Tell us the page and
+            what happened, and we will get you the information another way and
+            fix the problem.</p>
+
+          <p class="updated">Last updated Oct. 13, 2026.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <nav class="footer-nav" aria-label="Site">
+        <a href="./">The crawl</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="accessibility.html" aria-current="page">Accessibility</a>
+      </nav>
+      <p class="legal">Must be 21+ to purchase or consume alcohol. No purchase required to
+        participate. Participating businesses operate independently and are responsible for
+        their own events, offers, service and premises.</p>
+      <p class="drink"><strong>Please drink responsibly.</strong></p>
+      <p class="credit">Made in Kansas City by
+        <a href="https://www.mediabrilliance.io" target="_blank" rel="noopener"><img src="images/mb-mark.svg"
+           width="206" height="95" alt="" />mediaBrilliance digitalxtudio</a></p>
+    </footer>
+
+    <!-- The client's data file, with the current minute as its query. Pages
+         lets a browser reuse a file for 10 minutes and her edits skip
+         tools/build.sh, so a content stamp cannot reach this one. A per-minute
+         URL makes an edit show within about a minute. document.write keeps it
+         parser-blocking, so it still runs before the deferred page script;
+         the file is same-origin, which no browser intervenes on. -->
+    <script>document.write('<script src="data/crawl.js?m=' + Math.floor(Date.now() / 6e4) + '"><\/script>');</script>
+    <script src="js/crawl.min.js?v=71ce1244" defer></script>
+  </body>
+</html>
