@@ -52,7 +52,7 @@ Crawls stay hidden until they have content.
 ```
 /
 ├── index.html        # the page
-├── privacy.html      # collects nothing, and says so specifically
+├── privacy.html      # Google Analytics and the weather check, said specifically
 ├── terms.html        # plain language, not lawyer-reviewed
 ├── accessibility.html # WCAG 2.1 AA target, what is done, how to report a problem
 ├── style.css         # SOURCE, mobile-first. Pages load style.min.css

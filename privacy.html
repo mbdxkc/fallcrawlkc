@@ -15,7 +15,7 @@
 
       @project      fallcrawlkc
       @file         privacy.html
-      @updated      2026-10-02
+      @updated      2026-10-14
       @client       East Crossroads Fall Crawl, Kansas City, MO
       @repository   https://github.com/mbdxkc/fallcrawlkc
 
@@ -29,10 +29,11 @@
     ============================================================================
 
       @desc         Every claim on this page is a fact about the build, not
-                    boilerplate. The site loads no analytics, no cookies, no
-                    forms and no third-party fonts or scripts; keeps two
-                    sessionStorage values (21+ answer, weather cache); and makes one outside request, Open-Meteo for
-                    Kansas City's current weather -
+                    boilerplate. The site loads Google Analytics (G-0R8SL4K99W,
+                    enhanced measurement on, _ga cookies) on every page; has no
+                    forms and no third-party fonts; keeps two sessionStorage
+                    values (21+ answer, weather cache); and makes one other
+                    outside request, Open-Meteo for Kansas City's current weather -
                     checked across index.html, style.css and js/crawl.js. If
                     any of that changes, THIS PAGE CHANGES IN THE SAME COMMIT,
                     or it becomes a false statement about data handling.
@@ -48,17 +49,17 @@
 
 
     <title>Privacy - East Crossroads Fall Crawl</title>
-    <meta name="description" content="The East Crossroads Fall Crawl site collects nothing: no cookies, no analytics, no forms." />
+    <meta name="description" content="Privacy for the East Crossroads Fall Crawl site: Google Analytics counts visits, and there are no forms or sign-ups." />
     <link rel="canonical" href="https://fallcrawlkc.com/privacy.html" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Privacy - East Crossroads Fall Crawl" />
-    <meta property="og:description" content="The East Crossroads Fall Crawl site collects nothing: no cookies, no analytics, no forms." />
+    <meta property="og:description" content="Privacy for the East Crossroads Fall Crawl site: Google Analytics counts visits, and there are no forms or sign-ups." />
     <meta property="og:url" content="https://fallcrawlkc.com/privacy.html" />
     <meta property="og:image" content="https://fallcrawlkc.com/images/og.png" />
     <meta property="og:image:alt" content="East Crossroads Fall Crawl, 10.24.26, Kansas City" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Privacy - East Crossroads Fall Crawl" />
-    <meta name="twitter:description" content="The East Crossroads Fall Crawl site collects nothing: no cookies, no analytics, no forms." />
+    <meta name="twitter:description" content="Privacy for the East Crossroads Fall Crawl site: Google Analytics counts visits, and there are no forms or sign-ups." />
     <meta name="twitter:image" content="https://fallcrawlkc.com/images/og.png" />
     <meta name="theme-color" content="#000000" />
 
@@ -73,6 +74,23 @@
     <link rel="preload" href="fonts/antic.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="fonts/gagalin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="style.min.css?v=756a2839" />
+    <!-- Google Analytics, described on privacy.html. Commands queue now; the
+         library loads once the page has finished loading and gone idle, so it
+         never competes with the first screen. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-0R8SL4K99W');
+      addEventListener('load', function () {
+        (window.requestIdleCallback || setTimeout)(function () {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-0R8SL4K99W';
+          document.head.appendChild(s);
+        }, { timeout: 3000 });
+      });
+    </script>
   </head>
 
   <body>
@@ -92,12 +110,29 @@
       <section class="band legal-page">
         <h1 class="legal-title">Privacy</h1>
         <div class="prose">
-          <p class="lede">This site does not collect anything about you.</p>
+          <p class="lede">This site counts visits with Google Analytics. It never asks who you are.</p>
 
           <h2>What we do not do</h2>
-          <p>No cookies. No analytics. No tracking pixels. No advertising
-            tags. No fonts or scripts are loaded from another company. The one
-            outside request is the weather check described below.</p>
+          <p>No forms. No advertising tags. No tracking pixels. No fonts are
+            loaded from another company. The only outside requests are Google
+            Analytics and the weather check, both described below.</p>
+
+          <h2>Visit counts</h2>
+          <p>To learn how many people use the site and which parts they read,
+            every page loads
+            <a href="https://marketingplatform.google.com/about/analytics/" target="_blank" rel="noopener">Google Analytics</a>.
+            Your browser sends Google the page you viewed, the site that sent
+            you here, your device and browser type, an approximate location
+            worked out from your IP address, and what you do on the page, such
+            as scrolling and following links.</p>
+          <p>Google Analytics sets cookies whose names start with _ga, so a
+            second visit can be counted as a return visit. They last up to two
+            years unless you clear them. We see totals and trends, never who
+            you are. Google handles the data under
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">its privacy policy</a>.
+            To opt out, block or clear cookies for this site, or install
+            Google&rsquo;s
+            <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">opt-out browser add-on</a>.</p>
           <p>Two small notes are kept in your browser while the tab is open:
             that you answered the 21+ question, and the last weather check.
             They stay on your device and are gone when you close the tab.</p>
@@ -147,7 +182,7 @@
           <p>Message <a href="https://www.instagram.com/fallcrawlkc" target="_blank"
              rel="noopener">@fallcrawlkc</a> on Instagram.</p>
 
-          <p class="updated">Last updated Oct. 3, 2026.</p>
+          <p class="updated">Last updated Oct. 14, 2026.</p>
         </div>
       </section>
     </main>
