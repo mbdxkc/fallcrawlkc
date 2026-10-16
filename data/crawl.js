@@ -69,9 +69,7 @@ window.FALL_CRAWL = {
   // Trick-or-Treat Routes: one line per paragraph, in quotes, each
   // followed by a comma.
   treats: [
-    "We won't send you into the wild alone.",
-    "Three curated routes are coming soon, whether you want to hit them all, take your time or chase the wildest things happening throughout the crawl.",
-    "Built around special events, experiences and timing. Routes drop closer to crawl day.",
+    "Post your route and follow others with #fallcrawlkc.",
   ],
 
   /* ---- Play it safe ---------------------------------------------------

@@ -17,8 +17,8 @@
 
       @project      fallcrawlkc
       @file         index.html
-      @version      1.9.4
-      @updated      2026-10-14
+      @version      1.9.5
+      @updated      2026-10-16
       @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
       @url          https://fallcrawlkc.com/
       @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -216,20 +216,10 @@
 
       </section>
 
-      <!-- ===== where: the headline over the map ===== -->
-      <section class="band" id="map">
-        <h2 class="headline" data-headline></h2>
-        <p class="lede" data-blurb></p>
-        <img class="map-img" src="images/map.webp" width="1141" height="1143" loading="lazy" decoding="async"
-             srcset="images/map-480.webp 480w, images/map-736.webp 736w, images/map.webp 1141w"
-             sizes="(min-width: 800px) 46rem, calc(100vw - 2.5rem)"
-             alt="Hand-drawn map of the East Crossroads, Main Street to Cherry Street and Truman Road to 19th Street, naming the 13 participating spots, each beside its featured brand's logo: Tannin, The Belfry Collective, Cigar Box, Chartreuse Saloon, Beckett's, Ricochet, King G, Jade Jaguar, International Tap House, MOD Gallery, Grinder's, The Den and Ted's Taproom." />
-      </section>
-
       <!-- ===== Fall Crawl Roulette =====
-           Straight under the map: see where the spots are, then let the
-           wheel pick one. A date in wheelFrom (data/crawl.js) takes it off
-           the page until that day, nav link included. -->
+           Straight under the hero: the first thing to play with. A date in
+           wheelFrom (data/crawl.js) takes it off the page until that day,
+           nav link included. -->
       <section class="band" id="spin">
         <h2>Fall Crawl Roulette</h2>
         <p class="lede" id="spin-lede">Can&rsquo;t decide where to go next? Leave it to fate.<br />
@@ -243,10 +233,31 @@
         <p class="sr-only" id="spin-live" aria-live="polite"></p>
       </section>
 
+      <!-- ===== where: the headline over the map ===== -->
+      <section class="band" id="map">
+        <h2 class="headline" data-headline></h2>
+        <p class="lede" data-blurb></p>
+        <img class="map-img" src="images/map.webp" width="1141" height="1143" loading="lazy" decoding="async"
+             srcset="images/map-480.webp 480w, images/map-736.webp 736w, images/map.webp 1141w"
+             sizes="(min-width: 800px) 46rem, calc(100vw - 2.5rem)"
+             alt="Hand-drawn map of the East Crossroads, Main Street to Cherry Street and Truman Road to 19th Street, naming the 13 participating spots, each beside its featured brand's logo: Tannin, The Belfry Collective, Cigar Box, Chartreuse Saloon, Beckett's, Ricochet, King G, Jade Jaguar, International Tap House, MOD Gallery, Grinder's, The Den and Ted's Taproom." />
+      </section>
+
       <!-- ===== trick-or-treat routes ===== -->
       <section class="band" id="treats">
         <h2>Trick-or-Treat Routes</h2>
         <p class="soon" data-treats></p>
+        <a class="cta cta-ig" href="https://www.instagram.com/fallcrawlkc"
+           target="_blank" rel="noopener">
+          <svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true" focusable="false">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="5" />
+            <circle cx="12" cy="12" r="4.2" />
+            <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none" />
+          </svg>
+          <span>Share your route</span>
+        </a>
       </section>
 
       <!-- ===== crawl guide ===== -->
@@ -351,6 +362,6 @@
          deferred page script; the file is same-origin, which browsers do not
          intervene on. -->
     <script>document.write('<script src="data/crawl.js?m=' + Math.floor(Date.now() / 6e4) + '"><\/script>');</script>
-    <script src="js/crawl.min.js?v=71ce1244" defer></script>
+    <script src="js/crawl.min.js?v=84c9c58d" defer></script>
   </body>
 </html>

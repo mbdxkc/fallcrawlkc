@@ -191,12 +191,12 @@ spec's 1024-byte limit for the charset declaration.
 **What the page does beyond the lists (28 Sep).** A 21+ check (sessionStorage,
 per tab); a countdown; the big date as the add-to-calendar link, marked with a
 calendar-plus icon (the calendar file, or Google Calendar on Android, which
-cannot open one); the Fall Crawl Roulette wheel, right under the map,
+cannot open one); the Fall Crawl Roulette wheel, right under the hero,
 of live spots (each labelled with its event name, or the business name until it
 has one), whose card shows the collab heading, event, address, hours, Instagram,
 brands, any prize (Ted's free cover), then the same write-up and lists as the
 Crawl Guide, or "Details coming soon." otherwise, with a text link to EZ Pedicabs for the long walks; the wheel sits
-under the map and shows now (29 Sep, for the weekend launch); a date in
+under the hero (moved above the map 16 Oct) and shows now (29 Sep, for the weekend launch); a date in
 `wheelFrom` would take it off the page until that day, nav link included; a header scene of ghosts, a goblin and a monster
 (size sets speed, randomised per load), fog thickest behind the title, and the
 real moon for Kansas City (position and phase computed in the browser, gliding
@@ -253,18 +253,22 @@ fog. The privacy page says so. If it fails, the sky stays clear.
       invented special can no longer reach the page
 - [x] Trick-or-Treat Routes copy (Amy, 29 Sep). The line under the Instagram
       button is settled as none: the icon in the button carries it (`ig.blurb`
-      stays empty). Amy offered a two-sentence version on 1 Oct; still none
+      stays empty). Amy offered a two-sentence version on 1 Oct; still none.
+      On 16 Oct the three coming-soon lines became one, "Post your route and
+      follow others with #fallcrawlkc.", over a "Share your route" button to
+      @fallcrawlkc. Not the hashtag: Instagram's tag URL redirects to a keyword
+      search that errors with `#` and returns other cities' fall crawls without it
 - [ ] Client copy still to write: the headline blurb under the map heading;
       Crawl Guide is hidden (`guide: false`)
 - [x] Play It Safe is Amy's own copy (1 Oct), five items. Spellings
       confirmed: Beckett's and Grinder's
 - [x] Amy's final map, with The Den (2 Oct)
 
-Page order (12 Oct): hero, map, Fall Crawl Roulette, Trick-or-Treat Routes,
+Page order (16 Oct): hero, Fall Crawl Roulette, map, Trick-or-Treat Routes,
 Fall Crawl Guide, What to Expect (moved below the guide at Amy's request), Play It
 Safe, the EZ Pedicabs card (no heading since 3 Oct), icon strip, footer with the
 studio credit. Suggested Crawls sits in the markup and stays hidden while empty.
-The menu follows the page: Home, Where, Spin, Crawl Guide, Expect.
+The menu follows the page: Home, Spin, Where, Crawl Guide, Expect.
 
 - [x] All 13 spots named (12 Oct): Cigar Box "The Afterlife Lounge," Grinder's
       "The Devils Backyard," International Tap House "Permanent Damage"; MOD
