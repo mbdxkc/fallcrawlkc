@@ -156,12 +156,12 @@ window.FALL_CRAWL = {
         { title: "Featured Cocktails", items: ["Corpsepolitan", "Dead Man Walking Martini"] },
       ] },
 
-    { name: "Grinder's", street: "417 E 18th St", hours: "11 a.m. to midnight", insta: "grinderskc",
-      collab: "Grinder’s x Wild Turkey American Honey",
+    { name: "Grinders", street: "417 E 18th St", hours: "11 a.m. to midnight", insta: "grinderskc",
+      collab: "Grinders x Wild Turkey American Honey",
       event:  "The Devils Backyard",
       brands: ["Wild Turkey American Honey"],
       about: [
-        "Head out to Grinder’s patio for campfires, Halloween cocktails, and Wild Turkey shots.",
+        "Head out to Grinders patio for campfires, Halloween cocktails, and Wild Turkey shots.",
       ],
       lists: [
         { title: "Featured Cocktails", items: ["Campfire Mule", "Haunted Lemonade", "Wild Turkey and American Honey Shot Specials"] },
@@ -173,10 +173,10 @@ window.FALL_CRAWL = {
       brands: ["Chica Chida"],
       about: [
         "Temporary tattoos, Chica Chida cocktails, and giveaways. No permanent decisions required… yet.",
-        "Chica-Chida Flash Tattoo Pop-Up Coming Soon!",
+        "Chica-Chida x River Market Tattoo x iTap Flash Tattoo Pop-Up: Saturday, Nov. 14, noon to late.",
       ],
       lists: [
-        { title: "Featured Cocktails", items: ["Coming soon…"] },
+        { title: "Featured Cocktails", items: ["Witches Brew", "Chica-Chida Bomb Shots"] },
       ] },
 
     { name: "Jade Jaguar", street: "1800 Walnut St", hours: "5 p.m. to 1:30 a.m.", insta: "jadejaguarkc",
@@ -188,7 +188,7 @@ window.FALL_CRAWL = {
         "Giveaways!",
       ],
       lists: [
-        { title: "Featured Cocktails", items: ["Coming soon…"] },
+        { title: "Featured Cocktails", items: ["El Chango Maldito", "Mango de los Muertos", "La Sirena Encantada"] },
       ] },
 
     { name: "King G", street: "500 E 18th St", hours: "11 a.m. to 1:30 a.m.", insta: "king.g.kc",
@@ -275,7 +275,7 @@ window.FALL_CRAWL = {
       event:  "Den of the Dead",
       brands: ["Crystal Head Vodka"],
       about: [
-        "Step into The Den for a one-night-only spooky cocktail experience worth losing your head over.",
+        "Step into The Den, a brand-new cocktail bar tucked away beside The Fold, for a one-night-only Halloween experience worth losing your head over.",
       ],
       lists: [
         { title: "Featured Cocktails", items: ["Drop Dead Gorgeous", "Blood Money", "Grave Mistake"] },
