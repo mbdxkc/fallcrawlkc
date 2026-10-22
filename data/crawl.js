@@ -120,10 +120,16 @@ window.FALL_CRAWL = {
        lists         titled lists, e.g. featured drinks:
                        { title: "Featured Drinks", items: ["One", "Two"] },
        prize         lines shown only when the wheel lands on this spot
+       pin           the map point check-in measures against. Set by the
+                     developer from the address; leave it as it is
+       basic         true shows only the name, address, hours, Instagram
+                     and lists, in the guide and on the wheel, and gives
+                     the spot a 2 percent chance on the wheel, e.g.
+                     basic: true,
        live          false hides a spot without deleting it              */
 
   venues: [
-    { name: "Beckett's", street: "1701 McGee St", hours: "11 a.m. to 1:30 a.m.", insta: "beckettskcmo",
+    { name: "Beckett's", street: "1701 McGee St", hours: "11 a.m. to 1:30 a.m.", insta: "beckettskcmo", pin: [39.093061, -94.579746],
       collab: "Beckett's x Lucky One x Ole Smoky",
       event:  "The Haunted Tailgate",
       brands: ["Ole Smoky", "High Noon", "Lucky One"],
@@ -134,7 +140,7 @@ window.FALL_CRAWL = {
         { title: "Featured Drinks", items: ["Nut Up or Shut Up Shots", "Caramel Apple Slushies"] },
       ] },
 
-    { name: "Chartreuse Saloon", street: "1627 Oak St", hours: "4 p.m. to 1:30 a.m.", insta: "chartreusesaloonkc",
+    { name: "Chartreuse Saloon", street: "1627 Oak St", hours: "4 p.m. to 1:30 a.m.", insta: "chartreusesaloonkc", pin: [39.093456, -94.578673],
       collab: "Chartreuse Saloon x Old Forester",
       event:  "Your Fortune Awaits",
       brands: ["Old Forester 86"],
@@ -145,7 +151,7 @@ window.FALL_CRAWL = {
         { title: "Featured Cocktails", items: ["Fall Old Fashioned", "Lion’s Tale", "Vampire Juice"] },
       ] },
 
-    { name: "Cigar Box", street: "1519 Grand Blvd", hours: "5 p.m. to 3 a.m.", insta: "thecigarbox",
+    { name: "Cigar Box", street: "1519 Grand Blvd", hours: "5 p.m. to 3 a.m.", insta: "thecigarbox", pin: [39.095095, -94.580787],
       collab: "Cigar Box x Tito’s Handmade Vodka",
       event:  "The Afterlife Lounge",
       brands: ["Tito's Handmade Vodka"],
@@ -156,7 +162,7 @@ window.FALL_CRAWL = {
         { title: "Featured Cocktails", items: ["Corpsepolitan", "Dead Man Walking Martini"] },
       ] },
 
-    { name: "Grinders", street: "417 E 18th St", hours: "11 a.m. to midnight", insta: "grinderskc",
+    { name: "Grinders", street: "417 E 18th St", hours: "11 a.m. to midnight", insta: "grinderskc", pin: [39.091540, -94.578659],
       collab: "Grinders x Wild Turkey American Honey",
       event:  "The Devils Backyard",
       brands: ["Wild Turkey American Honey"],
@@ -167,7 +173,7 @@ window.FALL_CRAWL = {
         { title: "Featured Cocktails", items: ["Campfire Mule", "Haunted Lemonade", "Wild Turkey and American Honey Shot Specials"] },
       ] },
 
-    { name: "International Tap House", street: "403 E 18th St", hours: "11 a.m. to 1 a.m.", insta: "itapxroads",
+    { name: "International Tap House", street: "403 E 18th St", hours: "11 a.m. to 1 a.m.", insta: "itapxroads", pin: [39.091509, -94.578758],
       collab: "International Tap House x Chica-Chida",
       event:  "Permanent Damage",
       brands: ["Chica Chida"],
@@ -179,7 +185,7 @@ window.FALL_CRAWL = {
         { title: "Featured Cocktails", items: ["Witches Brew", "Chica-Chida Bomb Shots"] },
       ] },
 
-    { name: "Jade Jaguar", street: "1800 Walnut St", hours: "5 p.m. to 1:30 a.m.", insta: "jadejaguarkc",
+    { name: "Jade Jaguar", street: "1800 Walnut St", hours: "5 p.m. to 1:30 a.m.", insta: "jadejaguarkc", pin: [39.091446, -94.582842],
       collab: "Jade Jaguar x Rosaluna Mezcal",
       event:  "Mezcal is Magic",
       brands: ["Rosaluna Mezcal"],
@@ -191,7 +197,7 @@ window.FALL_CRAWL = {
         { title: "Featured Cocktails", items: ["El Chango Maldito", "Mango de los Muertos", "La Sirena Encantada"] },
       ] },
 
-    { name: "King G", street: "500 E 18th St", hours: "11 a.m. to 1:30 a.m.", insta: "king.g.kc",
+    { name: "King G", street: "500 E 18th St", hours: "11 a.m. to 1:30 a.m.", insta: "king.g.kc", pin: [39.091726, -94.577527],
       collab: "King G x Wild Turkey",
       event:  "The Midnight Matinee",
       brands: ["Wild Turkey"],
@@ -202,7 +208,7 @@ window.FALL_CRAWL = {
         { title: "Featured Cocktail", items: ["Boulevardier"] },
       ] },
 
-    { name: "MOD Gallery", street: "1809 McGee St", hours: "7 p.m. to 1 a.m.", insta: "mod.gallery.space2",
+    { name: "MOD Gallery", street: "1809 McGee St", hours: "7 p.m. to 1 a.m.", insta: "mod.gallery.space2", pin: [39.091289, -94.579839],
       collab: "MOD Gallery x Jack Daniel’s",
       event:  "Late Night Freaks",
       brands: ["Jack Daniel's"],
@@ -213,7 +219,7 @@ window.FALL_CRAWL = {
         { title: "Featured Cocktails", items: ["Haunted Sour", "Bloody Tennessee", "Poison Apple", "Blackberry Lemonade Seltzer"] },
       ] },
 
-    { name: "Ricochet", street: "1720 McGee St", hours: "11 a.m. to 1:30 a.m.", insta: "ricochetkcmo",
+    { name: "Ricochet", basic: true, street: "1720 McGee St", hours: "11 a.m. to 1:30 a.m.", insta: "ricochetkcmo", pin: [39.092765, -94.580361],
       collab: "Ricochet x High Noon x Espolon",
       event:  "Play at Your Own Risk",
       brands: ["Espolon", "High Noon", "Lucky One"],
@@ -224,10 +230,10 @@ window.FALL_CRAWL = {
         "Yard games, giveaways, and Halloween cocktails to keep the fun going into the night.",
       ],
       lists: [
-        { title: "Featured Cocktails", items: ["Peach Cobbler Margarita", "Pumpkin Spice Shots"] },
+        { title: "Featured Drinks", items: ["High Noon Bucket Special", "Espolòn and Lucky One Specials"] },
       ] },
 
-    { name: "Tannin", street: "1526 Walnut St", hours: "4 p.m. to 1:30 a.m.", insta: "tanninkc",
+    { name: "Tannin", street: "1526 Walnut St", hours: "4 p.m. to 1:30 a.m.", insta: "tanninkc", pin: [39.095324, -94.582417],
       collab: "Tannin x Justin Winery",
       event:  "Into the Vines",
       brands: ["Justin Winery"],
@@ -240,7 +246,7 @@ window.FALL_CRAWL = {
       ],
       lists: [] },
 
-    { name: "Ted's Taproom", street: "1829 McGee St", hours: "5 p.m. to 1 a.m.", insta: "teds_taproom",
+    { name: "Ted's Taproom", street: "1829 McGee St", hours: "5 p.m. to 1 a.m.", insta: "teds_taproom", pin: [39.090608, -94.579868],
       collab: "Ted’s Taproom x Holladay Bourbon",
       event:  "The Forbidden Era",
       brands: ["Ben Holladay"],
@@ -258,7 +264,7 @@ window.FALL_CRAWL = {
       ],
       prize: ["YOU WON FREE COVER AT TED’S TAPROOM!", "10.24.26 | SCREENSHOT TO REDEEM"] },
 
-    { name: "The Belfry Collective", street: "1532 Grand Blvd", hours: "4 p.m. to midnight", insta: "thebelfrycollective",
+    { name: "The Belfry Collective", street: "1532 Grand Blvd", hours: "4 p.m. to midnight", insta: "thebelfrycollective", pin: [39.094605, -94.581567],
       collab: "The Belfry x Four Roses x Fireball",
       event:  "Heaven or Hell",
       brands: ["Fireball", "Four Roses"],
@@ -270,7 +276,7 @@ window.FALL_CRAWL = {
         { title: "Ground Control Menu", items: ["Type O Negative Sangria", "The Harvest Fireball"] },
       ] },
 
-    { name: "The Den", street: "1830 Walnut St", hours: "6 p.m. to 1 a.m.", insta: "thefoldkcmo",
+    { name: "The Den", street: "1830 Walnut St", hours: "6 p.m. to 1 a.m.", insta: "thefoldkcmo", pin: [39.091282, -94.582613],
       collab: "The Den x Crystal Head Vodka",
       event:  "Den of the Dead",
       brands: ["Crystal Head Vodka"],

@@ -17,8 +17,8 @@
 
       @project      fallcrawlkc
       @file         index.html
-      @version      1.9.5
-      @updated      2026-10-16
+      @version      1.10.0
+      @updated      2026-10-22
       @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
       @url          https://fallcrawlkc.com/
       @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -65,7 +65,7 @@
                     the current minute instead, since edits to it skip the build.
 
     ============================================================================
-      Fall Crawl v1.9.1  ·  index.html  ·  mediaBrilliance
+      Fall Crawl v1.10.0  ·  index.html  ·  mediaBrilliance
     ============================================================================
     -->
 
@@ -105,7 +105,7 @@
     <!-- crossorigin is required even same-origin, or the font is fetched twice. -->
     <link rel="preload" href="fonts/antic.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="fonts/gagalin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="style.min.css?v=756a2839" />
+    <link rel="stylesheet" href="style.min.css?v=3a0381af" />
     <!-- Google Analytics, described on privacy.html. Commands queue now; the
          library loads once the page has finished loading and gone idle, so it
          never competes with the first screen. -->
@@ -224,6 +224,12 @@
         <h2>Fall Crawl Roulette</h2>
         <p class="lede" id="spin-lede">Can&rsquo;t decide where to go next? Leave it to fate.<br />
           Spin the wheel. Go where it sends you.</p>
+        <!-- Check in: shown on the night only. Filled by js/crawl.js. -->
+        <div class="checkin" id="checkin" hidden>
+          <button class="checkin-btn" id="checkin-btn" type="button">Check in where I am</button>
+          <p class="checkin-msg" id="checkin-msg" aria-live="polite"></p>
+          <div class="checkin-pick" id="checkin-pick"></div>
+        </div>
         <div class="wheel-wrap" id="wheel-wrap" hidden>
           <div class="wheel-pointer" aria-hidden="true"></div>
           <svg class="wheel" id="wheel" viewBox="-110 -110 220 220" role="img" aria-label="Wheel of participating spots"></svg>
@@ -362,6 +368,6 @@
          deferred page script; the file is same-origin, which browsers do not
          intervene on. -->
     <script>document.write('<script src="data/crawl.js?m=' + Math.floor(Date.now() / 6e4) + '"><\/script>');</script>
-    <script src="js/crawl.min.js?v=84c9c58d" defer></script>
+    <script src="js/crawl.min.js?v=502e6a43" defer></script>
   </body>
 </html>

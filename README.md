@@ -197,7 +197,21 @@ has one), whose card shows the collab heading, event, address, hours, Instagram,
 brands, any prize (Ted's free cover), then the same write-up and lists as the
 Crawl Guide, or "Details coming soon." otherwise, with a text link to EZ Pedicabs for the long walks; the wheel sits
 under the hero (moved above the map 16 Oct) and shows now (29 Sep, for the weekend launch); a date in
-`wheelFrom` would take it off the page until that day, nav link included; a header scene of ghosts, a goblin and a monster
+`wheelFrom` would take it off the page until that day, nav link included. Above
+the wheel, on the night only (midnight on `date` to 4 a.m. after), a Check in button
+asks for the phone's location, matches it on the phone against each spot's `pin`
+(Nominatim rooftop geocodes, 22 Oct), sends Analytics only the spot's name as
+`check_in`, and keeps that spot out of the next spin. Spots closer together than the
+reading can separate (Grinders and International Tap House are 9 m apart) are
+offered as a choice. The wheel's odds then follow the night: the spot checked in at
+and the last spot landed on never come up, the rest are weighted by distance from the
+check-in (next door three to four times the far end), spots already checked into
+count a quarter, and a spot with `basic: true` (Ricochet, at Amy's request, 22 Oct) gets a flat 2
+percent and shows only name, address, hours, Instagram and lists in the guide, on its wheel
+slice and on its card. Check-ins are kept in localStorage
+(`fallcrawl-checkins`) for the night and deleted outside the check-in window; slices
+stay equal on screen. Register `spot` as an event-scoped custom dimension in GA4 to
+report check-ins by spot; a header scene of ghosts, a goblin and a monster
 (size sets speed, randomised per load), fog thickest behind the title, and the
 real moon for Kansas City (position and phase computed in the browser, gliding
 along its real path at the moon's own pace); a bat

@@ -10,8 +10,8 @@
 
     @project      fallcrawlkc
     @file         style.css
-    @version      1.9.4
-    @updated      2026-10-14
+    @version      1.10.0
+    @updated      2026-10-22
     @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
     @url          https://fallcrawlkc.com/
     @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -49,7 +49,7 @@
                   glyphs left by half the tracking.
 
   ============================================================================
-    Fall Crawl v1.9.1  ·  style.css  ·  mediaBrilliance
+    Fall Crawl v1.10.0  ·  style.css  ·  mediaBrilliance
   ============================================================================
 */
 
@@ -771,6 +771,18 @@ body::after {
   text-transform: uppercase; letter-spacing: .08em; text-indent: .08em;
 }
 .spin-btn[disabled] { opacity: .6; cursor: default; }
+/* Check in: second to Spin, so outlined rather than filled. */
+.checkin { margin: 1.25rem auto 1.75rem; }
+.checkin-btn, .checkin-pick button {
+  min-height: 44px; padding: .6rem 1.2rem; border: 1px solid var(--orange); border-radius: 2px;
+  background: transparent; color: var(--ink); font: inherit; letter-spacing: .04em; cursor: pointer;
+}
+.checkin-btn:hover, .checkin-btn:focus-visible,
+.checkin-pick button:hover, .checkin-pick button:focus-visible { background: rgba(200, 64, 8, .2); }
+.checkin-btn[disabled] { opacity: .6; cursor: default; }
+.checkin-msg { margin: .65rem 0 0; color: var(--muted); }
+.checkin-pick { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-top: .65rem; }
+.checkin-msg:empty, .checkin-pick:empty { display: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* ---------- dialogs: spot card and age check ---------- */

@@ -10,8 +10,8 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.9.5
- *   @updated      2026-10-16
+ *   @version      1.10.0
+ *   @updated      2026-10-22
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
  *   @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -49,7 +49,7 @@
  *                 only this script's own SVG.
  *
  * ============================================================================
- *   Fall Crawl v1.9.1  ·  js/crawl.js  ·  mediaBrilliance
+ *   Fall Crawl v1.10.0  ·  js/crawl.js  ·  mediaBrilliance
  * ============================================================================
  */
 
@@ -294,9 +294,11 @@
     if (n) n.textContent = String(list.length);
 
     list.forEach(function (v) {
+      // A basic spot shows its name, address, hours, Instagram and lists only.
+      var full = !v.basic;
       var li = el('li', 'venue');
-      li.appendChild(el('h3', 'venue-name', v.collab || v.name || ''));
-      if (v.event) li.appendChild(el('p', 'venue-event', v.event));
+      li.appendChild(el('h3', 'venue-name', (full && v.collab) || v.name || ''));
+      if (full && v.event) li.appendChild(el('p', 'venue-event', v.event));
 
       if (v.street) {
         var a = el('a', 'venue-street', v.street);
@@ -308,9 +310,9 @@
       if (v.hours) li.appendChild(el('p', 'venue-hours', v.hours));
       var ig = insta(v.insta);
       if (ig) li.appendChild(ig);
-      var b = brands(v.brands);
+      var b = full && brands(v.brands);
       if (b) li.appendChild(b);
-      li.appendChild(details(v));
+      li.appendChild(details(full ? v : { lists: v.lists }));
       ul.appendChild(li);
     });
   }
@@ -589,7 +591,7 @@
       t.setAttribute('text-anchor', 'end');
       t.setAttribute('dominant-baseline', 'middle');
       t.setAttribute('class', 'wheel-label');
-      var name = v.event || v.name;
+      var name = (!v.basic && v.event) || v.name;
       // Long names step down a size rather than lose their ending.
       if (name.length > 20) t.style.fontSize = '6px';
       t.textContent = name.length > 26 ? name.slice(0, 25) + '\u2026' : name;
@@ -601,14 +603,42 @@
     svg.appendChild(hub);
 
     var angle = 0, spinning = false, last = -1;
+    var seen = visited(), here = spots.map(function (v) { return v.name; })
+                                      .indexOf(seen[seen.length - 1]);
     var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // "Spin again" landing where it just was reads as broken, so the
-    // previous spot sits out one spin. A single spot has to repeat.
+    /* The odds. The spot checked in at never comes up, and neither does the
+       one the last spin landed on, since "Spin again" landing where it just
+       was reads as broken. After a check-in the rest are weighted by
+       distance from it, nearest highest (next door weighs three to four
+       times the far end of the neighbourhood), and a spot already checked
+       into tonight counts a quarter. A spot marked basic in the data file
+       gets a flat 2 percent whatever else applies. Slices stay equal on
+       screen. */
+    function odds() {
+      var from = here >= 0 ? spots[here].pin : null, flat = 0, rest = 0;
+      var w = spots.map(function (v, i) {
+        if (n > 1 && (i === here || i === last)) return 0;
+        var x = from && v.pin ? 1 / (metres(from, v.pin) + 200) : 1;
+        return seen.indexOf(v.name) >= 0 ? x / 4 : x;
+      });
+      w.forEach(function (x, i) { if (x && spots[i].basic) flat += 0.02; else rest += x; });
+      return w.map(function (x, i) {
+        if (!x) return 0;
+        if (spots[i].basic) return rest ? 0.02 : 1;
+        return x * Math.max(0, 1 - flat) / rest;
+      });
+    }
+
     function pick() {
-      var pool = spots.map(function (v, i) { return i; })
-                      .filter(function (i) { return i !== last || n === 1; });
-      last = pool[Math.floor(Math.random() * pool.length)];
+      var p = odds(), r = Math.random() * p.reduce(function (a, b) { return a + b; }, 0);
+      last = -1;
+      for (var i = 0; i < n; i++) {
+        if (!p[i]) continue;
+        last = i; r -= p[i];
+        if (r < 0) break;
+      }
+      if (last < 0) last = 0;                // one spot, already checked in
       return last;
     }
 
@@ -632,6 +662,7 @@
     }
 
     btn.addEventListener('click', spin);
+    checkIn(spots, function (i) { here = i; seen = remember(spots[i].name); });
     var again = document.getElementById('spot-again');
     if (again) again.addEventListener('click', function () {
       closeModal(document.getElementById('spot-card'));
@@ -643,16 +674,110 @@
     });
   }
 
+  /* ---- Check in -------------------------------------------------------
+     On the night, a visitor checks in at the spot they are in before
+     spinning for the next one, and that spot sits out the spin. The phone's
+     position is compared with each spot's pin on the phone itself; only the
+     spot's name goes to Analytics (check_in), never the coordinates. Some
+     neighbours are closer than a phone can tell apart indoors (Grinders and
+     International Tap House are 9 m apart), so when more than one spot is
+     in range the visitor picks. Shown from midnight on DATA.date until 4
+     a.m. the next morning, after the last spot closes. */
+  function checkInOpen() {
+    var day = eventDay();
+    if (!day) return false;
+    var now = new Date(), end = new Date(day); end.setDate(end.getDate() + 1); end.setHours(4);
+    return now >= day && now < end;
+  }
+
+  // The spots checked in at tonight, oldest first, kept on the device so the
+  // wheel can steer somewhere new after a reload. Read as empty outside the
+  // check-in window, and deleted then.
+  var SEEN_KEY = 'fallcrawl-checkins';
+  function visited() {
+    try {
+      var s = JSON.parse(localStorage.getItem(SEEN_KEY) || 'null');
+      if (checkInOpen() && s && s.day === DATA.date && s.spots instanceof Array) return s.spots;
+      localStorage.removeItem(SEEN_KEY);
+    } catch (e) {}
+    return [];
+  }
+  function remember(name) {
+    var list = visited().filter(function (x) { return x !== name; }).concat(name);
+    try { localStorage.setItem(SEEN_KEY, JSON.stringify({ day: DATA.date, spots: list })); } catch (e) {}
+    return list;
+  }
+
+  function metres(a, b) {
+    var r = Math.PI / 180, dLat = (b[0] - a[0]) * r, dLng = (b[1] - a[1]) * r;
+    var h = Math.pow(Math.sin(dLat / 2), 2) +
+            Math.cos(a[0] * r) * Math.cos(b[0] * r) * Math.pow(Math.sin(dLng / 2), 2);
+    return 12742000 * Math.asin(Math.sqrt(h));
+  }
+
+  function checkIn(spots, done) {
+    var box = document.getElementById('checkin');
+    var btn = document.getElementById('checkin-btn');
+    var msg = document.getElementById('checkin-msg');
+    var pick = document.getElementById('checkin-pick');
+    var pinned = spots.filter(function (v) { return v.pin && v.pin.length === 2; });
+    if (!box || !navigator.geolocation || !pinned.length || !checkInOpen()) return;
+    box.hidden = false;
+
+    function say(text) { msg.textContent = text; }
+    function checkInAt(v) {
+      pick.textContent = '';
+      say('Checked in at ' + v.name + '. Spin for your next stop.');
+      if (window.gtag) gtag('event', 'check_in', { spot: v.name });
+      done(spots.indexOf(v));
+    }
+
+    btn.addEventListener('click', function () {
+      btn.disabled = true; pick.textContent = ''; say('Finding you\u2026');
+      navigator.geolocation.getCurrentPosition(function (p) {
+        btn.disabled = false;
+        var me = [p.coords.latitude, p.coords.longitude];
+        // The reading's own margin, floored for GPS indoors and capped so a
+        // city-wide fix cannot offer the whole neighbourhood.
+        var reach = Math.min(Math.max(p.coords.accuracy || 0, 30), 150) + 25;
+        var near = pinned.map(function (v) { return { v: v, d: metres(me, v.pin) }; })
+                         .sort(function (a, b) { return a.d - b.d; });
+        var hits = near.filter(function (n) { return n.d <= reach; });
+        if (!hits.length) {
+          say('You\u2019re not at a Fall Crawl spot yet. Closest: ' + near[0].v.name +
+              ', about ' + Math.max(1, Math.round(near[0].d / 80)) + ' min walk.');
+        } else if (hits.length === 1) {
+          checkInAt(hits[0].v);
+        } else {
+          say('Which one are you in?');
+          hits.slice(0, 4).forEach(function (n) {
+            var b = el('button', '', n.v.name);
+            b.type = 'button';
+            b.addEventListener('click', function () { checkInAt(n.v); });
+            pick.appendChild(b);
+          });
+        }
+      }, function (e) {
+        btn.disabled = false;
+        say(e.code === 1
+          ? 'Location is off for this site, so check-in can\u2019t find your spot.'
+          : 'Couldn\u2019t get your location. Try again in a moment.');
+      }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
+    });
+  }
+
   function showSpot(v) {
     var card = document.getElementById('spot-card');
     if (!card) return;
-    document.getElementById('spot-name').textContent = v.collab || v.name;
+    // A basic spot's card carries the name, address, hours, Instagram and lists only.
+    var full = !v.basic;
+    document.getElementById('spot-name').textContent = (full && v.collab) || v.name;
     var ev = document.getElementById('spot-event');
-    if (ev) { ev.textContent = v.event || ''; ev.hidden = !v.event; }
+    if (ev) { ev.textContent = v.event || ''; ev.hidden = !(full && v.event); }
     var prize = document.getElementById('spot-prize');
     if (prize) {
       prize.textContent = '';
-      (v.prize || []).filter(Boolean).forEach(function (line) { prize.appendChild(el('p', null, line)); });
+      if (full) (v.prize || []).filter(Boolean).forEach(function (line) { prize.appendChild(el('p', null, line)); });
       prize.hidden = !prize.childNodes.length;
     }
     var st = document.getElementById('spot-street');
@@ -663,7 +788,7 @@
     var box = document.getElementById('spot-brands');
     if (box) {
       box.textContent = '';
-      var row = brands(v.brands);
+      var row = full && brands(v.brands);
       if (row) {
         row.querySelectorAll('img').forEach(function (i) { i.loading = 'eager'; });
         box.appendChild(row);
@@ -672,8 +797,8 @@
     }
     var box2 = document.getElementById('spot-details');
     box2.textContent = '';
-    box2.appendChild(details(v));
-    document.getElementById('spot-empty').hidden = box2.childNodes.length > 0;
+    box2.appendChild(details(full ? v : { lists: v.lists }));
+    document.getElementById('spot-empty').hidden = !full || box2.childNodes.length > 0;
     var ig = document.getElementById('spot-ig');
     if (v.insta) { ig.textContent = '@' + v.insta; ig.href = 'https://www.instagram.com/' + v.insta; ig.hidden = false; }
     else ig.hidden = true;

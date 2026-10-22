@@ -15,7 +15,7 @@
 
       @project      fallcrawlkc
       @file         privacy.html
-      @updated      2026-10-14
+      @updated      2026-10-22
       @client       East Crossroads Fall Crawl, Kansas City, MO
       @repository   https://github.com/mbdxkc/fallcrawlkc
 
@@ -73,7 +73,7 @@
     <!-- crossorigin is required even same-origin, or the font is fetched twice. -->
     <link rel="preload" href="fonts/antic.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="fonts/gagalin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="style.min.css?v=756a2839" />
+    <link rel="stylesheet" href="style.min.css?v=3a0381af" />
     <!-- Google Analytics, described on privacy.html. Commands queue now; the
          library loads once the page has finished loading and gone idle, so it
          never competes with the first screen. -->
@@ -147,6 +147,19 @@
             Open-Meteo sees your IP address and browser type. At most once
             every 30 minutes; nothing else is sent. The moon's position and
             phase are worked out on your own device.</p>
+
+          <h2>Checking in</h2>
+          <p>On the night of the crawl, the Check in button asks your browser
+            for your location, and only when you tap it. Your phone compares
+            that location with the spots' addresses on your own device. The
+            only thing sent anywhere is the name of the spot you checked in
+            at, which Google Analytics counts as a check-in. Your location
+            itself never leaves your phone and is not kept. If you say no,
+            the wheel works the same.</p>
+          <p>The names of the spots you check in at are kept in your browser
+            for the night, so the wheel can favor spots close by and send you
+            somewhere new. They stay on your device and are deleted the
+            morning after the crawl.</p>
           <p>There are no forms. There is nothing to sign up for and nowhere
             to enter your name, email or phone number.</p>
 
@@ -182,7 +195,7 @@
           <p>Message <a href="https://www.instagram.com/fallcrawlkc" target="_blank"
              rel="noopener">@fallcrawlkc</a> on Instagram.</p>
 
-          <p class="updated">Last updated Oct. 14, 2026.</p>
+          <p class="updated">Last updated Oct. 22, 2026.</p>
         </div>
       </section>
     </main>
@@ -210,6 +223,6 @@
          parser-blocking, so it still runs before the deferred page script;
          the file is same-origin, which no browser intervenes on. -->
     <script>document.write('<script src="data/crawl.js?m=' + Math.floor(Date.now() / 6e4) + '"><\/script>');</script>
-    <script src="js/crawl.min.js?v=84c9c58d" defer></script>
+    <script src="js/crawl.min.js?v=502e6a43" defer></script>
   </body>
 </html>
