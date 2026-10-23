@@ -776,9 +776,16 @@
       (v.prize || []).filter(Boolean).forEach(function (line) { prize.appendChild(el('p', null, line)); });
       prize.hidden = !prize.childNodes.length;
     }
+    // On the card the address is a way there: walking directions in Google
+    // Maps from wherever the phone is, marked with an arrow.
     var st = document.getElementById('spot-street');
-    if (v.street) { st.textContent = v.street; st.href = MAPS + encodeURIComponent(v.street + ', Kansas City, MO'); st.hidden = false; }
-    else st.hidden = true;
+    if (v.street) {
+      st.textContent = v.street + ' \u2192';
+      st.href = 'https://www.google.com/maps/dir/?api=1&travelmode=walking&destination=' +
+                encodeURIComponent(v.street + ', Kansas City, MO');
+      st.setAttribute('aria-label', 'Walking directions to ' + v.street);
+      st.hidden = false;
+    } else st.hidden = true;
     var hrs = document.getElementById('spot-hours');
     if (hrs) { hrs.textContent = v.hours || ''; hrs.hidden = !v.hours; }
     var box = document.getElementById('spot-brands');

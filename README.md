@@ -193,7 +193,7 @@ per tab); a countdown; the big date as the add-to-calendar link, marked with a
 calendar-plus icon (the calendar file, or Google Calendar on Android, which
 cannot open one); the Fall Crawl Roulette wheel, right under the hero,
 of live spots (each labelled with its event name, or the business name until it
-has one), whose card shows the collab heading, event, address, hours, Instagram,
+has one), whose card shows the collab heading, event, address (with an arrow, linking to Google Maps walking directions from the phone, 22 Oct), hours, Instagram,
 brands, any prize (Ted's free cover), then the same write-up and lists as the
 Crawl Guide, or "Details coming soon." otherwise, with a text link to EZ Pedicabs for the long walks; the wheel sits
 under the hero (moved above the map 16 Oct) and shows now (29 Sep, for the weekend launch); a date in
