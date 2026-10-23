@@ -209,8 +209,8 @@ check-in (next door three to four times the far end), spots already checked into
 count a quarter, and a spot with `chance: N` gets a flat N percent (Ricochet, 2, at Amy's request,
 22 Oct). Check-ins are kept in localStorage
 (`fallcrawl-checkins`) for the night and deleted outside the check-in window; slices
-stay equal on screen. Register `spot` as an event-scoped custom dimension in GA4 to
-report check-ins by spot; a header scene of ghosts, a goblin and a monster
+stay equal on screen. The parameter is `Spot`, capital S, to match the event-scoped
+custom dimension Spot registered in GA4 on 22 Oct (names are case-sensitive); a header scene of ghosts, a goblin and a monster
 (size sets speed, randomised per load), fog thickest behind the title, and the
 real moon for Kansas City (position and phase computed in the browser, gliding
 along its real path at the moon's own pace); a bat

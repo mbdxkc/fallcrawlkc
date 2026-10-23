@@ -726,7 +726,9 @@
     function checkInAt(v) {
       pick.textContent = '';
       say('Checked in at ' + v.name + '. Spin for your next stop.');
-      if (window.gtag) gtag('event', 'check_in', { spot: v.name });
+      // Capital S: the GA4 custom dimension Spot was registered on parameter
+      // "Spot", and parameter names are case-sensitive.
+      if (window.gtag) gtag('event', 'check_in', { Spot: v.name });
       done(spots.indexOf(v));
     }
 
