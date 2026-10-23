@@ -206,9 +206,8 @@ reading can separate (Grinders and International Tap House are 9 m apart) are
 offered as a choice. The wheel's odds then follow the night: the spot checked in at
 and the last spot landed on never come up, the rest are weighted by distance from the
 check-in (next door three to four times the far end), spots already checked into
-count a quarter, and a spot with `basic: true` (Ricochet, at Amy's request, 22 Oct) gets a flat 2
-percent and shows only name, address, hours, Instagram and lists in the guide, on its wheel
-slice and on its card. Check-ins are kept in localStorage
+count a quarter, and a spot with `chance: N` gets a flat N percent (Ricochet, 2, at Amy's request,
+22 Oct). Check-ins are kept in localStorage
 (`fallcrawl-checkins`) for the night and deleted outside the check-in window; slices
 stay equal on screen. Register `spot` as an event-scoped custom dimension in GA4 to
 report check-ins by spot; a header scene of ghosts, a goblin and a monster

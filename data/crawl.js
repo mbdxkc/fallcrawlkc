@@ -122,10 +122,8 @@ window.FALL_CRAWL = {
        prize         lines shown only when the wheel lands on this spot
        pin           the map point check-in measures against. Set by the
                      developer from the address; leave it as it is
-       basic         true shows only the name, address, hours, Instagram
-                     and lists, in the guide and on the wheel, and gives
-                     the spot a 2 percent chance on the wheel, e.g.
-                     basic: true,
+       chance        a fixed chance of landing on the wheel, in percent,
+                     e.g.  chance: 2,  Leave it off for the usual odds
        live          false hides a spot without deleting it              */
 
   venues: [
@@ -219,15 +217,13 @@ window.FALL_CRAWL = {
         { title: "Featured Cocktails", items: ["Haunted Sour", "Bloody Tennessee", "Poison Apple", "Blackberry Lemonade Seltzer"] },
       ] },
 
-    { name: "Ricochet", basic: true, street: "1720 McGee St", hours: "11 a.m. to 1:30 a.m.", insta: "ricochetkcmo", pin: [39.092765, -94.580361],
+    { name: "Ricochet", chance: 2, street: "1720 McGee St", hours: "11 a.m. to 1:30 a.m.", insta: "ricochetkcmo", pin: [39.092765, -94.580361],
       collab: "Ricochet x High Noon x Espolon",
       event:  "Play at Your Own Risk",
       brands: ["Espolon", "High Noon", "Lucky One"],
       about: [
-        "High Noon Skee-Ball Tournament | 2–4 PM",
-        "Think you've got the highest score? Prove it! Top scorer takes home a prize.",
-        "Keep the Games Going with Espolòn!",
-        "Yard games, giveaways, and Halloween cocktails to keep the fun going into the night.",
+        "High Noon Skee-Ball Competition, 2-4 p.m. The winner gets a High Noon prize!",
+        "Espolòn giveaways, 9-11 p.m.",
       ],
       lists: [
         { title: "Featured Drinks", items: ["High Noon Bucket Special", "Espolòn and Lucky One Specials"] },

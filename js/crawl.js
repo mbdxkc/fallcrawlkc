@@ -294,11 +294,9 @@
     if (n) n.textContent = String(list.length);
 
     list.forEach(function (v) {
-      // A basic spot shows its name, address, hours, Instagram and lists only.
-      var full = !v.basic;
       var li = el('li', 'venue');
-      li.appendChild(el('h3', 'venue-name', (full && v.collab) || v.name || ''));
-      if (full && v.event) li.appendChild(el('p', 'venue-event', v.event));
+      li.appendChild(el('h3', 'venue-name', v.collab || v.name || ''));
+      if (v.event) li.appendChild(el('p', 'venue-event', v.event));
 
       if (v.street) {
         var a = el('a', 'venue-street', v.street);
@@ -310,9 +308,9 @@
       if (v.hours) li.appendChild(el('p', 'venue-hours', v.hours));
       var ig = insta(v.insta);
       if (ig) li.appendChild(ig);
-      var b = full && brands(v.brands);
+      var b = brands(v.brands);
       if (b) li.appendChild(b);
-      li.appendChild(details(full ? v : { lists: v.lists }));
+      li.appendChild(details(v));
       ul.appendChild(li);
     });
   }
@@ -591,7 +589,7 @@
       t.setAttribute('text-anchor', 'end');
       t.setAttribute('dominant-baseline', 'middle');
       t.setAttribute('class', 'wheel-label');
-      var name = (!v.basic && v.event) || v.name;
+      var name = v.event || v.name;
       // Long names step down a size rather than lose their ending.
       if (name.length > 20) t.style.fontSize = '6px';
       t.textContent = name.length > 26 ? name.slice(0, 25) + '\u2026' : name;
@@ -612,9 +610,9 @@
        was reads as broken. After a check-in the rest are weighted by
        distance from it, nearest highest (next door weighs three to four
        times the far end of the neighbourhood), and a spot already checked
-       into tonight counts a quarter. A spot marked basic in the data file
-       gets a flat 2 percent whatever else applies. Slices stay equal on
-       screen. */
+       into tonight counts a quarter. A spot with a chance in the data file
+       (Ricochet: 2) gets that percentage flat, whatever else applies.
+       Slices stay equal on screen. */
     function odds() {
       var from = here >= 0 ? spots[here].pin : null, flat = 0, rest = 0;
       var w = spots.map(function (v, i) {
@@ -622,10 +620,10 @@
         var x = from && v.pin ? 1 / (metres(from, v.pin) + 200) : 1;
         return seen.indexOf(v.name) >= 0 ? x / 4 : x;
       });
-      w.forEach(function (x, i) { if (x && spots[i].basic) flat += 0.02; else rest += x; });
+      w.forEach(function (x, i) { if (x && spots[i].chance) flat += spots[i].chance / 100; else rest += x; });
       return w.map(function (x, i) {
         if (!x) return 0;
-        if (spots[i].basic) return rest ? 0.02 : 1;
+        if (spots[i].chance) return rest ? spots[i].chance / 100 : 1;
         return x * Math.max(0, 1 - flat) / rest;
       });
     }
@@ -769,15 +767,13 @@
   function showSpot(v) {
     var card = document.getElementById('spot-card');
     if (!card) return;
-    // A basic spot's card carries the name, address, hours, Instagram and lists only.
-    var full = !v.basic;
-    document.getElementById('spot-name').textContent = (full && v.collab) || v.name;
+    document.getElementById('spot-name').textContent = v.collab || v.name;
     var ev = document.getElementById('spot-event');
-    if (ev) { ev.textContent = v.event || ''; ev.hidden = !(full && v.event); }
+    if (ev) { ev.textContent = v.event || ''; ev.hidden = !v.event; }
     var prize = document.getElementById('spot-prize');
     if (prize) {
       prize.textContent = '';
-      if (full) (v.prize || []).filter(Boolean).forEach(function (line) { prize.appendChild(el('p', null, line)); });
+      (v.prize || []).filter(Boolean).forEach(function (line) { prize.appendChild(el('p', null, line)); });
       prize.hidden = !prize.childNodes.length;
     }
     var st = document.getElementById('spot-street');
@@ -788,7 +784,7 @@
     var box = document.getElementById('spot-brands');
     if (box) {
       box.textContent = '';
-      var row = full && brands(v.brands);
+      var row = brands(v.brands);
       if (row) {
         row.querySelectorAll('img').forEach(function (i) { i.loading = 'eager'; });
         box.appendChild(row);
@@ -797,8 +793,8 @@
     }
     var box2 = document.getElementById('spot-details');
     box2.textContent = '';
-    box2.appendChild(details(full ? v : { lists: v.lists }));
-    document.getElementById('spot-empty').hidden = !full || box2.childNodes.length > 0;
+    box2.appendChild(details(v));
+    document.getElementById('spot-empty').hidden = box2.childNodes.length > 0;
     var ig = document.getElementById('spot-ig');
     if (v.insta) { ig.textContent = '@' + v.insta; ig.href = 'https://www.instagram.com/' + v.insta; ig.hidden = false; }
     else ig.hidden = true;
