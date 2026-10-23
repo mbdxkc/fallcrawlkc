@@ -226,7 +226,7 @@ window.FALL_CRAWL = {
         "Espolòn giveaways, 9-11 p.m.",
       ],
       lists: [
-        { title: "Featured Drinks", items: ["High Noon Bucket Special", "Espolòn and Lucky One Specials"] },
+        { title: "Featured Drinks", items: ["High Noon Bucket Special", "Peach Cobbler Margarita"] },
       ] },
 
     { name: "Tannin", street: "1526 Walnut St", hours: "4 p.m. to 1:30 a.m.", insta: "tanninkc", pin: [39.095324, -94.582417],
