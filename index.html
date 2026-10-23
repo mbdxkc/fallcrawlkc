@@ -224,7 +224,7 @@
         <h2>Fall Crawl Roulette</h2>
         <p class="lede" id="spin-lede">Can&rsquo;t decide where to go next? Leave it to fate.<br />
           Spin the wheel. Go where it sends you.</p>
-        <!-- Check in: shown on the night only. Filled by js/crawl.js. -->
+        <!-- Check in: shown until the morning after the crawl. Filled by js/crawl.js. -->
         <div class="checkin" id="checkin" hidden>
           <button class="checkin-btn" id="checkin-btn" type="button">Check in where I am</button>
           <p class="checkin-msg" id="checkin-msg" aria-live="polite"></p>
@@ -368,6 +368,6 @@
          deferred page script; the file is same-origin, which browsers do not
          intervene on. -->
     <script>document.write('<script src="data/crawl.js?m=' + Math.floor(Date.now() / 6e4) + '"><\/script>');</script>
-    <script src="js/crawl.min.js?v=502e6a43" defer></script>
+    <script src="js/crawl.min.js?v=1350b293" defer></script>
   </body>
 </html>

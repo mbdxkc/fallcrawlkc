@@ -681,18 +681,18 @@
      spot's name goes to Analytics (check_in), never the coordinates. Some
      neighbours are closer than a phone can tell apart indoors (Grinders and
      International Tap House are 9 m apart), so when more than one spot is
-     in range the visitor picks. Shown from midnight on DATA.date until 4
-     a.m. the next morning, after the last spot closes. */
+     in range the visitor picks. Shown until 4 a.m. the morning after
+     DATA.date, after the last spot closes. */
   function checkInOpen() {
     var day = eventDay();
     if (!day) return false;
     var now = new Date(), end = new Date(day); end.setDate(end.getDate() + 1); end.setHours(4);
-    return now >= day && now < end;
+    return now < end;
   }
 
   // The spots checked in at tonight, oldest first, kept on the device so the
-  // wheel can steer somewhere new after a reload. Read as empty outside the
-  // check-in window, and deleted then.
+  // wheel can steer somewhere new after a reload. Read as empty once the
+  // check-in window closes, and deleted then.
   var SEEN_KEY = 'fallcrawl-checkins';
   function visited() {
     try {

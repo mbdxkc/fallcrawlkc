@@ -198,7 +198,7 @@ brands, any prize (Ted's free cover), then the same write-up and lists as the
 Crawl Guide, or "Details coming soon." otherwise, with a text link to EZ Pedicabs for the long walks; the wheel sits
 under the hero (moved above the map 16 Oct) and shows now (29 Sep, for the weekend launch); a date in
 `wheelFrom` would take it off the page until that day, nav link included. Above
-the wheel, on the night only (midnight on `date` to 4 a.m. after), a Check in button
+the wheel, until 4 a.m. after `date` (shown early from 22 Oct, at Valdez's call), a Check in button
 asks for the phone's location, matches it on the phone against each spot's `pin`
 (Nominatim rooftop geocodes, 22 Oct), sends Analytics only the spot's name as
 `check_in`, and keeps that spot out of the next spin. Spots closer together than the
