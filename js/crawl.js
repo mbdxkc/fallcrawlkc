@@ -11,7 +11,7 @@
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
  *   @version      1.10.0
- *   @updated      2026-10-22
+ *   @updated      2026-10-24
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
  *   @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -35,9 +35,24 @@
  *   IMPLEMENTATION NOTES
  * ============================================================================
  *
- *   @desc         Renders every list on the page from data/crawl.js so the
- *                 client edits one plain file through GitHub's web editor and
- *                 never touches markup.
+ *   @desc         Everything the page does after load, in one file with no
+ *                 dependencies: renders every list from data/crawl.js (so the
+ *                 client edits one plain file and never touches markup), runs
+ *                 the Fall Crawl Roulette wheel and check-in, and draws the
+ *                 night scene (header procession, real moon and weather, bat,
+ *                 ravens, real star field). Sections, in file order:
+ *                 helpers, basics, countdown and calendar, lists, header,
+ *                 roulette, check-in, spot card, 21+ check, header scene,
+ *                 moon and weather, bat, ravens, stars, init().
+ *   @load         Loaded deferred as js/crawl.min.js?v=<hash> on every page
+ *                 (tools/build.sh), after data/crawl.js?m=<minute>. Every
+ *                 renderer checks for its own container, because the policy
+ *                 pages reuse this file for the header and have no lists.
+ *   @privacy      Outside requests: Open-Meteo for Kansas City's weather
+ *                 (fixed coordinates, cached 30 minutes per tab). Analytics
+ *                 events go through the gtag() the page defines: check_in
+ *                 with the spot's name only. A check-in's coordinates never
+ *                 leave the device.
  *   @a11y         Header links are built after the sections render, so a
  *                 section that removed itself cannot leave a dead anchor.
  *                 Sections whose list is empty are removed from the DOM, not
@@ -46,7 +61,10 @@
  *   @security     Every value from data/crawl.js is written with textContent,
  *                 never innerHTML. Venue copy arrives from a hand-edited file
  *                 and must not be able to inject markup. innerHTML carries
- *                 only this script's own SVG.
+ *                 only this script's own SVG and numbers it computed.
+ *   @motion       Every animation is off under prefers-reduced-motion: the
+ *                 bat and ravens never start, the wheel lands without
+ *                 spinning, and CSS stills the header and the stars.
  *
  * ============================================================================
  *   Fall Crawl v1.10.0  ·  js/crawl.js  ·  mediaBrilliance
@@ -277,8 +295,9 @@
 
   /* ---- participating spots ---------------------------------------------
      Each of the three renderers below checks for its own <ul> before it
-     writes. The check is not paranoia: privacy.html and terms.html reuse
-     this file for the header bar and have none of the list containers, and
+     writes. The check is not paranoia: privacy.html, terms.html and
+     accessibility.html reuse this file for the header bar and have none of
+     the list containers, and
      an unguarded appendChild threw there, which aborted init() before the
      nav and the social icons were built. An EMPTY list hides the fault,
      because drop() returns first - so it only appears on a page that has
@@ -433,7 +452,7 @@
      being empty cannot leave a link pointing at nothing.
   ---------------------------------------------------------------------- */
   /* `on` answers "will this section exist on the crawl page", from the
-     DATA rather than from the DOM. It has to: privacy.html and terms.html
+     DATA rather than from the DOM. It has to: the three policy pages
      carry the same header and none of these sections, so asking the
      document would remove the nav on exactly the pages that most need a
      way back. The tests below MUST match the ones the renderers use, or
@@ -533,10 +552,12 @@
   }
 
   /* ---- Fall Crawl Roulette --------------------------------------------
-     A wheel of the live spots. Each spin lands on a random one, never the
-     same one twice in a row, then opens a card with whatever details the
-     data file has so far. Missing details are left off; a spot with none
-     says details are coming soon. Nothing is stored. */
+     A wheel of the live spots, one equal slice each. A spin picks a spot by
+     weighted chance (see odds() below), turns the wheel so that slice lands
+     under the pointer, then opens a card with whatever details the data file
+     has. Missing details are left off; a spot with none says details are
+     coming soon. The wheel itself stores nothing; check-ins (further down)
+     are what the odds remember. */
   var COLORS = ['#c84008', '#1b1b1b', '#8a2b06', '#2b2b2b'];
 
   // The wheel stays off the page until DATA.wheelFrom (YYYY-MM-DD), in the
@@ -855,7 +876,7 @@
      Decorative and slow: translucent ghosts drift through the bar and the
      odd goblin or monster trudges along its bottom edge. Each figure draws
      its own pace, pause, height and direction on page load. Injected here
-     so all three pages get it from one place. Hidden from assistive tech,
+     so every page gets it from one place. Hidden from assistive tech,
      never takes clicks, and off under prefers-reduced-motion (in CSS). */
   var uid = 0;
 
@@ -987,8 +1008,9 @@
      lunar formulas popularised by SunCalc, after Meeus), nothing fetched:
      east of south maps to the left of the bar, west to the right, altitude
      to how high it sits, and below the horizon it is gone. Weather is the
-     one outside request on the site: current conditions for Kansas City's
-     fixed coordinates from Open-Meteo, cached for 30 minutes in this tab.
+     one outside request this script makes (Analytics is the page's own):
+     current conditions for Kansas City's fixed coordinates from Open-Meteo,
+     cached for 30 minutes in this tab.
      Clouds and daylight dim the moon, fog and rain thicken the fog bank. If
      the request fails the sky just stays clear. */
   var KC = { lat: 39.0997, lng: -94.5786 };
@@ -1122,11 +1144,12 @@
   /* ---- the bat ------------------------------------------------------------
      A large bat crosses the page window (not the header) about once a
      minute. It is drawn fresh every frame from a small 3D model seen from
-     below and a little to the side, the way bats are seen overhead: each wing is a membrane stretched over
-     four finger bones, it flaps about the shoulder with a fast downstroke
-     and a slower upstroke that half-folds the wing, and the far wing sits
-     behind the body, a little darker. The path is a bat's, not a glide: steady
-     headway, a quick jink up or down every half second or so, and the
+     below and a little to the side, the way bats are seen overhead: each
+     wing is a membrane stretched over four finger bones, it flaps about the
+     shoulder with a fast downstroke and a slower upstroke that half-folds
+     the wing, and the far wing sits behind the body, a little darker. The
+     path is a bat's, not a glide: steady headway, a quick jink up or down
+     every half second or so, and the
      body banks into each climb and dive. Black with orange line work, like
      the logo. Fixed, click-through, under the header, off under reduced
      motion. */
