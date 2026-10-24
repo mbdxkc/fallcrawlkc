@@ -123,11 +123,11 @@ window.FALL_CRAWL = {
        pin           the map point check-in measures against. Set by the
                      developer from the address; leave it as it is
        chance        a fixed chance of landing on the wheel, in percent,
-                     e.g.  chance: 2,  Leave it off for the usual odds
+                     e.g.  chance: 5,  Leave it off for the usual odds
        live          false hides a spot without deleting it              */
 
   venues: [
-    { name: "Beckett's", street: "1701 McGee St", hours: "11 a.m. to 1:30 a.m.", insta: "beckettskcmo", pin: [39.093061, -94.579746],
+    { name: "Beckett's", chance: 5, street: "1701 McGee St", hours: "11 a.m. to 1:30 a.m.", insta: "beckettskcmo", pin: [39.093061, -94.579746],
       collab: "Beckett's x Lucky One x Ole Smoky",
       event:  "The Haunted Tailgate",
       brands: ["Ole Smoky", "High Noon", "Lucky One"],
@@ -217,7 +217,7 @@ window.FALL_CRAWL = {
         { title: "Featured Cocktails", items: ["Haunted Sour", "Bloody Tennessee", "Poison Apple", "Blackberry Lemonade Seltzer"] },
       ] },
 
-    { name: "Ricochet", chance: 2, street: "1720 McGee St", hours: "11 a.m. to 1:30 a.m.", insta: "ricochetkcmo", pin: [39.092765, -94.580361],
+    { name: "Ricochet", chance: 5, street: "1720 McGee St", hours: "11 a.m. to 1:30 a.m.", insta: "ricochetkcmo", pin: [39.092765, -94.580361],
       collab: "Ricochet x High Noon x Espolon",
       event:  "Play at Your Own Risk",
       brands: ["Espolon", "High Noon", "Lucky One"],

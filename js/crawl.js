@@ -51,7 +51,7 @@
  *   @privacy      Outside requests: Open-Meteo for Kansas City's weather
  *                 (fixed coordinates, cached 30 minutes per tab). Analytics
  *                 events go through the gtag() the page defines: check_in
- *                 with the spot's name only. A check-in's coordinates never
+ *                 and spin, each with a spot's name only. A check-in's coordinates never
  *                 leave the device.
  *   @a11y         Header links are built after the sections render, so a
  *                 section that removed itself cannot leave a dead anchor.
@@ -556,7 +556,8 @@
      weighted chance (see odds() below), turns the wheel so that slice lands
      under the pointer, then opens a card with whatever details the data file
      has. Missing details are left off; a spot with none says details are
-     coming soon. The wheel itself stores nothing; check-ins (further down)
+     coming soon. Each landing goes to Analytics as a spin event with the
+     spot's name. The wheel itself stores nothing; check-ins (further down)
      are what the odds remember. */
   var COLORS = ['#c84008', '#1b1b1b', '#8a2b06', '#2b2b2b'];
 
@@ -632,7 +633,7 @@
        distance from it, nearest highest (next door weighs three to four
        times the far end of the neighbourhood), and a spot already checked
        into tonight counts a quarter. A spot with a chance in the data file
-       (Ricochet: 2) gets that percentage flat, whatever else applies.
+       (Beckett's and Ricochet: 5) gets that percentage flat, whatever else applies.
        Slices stay equal on screen. */
     function odds() {
       var from = here >= 0 ? spots[here].pin : null, flat = 0, rest = 0;
@@ -675,6 +676,8 @@
       var done = function () {
         spinning = false; btn.disabled = false;
         document.getElementById('spin-live').textContent = 'Landed on ' + spots[i].name;
+        // One event per spin, so Analytics counts spins and where they land.
+        if (window.gtag) gtag('event', 'spin', { Spot: spots[i].name });
         showSpot(spots[i]);
       };
       if (still) done(); else setTimeout(done, 5040);   // matches the CSS transition

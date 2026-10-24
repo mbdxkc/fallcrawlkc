@@ -100,7 +100,8 @@ spot inside the reading's margin of error is offered as a choice instead of
 guessed.
 
 The only thing sent is the spot's name, to Google Analytics, as a `check_in`
-event with a `Spot` parameter. Spots checked into are kept in `localStorage` so
+event with a `Spot` parameter. Each spin sends a `spin` event the same way, with
+the spot it landed on, so Analytics counts spins and landings. Spots checked into are kept in `localStorage` so
 the odds survive a reload; the list is ignored, then deleted, once the check-in
 window closes at 4 a.m. after the event. The [privacy page](https://fallcrawlkc.com/privacy.html)
 describes all of this in plain language.
