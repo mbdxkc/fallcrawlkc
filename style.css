@@ -906,6 +906,44 @@ body::after {
 .footer-nav a:focus-visible { color: var(--orange); }
 .footer-nav a[aria-current='page'] { color: var(--ink); }
 
+/* ---------- home: thank you ----------
+   The home page between crawls. The headline takes the date's place in the
+   hero, at the date's size, so the page keeps the event page's shape.
+   Scoped under .hero to outrank the .hero h1 rule above. */
+.hero .thanks-big {
+  letter-spacing: .02em; text-indent: .02em;
+  margin: 0;
+  color: var(--orange);
+  font-family: var(--display);
+  font-size: clamp(2.75rem, 14vw, 5.5rem);
+  font-weight: 800;
+  line-height: .95;
+  text-transform: uppercase;
+}
+.stat-list {
+  list-style: none; margin: 0 auto; padding: 0; max-width: 62rem;
+  display: grid; gap: clamp(1.25rem, 5vw, 2rem);
+  color: var(--muted); font-size: clamp(1rem, 3.6vw, 1.15rem);
+}
+.stat-list b {
+  display: block; color: var(--orange); font-family: var(--display);
+  font-size: clamp(3rem, 15vw, 4.5rem); font-weight: 800; line-height: 1;
+}
+@media (min-width: 768px) { .stat-list { grid-template-columns: repeat(3, 1fr); } }
+.thanks-list {
+  list-style: none; margin: 0 auto; padding: 0; max-width: 40rem;
+  display: grid; gap: .25rem 2rem; font-size: clamp(1.05rem, 4vw, 1.25rem);
+}
+@media (min-width: 480px) { .thanks-list { grid-template-columns: 1fr 1fr; } }
+/* 44px tall, so each name is a full tap target on a phone. */
+.thanks-list a {
+  display: flex; align-items: center; justify-content: center; min-height: 44px;
+  color: var(--ink); text-decoration: none;
+}
+.thanks-list a:hover, .thanks-list a:focus-visible { color: var(--orange); }
+.thanks-more { margin: clamp(1.25rem, 5vw, 2rem) auto 0; max-width: var(--measure); color: var(--muted); }
+.thanks-more a { color: var(--ink); }
+
 /* ---------- 1200 ----------
    The nav comes out of the menu button only here. With all five links
    (Home, Expect, Where, Spin, Crawl Guide) it ends at 384px, and at 1100px

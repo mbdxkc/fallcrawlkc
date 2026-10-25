@@ -1,7 +1,9 @@
 # East Crossroads Fall Crawl
 
 The event site for the East Crossroads Fall Crawl, a free, choose-your-own-adventure
-bar crawl through 13 spots in Kansas City's East Crossroads on Saturday, Oct. 24, 2026.
+bar crawl through 13 spots in Kansas City's East Crossroads. The 2026 crawl ran
+Saturday, Oct. 24; the home page now thanks everyone, and the event page lives on at
+[fallcrawlkc.com/2026](https://fallcrawlkc.com/2026/).
 
 Live at **[fallcrawlkc.com](https://fallcrawlkc.com)** · built by
 [mediaBrilliance](https://www.mediabrilliance.io)
@@ -20,7 +22,23 @@ To undo: **Commits** at the top of this page, find yours, **...**, **Revert**.
 
 ---
 
-## What the page does
+## Between crawls
+
+Since Oct. 25, 2026, the site has two parts:
+
+- **`index.html`, the home page:** thank you, the night in numbers, every spot
+  linked to its Instagram, and a link to the 2026 page. Its words are written in the
+  page itself; `data/crawl.js` supplies only the header bar's title and icons.
+- **`2026/`, the archive:** the event page exactly as it ran on crawl night, with
+  its own frozen copies of the stylesheet, the page script and the data file. Editing
+  the live files for a future crawl cannot change it, and `tools/build.sh` leaves it
+  alone. Images and fonts are shared from the root. The countdown, calendar date and
+  check-in switch themselves off after the date; the wheel still spins.
+
+The sections below describe the event page, which is what `2026/` holds and what a
+future crawl's page will start from.
+
+## What the event page does
 
 - **Lists the night from one data file.** Spots, events, featured brands, drink
   lists, hours, safety notes and the pedicab partner all render from
@@ -173,7 +191,8 @@ cropped or converted by hand:
 
 ```
 /
-├── index.html          # the event page
+├── index.html          # home: thank you and see you next fall
+├── 2026/               # the 2026 event page, frozen: its own CSS, script and data
 ├── privacy.html        # what is collected and why, in plain language
 ├── terms.html
 ├── accessibility.html

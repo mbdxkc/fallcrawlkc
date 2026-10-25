@@ -9,31 +9,20 @@
     ============================================================================
 
       EAST CROSSROADS FALL CRAWL
-      Single-page event site
+      Home: thank you, and see you next fall
 
-    ============================================================================
-      PROJECT
     ============================================================================
 
       @project      fallcrawlkc
       @file         index.html
-      @version      1.10.0
-      @updated      2026-10-22
+      @version      2.0.0
+      @updated      2026-10-25
       @client       East Crossroads Fall Crawl - East Crossroads, Kansas City, MO
       @url          https://fallcrawlkc.com/
       @repository   https://github.com/mbdxkc/fallcrawlkc
 
-    ============================================================================
-      AUTHORSHIP
-    ============================================================================
-
       @author       Valdez Campos <dez@mediabrilliance.io>
       @studio       mediaBrilliance - https://www.mediabrilliance.io
-      @contact      dez@mediabrilliance.io
-
-    ============================================================================
-      LICENSE
-    ============================================================================
 
       Copyright (c) 2026 mediaBrilliance. All rights reserved.
       Proprietary. See LICENSE at the repository root.
@@ -42,62 +31,39 @@
       IMPLEMENTATION NOTES
     ============================================================================
 
-      @desc         One page, one QR destination. Everything that changes week
-                    to week lives in data/crawl.js so the client edits it from
-                    GitHub's web editor without touching this file.
-      @paths        Relative, not root-absolute. A GitHub Pages project site is
-                    served from /fallcrawlkc/, where /images/... resolves outside
-                    the project and 404s. Relative works at both a subpath and a
-                    custom domain, so the hosting decision stops mattering.
-      @seo          Indexed. canonical, og:url, og:image and the Event JSON-LD
-                    all point at https://fallcrawlkc.com/. The <title>, meta
-                    description and JSON-LD dates are written here, not read
-                    from data/crawl.js, so a date change means both files.
-      @a11y         Skip link, semantic landmarks, one h1. Brand orange #C84008
-                    measures 4.19:1 on black: it clears 3:1 for large text and
-                    fails 4.5:1 for body copy, so it is display and accent only.
-      @fonts        Two self-hosted webfonts, both preloaded: Antic for body
-                    copy and Gagalin for headings. The lockup's own display
-                    face is not licensed here, so it ships only as artwork.
-      @cache        GitHub Pages lets a browser keep any file for 10 minutes.
-                    The stylesheet and page script carry a content-hash ?v=
-                    written by tools/build.sh; the data file is requested with
-                    the current minute instead, since edits to it skip the build.
+      @desc         The home page between crawls. The 2026 event page, map,
+                    guide and wheel included, lives on at 2026/. Everything on
+                    this page is written here rather than read from
+                    data/crawl.js, which now only supplies the header bar.
+      @numbers      "800+" is the 802 active users Google Analytics counted
+                    from Sept. 27 to Oct. 24, 2026. Analytics misses visitors
+                    who block it, so the true number is higher, never lower.
+      @paths        Relative, not root-absolute, as everywhere on the site.
+      @seo          canonical and og:url point at https://fallcrawlkc.com/.
+                    The Event JSON-LD moved with the event page to 2026/.
 
-    ============================================================================
-      Fall Crawl v1.10.0  ·  index.html  ·  mediaBrilliance
     ============================================================================
     -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-
-    <title>East Crossroads Fall Crawl - Saturday, October 24, 2026 - Kansas City</title>
-    <meta name="description" content="A choose-your-own-adventure bar crawl through the East Crossroads, Kansas City, the Saturday before Halloween, Oct. 24. 13 spots, free, 21+." />
+    <title>East Crossroads Fall Crawl - Thank you, Kansas City</title>
+    <meta name="description" content="Thank you, Kansas City. The East Crossroads Fall Crawl took over 13 neighborhood spots the Saturday before Halloween. See you next fall." />
     <link rel="canonical" href="https://fallcrawlkc.com/" />
-
-    <meta property="og:title" content="East Crossroads Fall Crawl - 10.24.26" />
-    <meta property="og:description" content="No tickets. No wristbands. No set route. A choose-your-own-adventure bar crawl through the East Crossroads, the Saturday before Halloween." />
     <meta property="og:type" content="website" />
+    <meta property="og:title" content="East Crossroads Fall Crawl - Thank you, Kansas City" />
+    <meta property="og:description" content="Thank you, Kansas City. The East Crossroads Fall Crawl took over 13 neighborhood spots the Saturday before Halloween. See you next fall." />
     <meta property="og:url" content="https://fallcrawlkc.com/" />
-    <!-- The share card is a 1200x630 PNG built by tools/make-og.py: the
-         date and place, not just the logo, because it is what people see
-         when the link is texted. PNG because scrapers fetch it once. -->
     <meta property="og:image" content="https://fallcrawlkc.com/images/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="East Crossroads Fall Crawl, 10.24.26, Saturday before Halloween in the East Crossroads, Kansas City." />
-
+    <meta property="og:image:alt" content="East Crossroads Fall Crawl, 10.24.26, Kansas City" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="East Crossroads Fall Crawl - 10.24.26" />
-    <meta name="twitter:description" content="No tickets. No wristbands. No set route. A choose-your-own-adventure bar crawl through the East Crossroads." />
+    <meta name="twitter:title" content="East Crossroads Fall Crawl - Thank you, Kansas City" />
+    <meta name="twitter:description" content="Thank you, Kansas City. The East Crossroads Fall Crawl took over 13 neighborhood spots the Saturday before Halloween. See you next fall." />
     <meta name="twitter:image" content="https://fallcrawlkc.com/images/og.png" />
-
     <meta name="theme-color" content="#000000" />
 
-    <!-- The .ico carries the skull and the glass alone. The whole figure
-         turns to grey below about 48px; her profile still reads. Built by
-         tools/make-icons.py from images/logo.png. -->
     <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48" />
     <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
@@ -105,7 +71,7 @@
     <!-- crossorigin is required even same-origin, or the font is fetched twice. -->
     <link rel="preload" href="fonts/antic.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="fonts/gagalin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="style.min.css?v=3a0381af" />
+    <link rel="stylesheet" href="style.min.css?v=5ba13c52" />
     <!-- Google Analytics, described on privacy.html. Commands queue now; the
          library loads once the page has finished loading and gone idle, so it
          never competes with the first screen. -->
@@ -122,46 +88,6 @@
           document.head.appendChild(s);
         }, { timeout: 3000 });
       });
-    </script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Event",
-      "name": "East Crossroads Fall Crawl",
-      "description": "A choose-your-own-adventure bar crawl through the East Crossroads in Kansas City: 13 neighborhood spots, specialty cocktails, live entertainment and costumes. No tickets, no wristbands, no set route.",
-      "startDate": "2026-10-24",
-      "endDate": "2026-10-24",
-      "eventStatus": "https://schema.org/EventScheduled",
-      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-      "image": ["https://fallcrawlkc.com/images/og.png", "https://fallcrawlkc.com/images/logo.png"],
-      "location": {
-        "@type": "Place",
-        "name": "East Crossroads",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Kansas City",
-          "addressRegion": "MO",
-          "addressCountry": "US"
-        }
-      },
-      "typicalAgeRange": "21-",
-      "isAccessibleForFree": true,
-      "url": "https://fallcrawlkc.com/",
-      "organizer": {
-        "@type": "Organization",
-        "name": "East Crossroads Fall Crawl",
-        "url": "https://fallcrawlkc.com/"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock",
-        "url": "https://fallcrawlkc.com/",
-        "validFrom": "2026-09-22"
-      }
-    }
     </script>
   </head>
 
@@ -180,29 +106,57 @@
 
     <main id="main">
 
-      <!-- Every element below carrying a data- attribute is filled from
-           data/crawl.js and is EMPTY on purpose. Typing text into one here
-           does nothing: the script overwrites it on load. Edit the words in
-           data/crawl.js, which is the only place they live. -->
-      <!-- ===== hero ===== -->
       <section class="hero">
         <img class="logo" src="images/logo.webp" width="1000" height="489"
              srcset="images/logo-500.webp 500w, images/logo-700.webp 700w, images/logo.webp 1000w"
              sizes="(min-width: 600px) 34rem, calc(100vw - 2.5rem)"
              fetchpriority="high" decoding="sync"
              alt="East Crossroads Fall Crawl: a skeleton raising a cocktail over the Kansas City skyline." />
-        <!-- The city, said out loud: the lockup names it only in the skyline. -->
         <p class="city">Kansas City</p>
-        <p class="date-big" data-date-short></p>
-        <h1>Saturday before Halloween</h1>
-        <p class="hours" data-hours></p>
-        <p class="countdown" data-countdown></p>
+        <h1 class="thanks-big">Thank you.</h1>
+        <p class="pitch"><span class="pitch-lead">Fall Crawl 2026 is in the books.</span>
+          <span class="pitch-sub">See you next fall.</span></p>
+      </section>
 
-        <p class="pitch"><span class="pitch-lead">A choose-your-own-adventure bar crawl.</span>
-          <span class="pitch-sub">No tickets. No wristbands. No set route.</span></p>
+      <section class="band" aria-label="The night in numbers">
+        <ul class="stat-list">
+          <li><b>800+</b> of you planned your night here</li>
+          <li><b>13</b> East Crossroads spots</li>
+          <li><b>1</b> wheel deciding where to go next</li>
+        </ul>
+      </section>
 
-        <p class="cta-note" data-ig-blurb></p>
-        <a class="cta cta-ig" data-ig href="https://www.instagram.com/" target="_blank" rel="noopener">
+      <section class="band">
+        <h2>Thank You</h2>
+        <p class="lede">To every spot that made the night.</p>
+        <ul class="thanks-list">
+          <li><a href="https://www.instagram.com/beckettskcmo" target="_blank" rel="noopener">Beckett&rsquo;s</a></li>
+          <li><a href="https://www.instagram.com/chartreusesaloonkc" target="_blank" rel="noopener">Chartreuse Saloon</a></li>
+          <li><a href="https://www.instagram.com/thecigarbox" target="_blank" rel="noopener">Cigar Box</a></li>
+          <li><a href="https://www.instagram.com/grinderskc" target="_blank" rel="noopener">Grinders</a></li>
+          <li><a href="https://www.instagram.com/itapxroads" target="_blank" rel="noopener">International Tap House</a></li>
+          <li><a href="https://www.instagram.com/jadejaguarkc" target="_blank" rel="noopener">Jade Jaguar</a></li>
+          <li><a href="https://www.instagram.com/king.g.kc" target="_blank" rel="noopener">King G</a></li>
+          <li><a href="https://www.instagram.com/mod.gallery.space2" target="_blank" rel="noopener">MOD Gallery</a></li>
+          <li><a href="https://www.instagram.com/ricochetkcmo" target="_blank" rel="noopener">Ricochet</a></li>
+          <li><a href="https://www.instagram.com/tanninkc" target="_blank" rel="noopener">Tannin</a></li>
+          <li><a href="https://www.instagram.com/teds_taproom" target="_blank" rel="noopener">Ted&rsquo;s Taproom</a></li>
+          <li><a href="https://www.instagram.com/thebelfrycollective" target="_blank" rel="noopener">The Belfry Collective</a></li>
+          <li><a href="https://www.instagram.com/thefoldkcmo" target="_blank" rel="noopener">The Den</a></li>
+        </ul>
+        <p class="thanks-more">Rides by <a href="https://ezpedicabs.com" target="_blank" rel="noopener">EZ Pedicabs</a>.
+          Word spread by KC Daily and InKansasCity.</p>
+      </section>
+
+      <section class="band">
+        <h2>Fall Crawl 2026</h2>
+        <p class="lede">The map, the guide and Fall Crawl Roulette, kept as they were on crawl night.</p>
+        <a class="cta" href="2026/">Relive 2026</a>
+      </section>
+
+      <section class="band">
+        <p class="cta-note">Tag #fallcrawlkc in your photos from the night.</p>
+        <a class="cta cta-ig" data-ig href="https://www.instagram.com/fallcrawlkc" target="_blank" rel="noopener">
           <svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
                aria-hidden="true" focusable="false">
@@ -211,112 +165,16 @@
             <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none" />
           </svg>
           <span data-ig-button></span>
-          <span class="cta-handle" data-ig-handle></span>
+          <span class="cta-handle" data-ig-handle>@fallcrawlkc</span>
         </a>
-
-      </section>
-
-      <!-- ===== Fall Crawl Roulette =====
-           Straight under the hero: the first thing to play with. A date in
-           wheelFrom (data/crawl.js) takes it off the page until that day,
-           nav link included. -->
-      <section class="band" id="spin">
-        <h2>Fall Crawl Roulette</h2>
-        <p class="lede" id="spin-lede">Can&rsquo;t decide where to go next? Leave it to fate.<br />
-          Spin the wheel. Go where it sends you.</p>
-        <!-- Check in: shown until the morning after the crawl. Filled by js/crawl.js. -->
-        <div class="checkin" id="checkin" hidden>
-          <button class="checkin-btn" id="checkin-btn" type="button">Check in where I am</button>
-          <p class="checkin-msg" id="checkin-msg" aria-live="polite"></p>
-          <div class="checkin-pick" id="checkin-pick"></div>
-        </div>
-        <div class="wheel-wrap" id="wheel-wrap" hidden>
-          <div class="wheel-pointer" aria-hidden="true"></div>
-          <svg class="wheel" id="wheel" viewBox="-110 -110 220 220" role="img" aria-label="Wheel of participating spots"></svg>
-        </div>
-        <button class="cta spin-btn" id="spin-btn" type="button" hidden>Spin</button>
-        <p class="soon" id="spin-soon">Coming soon. The wheel fills up once the spots are announced.</p>
-        <p class="sr-only" id="spin-live" aria-live="polite"></p>
-      </section>
-
-      <!-- ===== where: the headline over the map ===== -->
-      <section class="band" id="map">
-        <h2 class="headline" data-headline></h2>
-        <p class="lede" data-blurb></p>
-        <img class="map-img" src="images/map.webp" width="1141" height="1143" loading="lazy" decoding="async"
-             srcset="images/map-480.webp 480w, images/map-736.webp 736w, images/map.webp 1141w"
-             sizes="(min-width: 800px) 46rem, calc(100vw - 2.5rem)"
-             alt="Hand-drawn map of the East Crossroads, Main Street to Cherry Street and Truman Road to 19th Street, naming the 13 participating spots, each beside its featured brand's logo: Tannin, The Belfry Collective, Cigar Box, Chartreuse Saloon, Beckett's, Ricochet, King G, Jade Jaguar, International Tap House, MOD Gallery, Grinder's, The Den and Ted's Taproom." />
-      </section>
-
-      <!-- ===== trick-or-treat routes ===== -->
-      <section class="band" id="treats">
-        <h2>Trick-or-Treat Routes</h2>
-        <p class="soon" data-treats></p>
-        <a class="cta cta-ig" href="https://www.instagram.com/fallcrawlkc"
-           target="_blank" rel="noopener">
-          <svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <rect x="2.5" y="2.5" width="19" height="19" rx="5" />
-            <circle cx="12" cy="12" r="4.2" />
-            <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none" />
-          </svg>
-          <span>Share your route</span>
-        </a>
-      </section>
-
-      <!-- ===== crawl guide ===== -->
-      <section class="band" id="guide">
-        <h2>Crawl Guide</h2>
-        <p class="soon" data-guide></p>
-      </section>
-
-      <!-- ===== fall crawl guide: every spot, as each one wrote it ===== -->
-      <section class="band" id="spots">
-        <h2>Fall Crawl Guide</h2>
-        <p class="lede">Every spot runs its own night: live entertainment, pop-up bars, one-night-only cocktail features and lots of spooky surprises along the way.</p>
-        <ul class="venue-list" id="venue-list"></ul>
-      </section>
-
-      <!-- ===== what to expect ===== -->
-      <section class="band" id="expect">
-        <h2>What to Expect</h2>
-        <ul class="expect-list" id="expect-list"></ul>
-      </section>
-
-      <!-- ===== suggested crawls ===== -->
-      <section class="band" id="routes">
-        <h2>Suggested Crawls</h2>
-        <p class="lede">There is no official route. If you want one anyway, start here.</p>
-        <ul class="route-list" id="route-list"></ul>
-      </section>
-
-      <!-- ===== play it safe: getting home, and the costume rules ===== -->
-      <section class="band" id="safety">
-        <h2>Play It Safe</h2>
-        <ul class="expect-list" id="safety-list"></ul>
-      </section>
-
-      <!-- ===== partners. No visible heading: the card stands on its own,
-           and aria-label keeps the section a named region ===== -->
-      <section class="band" id="partners" aria-label="Getting around">
-        <ul class="partner-list" id="partner-list"></ul>
-      </section>
-
-      <!-- ===== the ground rules, as icons, last thing before the footer =====
-           Client artwork. The alt text carries the words baked into it. -->
-      <section class="band band-icons" aria-label="The basics">
-        <img class="icons" src="images/icons.webp" width="2194" height="524"
-             loading="lazy" decoding="async"
-             alt="Free to attend. 21+ only. No wristbands. Costumes encouraged." />
       </section>
 
     </main>
 
     <footer class="site-footer">
       <nav class="footer-nav" aria-label="Site">
-        <a href="./" aria-current="page">The crawl</a>
+        <a href="./" aria-current="page">Home</a>
+        <a href="2026/">2026</a>
         <a href="privacy.html">Privacy</a>
         <a href="terms.html">Terms</a>
         <a href="accessibility.html">Accessibility</a>
@@ -330,44 +188,11 @@
            width="206" height="95" alt="" />mediaBrilliance digitalxtudio</a></p>
     </footer>
 
-    <!-- Spot card, opened by the wheel. Filled by js/crawl.js. -->
-    <dialog class="modal spot-card" id="spot-card" aria-labelledby="spot-name">
-      <p class="spot-kicker">Your next stop</p>
-      <h2 id="spot-name"></h2>
-      <p class="venue-event" id="spot-event" hidden></p>
-      <a class="venue-street" id="spot-street" target="_blank" rel="noopener"></a>
-      <p class="venue-hours" id="spot-hours" hidden></p>
-      <a class="ig-link" id="spot-ig" target="_blank" rel="noopener"></a>
-      <div class="spot-brands" id="spot-brands" hidden></div>
-      <div class="spot-prize" id="spot-prize" hidden></div>
-      <div class="spot-details" id="spot-details"></div>
-      <p class="spot-empty" id="spot-empty">Details coming soon.</p>
-      <p class="spot-ride" id="spot-ride" hidden></p>
-      <div class="modal-actions">
-        <button class="cta" type="button" id="spot-again">Spin again</button>
-        <button class="modal-close" type="button" id="spot-close">Close</button>
-      </div>
-    </dialog>
-
-    <!-- Age check. Shown once per visit; the answer lives only in this tab
-         (sessionStorage) and never leaves the device. -->
-    <dialog class="modal age-gate" id="age-gate" aria-labelledby="age-q">
-      <h2 id="age-q">Are you 21 or older?</h2>
-      <p class="age-note">The Fall Crawl is 21+.</p>
-      <div class="modal-actions">
-        <button class="cta" type="button" id="age-yes">Yes, I&rsquo;m 21+</button>
-        <button class="modal-close" type="button" id="age-no">Not yet</button>
-      </div>
-      <p class="age-denied" id="age-denied" hidden>Come back when you are. We&rsquo;ll save you a costume.</p>
-    </dialog>
-
-    <!-- The event data, requested with the current minute as its query.
-         Edits to data/crawl.js skip tools/build.sh, so no content stamp can
-         reach it, and a per-minute URL shows a change within about a minute.
-         document.write keeps it parser-blocking, so it runs before the
-         deferred page script; the file is same-origin, which browsers do not
-         intervene on. -->
+    <!-- The data file supplies the header bar's title and icons. Requested
+         with the current minute as its query: edits to it skip tools/build.sh,
+         so no content stamp can reach it. document.write keeps it
+         parser-blocking, so it runs before the deferred page script. -->
     <script>document.write('<script src="data/crawl.js?m=' + Math.floor(Date.now() / 6e4) + '"><\/script>');</script>
-    <script src="js/crawl.min.js?v=54c8be30" defer></script>
+    <script src="js/crawl.min.js?v=ff7df0bd" defer></script>
   </body>
 </html>

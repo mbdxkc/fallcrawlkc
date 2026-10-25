@@ -11,7 +11,7 @@
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
  *   @version      1.10.0
- *   @updated      2026-10-24
+ *   @updated      2026-10-25
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
  *   @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -45,9 +45,10 @@
  *                 roulette, check-in, spot card, 21+ check, header scene,
  *                 moon and weather, bat, ravens, stars, init().
  *   @load         Loaded deferred as js/crawl.min.js?v=<hash> on every page
- *                 (tools/build.sh), after data/crawl.js?m=<minute>. Every
- *                 renderer checks for its own container, because the policy
- *                 pages reuse this file for the header and have no lists.
+ *                 at the site root (tools/build.sh), after data/crawl.js?m=
+ *                 <minute>. Every renderer checks for its own container: the
+ *                 home page and the policy pages use this file for the header
+ *                 and have no lists. 2026/ runs its own frozen copy.
  *   @privacy      Outside requests: Open-Meteo for Kansas City's weather
  *                 (fixed coordinates, cached 30 minutes per tab). Analytics
  *                 events go through the gtag() the page defines: check_in
@@ -449,24 +450,17 @@
 
   /* ---- header: links left ----------------------------------------------
      Built AFTER the sections render, so a section that removed itself for
-     being empty cannot leave a link pointing at nothing.
+     being empty cannot leave a link pointing at nothing. Every page on the
+     site root sits beside 2026/, so the same two page links work on all of
+     them. Section links appear only where that section is on the page.
   ---------------------------------------------------------------------- */
-  /* `on` answers "will this section exist on the crawl page", from the
-     DATA rather than from the DOM. It has to: the three policy pages
-     carry the same header and none of these sections, so asking the
-     document would remove the nav on exactly the pages that most need a
-     way back. The tests below MUST match the ones the renderers use, or
-     the header offers a link to a section that removed itself. */
   var NAV = [
-    /* Home is not a section, it is the crawl page itself, so it carries no
-       anchor and is the one entry that shows unconditionally. */
-    { id: null,     label: 'Home',   on: function () { return true; } },
-    { id: 'spin',   label: 'Spin',   on: wheelOpen },
-    { id: 'map',    label: 'Where',  on: function () { return true; } },
-    { id: 'spots',  label: 'Crawl Guide', on: function () {
-        return liveVenues().length > 0; } },
-    { id: 'expect', label: 'Expect', on: function () {
-        return (DATA.expect || []).length > 0; } }
+    { href: './',    label: 'Home' },
+    { href: '2026/', label: '2026' },
+    { id: 'spin',   label: 'Spin' },
+    { id: 'map',    label: 'Where' },
+    { id: 'spots',  label: 'Crawl Guide' },
+    { id: 'expect', label: 'Expect' }
   ];
 
   function liveVenues() {
@@ -476,31 +470,16 @@
   function nav() {
     var host = document.getElementById('bar-nav');
     if (!host) return;
-
-    // The crawl page is the one with the hero on it. On it the DOM is
-    // authoritative, because a section may already have removed itself;
-    // anywhere else the links have to reach back across to it.
-    var onCrawl = !!document.querySelector('.hero');
-    var live = NAV.filter(function (n) {
-      if (!n.id) return true;                       // Home, always
-      return onCrawl ? !!document.getElementById(n.id) : n.on();
-    });
-    if (!live.length) { host.parentNode.removeChild(host); return; }
-
-    var prefix = onCrawl ? '' : './';
+    var here = location.pathname.replace(/index\.html$/, '');
+    var live = NAV.filter(function (n) { return n.href || document.getElementById(n.id); });
     var ul = document.createElement('ul');
     live.forEach(function (n) {
       var li = document.createElement('li');
       var a  = el('a', null, n.label);
-      if (n.id) {
-        a.href = prefix + '#' + n.id;
-      } else {
-        // './' rather than '#', so the label means the same thing on every
-        // page. On the crawl page it is where you already are, and saying
-        // so is what stops it reading as a link that does nothing.
-        a.href = './';
-        if (onCrawl) a.setAttribute('aria-current', 'page');
-      }
+      a.href = n.href || '#' + n.id;
+      // The link to the page you are on says so, rather than reading as a
+      // link that does nothing.
+      if (n.href && new URL(a.href).pathname === here) a.setAttribute('aria-current', 'page');
       li.appendChild(a);
       ul.appendChild(li);
     });
