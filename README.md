@@ -35,8 +35,10 @@ Since Oct. 25, 2026, the site has two parts:
   alone. Images and fonts are shared from the root. The countdown, calendar date and
   check-in switch themselves off after the date; the wheel still spins.
 
-The sections below describe the event page, which is what `2026/` holds and what a
-future crawl's page will start from.
+The live `style.css` and `js/crawl.js` still carry the event page's parts (wheel,
+check-in, spot lists) so the next crawl's page can be built on them; only the bat,
+ravens and header figures were deleted. The sections below describe the event page,
+which is what `2026/` holds and what a future crawl's page will start from.
 
 ## What the event page does
 
@@ -53,9 +55,11 @@ future crawl's page will start from.
   City in real time and dims under real cloud cover. Behind every page, the 288
   stars of magnitude 3.5 and brighter sit where they are in the southern sky right
   now.
-- **Halloween motion.** Ghosts, a goblin and a monster cross the header; a bat
-  drawn from a 3D wing model crosses the page about once a minute; now and then a
-  flock of 1,000 ravens pours through.
+- **Halloween motion (2026 page only).** Ghosts, a goblin and a monster cross the
+  header; a bat drawn from a 3D wing model crosses about once a minute; now and then
+  a flock of 1,000 ravens pours through. All of it was removed from the live script
+  on Oct. 25, 2026, and survives in `2026/crawl.min.js` and git history. The moon,
+  fog and stars stay on every page.
 - **The practical bits.** A countdown, an add-to-calendar date, a 21+ check, the
   map, and a text-a-pedicab link on every card.
 
@@ -136,9 +140,9 @@ describes all of this in plain language.
 - **Stars:** 288 stars (d3-celestial's catalog, after Hipparcos) stored in the
   script as right ascension, declination and magnitude, mapped to the southern
   sky with east at the left edge and redrawn each minute.
-- **Bat and ravens:** each bird is a projected 3D wing model. The ravens draw on
-  one canvas from 24 prebuilt wingbeat poses, so a bird costs one fill and one
-  stroke a frame; the canvas exists only while the flock is in view.
+- **Bat and ravens (2026 page only):** each bird is a projected 3D wing model.
+  The ravens draw on one canvas from 24 prebuilt wingbeat poses, so a bird costs one
+  fill and one stroke a frame; the canvas exists only while the flock is in view.
 
 ---
 

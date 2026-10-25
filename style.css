@@ -406,8 +406,9 @@ a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
 
 /* The Instagram button: a lit ring rather than a flat block, like a neon
    sign in the haze. Orange ring and icon, white handle; fills orange on
-   hover. The ring is 4.19:1 on black, over the 3:1 a control boundary needs. */
-.cta-ig {
+   hover. The ring is 4.19:1 on black, over the 3:1 a control boundary needs.
+   .cta-ring gives any other button the same ring (Relive 2026 on the home page). */
+.cta-ig, .cta-ring {
   gap: .6em;
   padding: .8em 1.7em;
   background: rgba(200, 64, 8, .08);
@@ -420,7 +421,7 @@ a.bar-title:hover, a.bar-title:focus-visible { color: var(--orange); }
   transition: background-color .2s ease, box-shadow .2s ease, transform .2s ease;
 }
 .cta-ig .cta-icon { color: var(--orange); transition: color .2s ease; }
-.cta-ig:hover, .cta-ig:focus-visible {
+.cta-ig:hover, .cta-ig:focus-visible, .cta-ring:hover, .cta-ring:focus-visible {
   background: var(--orange);
   filter: none;
   box-shadow: 0 0 1.4rem rgba(200, 64, 8, .6);
@@ -598,9 +599,9 @@ a.partner-name { display: inline-block; text-decoration: none; }
 .credit img { display: block; width: auto; height: 1em; }
 .credit a:hover, .credit a:focus-visible { color: var(--orange); }
 
-/* ---------- night procession across the header ---------- */
+/* ---------- the header sky: fog and the moon ---------- */
 .site-header { overflow: hidden; }
-.site-header > *:not(.ghost-run):not(.fog-bank):not(.moon) { position: relative; z-index: 1; }
+.site-header > *:not(.fog-bank):not(.moon) { position: relative; z-index: 1; }
 
 /* The moon: the real one for Kansas City, placed and shaped by js/crawl.js
    (position from the time, phase from the date, dimmed by daylight and
@@ -640,57 +641,6 @@ a.partner-name { display: inline-block; text-decoration: none; }
   50%  { opacity: 1; }
   100% { translate: 2.5rem 1px; opacity: .6; }
 }
-.ghost-run { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
-.fig-lane {
-  position: absolute; left: 0;
-  transform: translateX(-10rem);
-  animation: fig-cross var(--dur, 50s) linear var(--delay, 0s) infinite;
-}
-.fig-lane.rev { animation-name: fig-cross-rev; }
-.fig-lane.floater { top: calc(50% - 1.35rem * var(--scale, 1) + var(--y, 0rem)); }
-.fig-lane.walker  { bottom: 0; }
-.fig { display: block; }
-.ghost   { width: calc(1.9rem * var(--scale, 1)); opacity: .55; animation: fig-float var(--bob, 3.4s) ease-in-out infinite alternate; }
-.ghost-sheet { transform-origin: 50% 20%; animation: ghost-sway var(--bob, 3.4s) ease-in-out infinite alternate; }
-.goblin  { width: calc(1.6rem * var(--scale, 1)); opacity: .9; animation: fig-step var(--step, 1s) ease-in-out infinite; }
-.monster { width: calc(1.85rem * var(--scale, 1)); opacity: .9; animation: fig-step var(--step, 1.3s) ease-in-out infinite; }
-.leg { transform-box: fill-box; transform-origin: 50% 0; animation: leg-swing calc(var(--step, 1s) / 2) ease-in-out infinite alternate; }
-.leg-b { animation-direction: alternate-reverse; }
-/* Travel takes 60% of each loop, then an offscreen pause. Size sets the
-   pace (tiny = fast, huge = slow) and every figure draws its own, so they
-   drift in and out of step. Reversed lanes are mirrored
-   whole so faces point the way they go. */
-@keyframes fig-cross {
-  0%   { transform: translateX(100vw); }
-  60%  { transform: translateX(-10rem); }
-  100% { transform: translateX(-10rem); }
-}
-@keyframes fig-cross-rev {
-  0%   { transform: translateX(-10rem) scaleX(-1); }
-  60%  { transform: translateX(100vw) scaleX(-1); }
-  100% { transform: translateX(100vw) scaleX(-1); }
-}
-@keyframes fig-float { from { translate: 0 -2px; } to { translate: 0 3px; } }
-@keyframes ghost-sway { from { transform: skewX(-4deg); } to { transform: skewX(4deg); } }
-@keyframes fig-step  { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.5px; } }
-@keyframes leg-swing { from { rotate: -14deg; } to { rotate: 14deg; } }
-
-/* ---------- the bat ---------- */
-/* Drawn and moved frame by frame in js/crawl.js. Under the sticky header
-   (z-index 5) and the dialogs; black shapes with orange line work, like the
-   logo, the far wing dimmer so the body reads in front of it. */
-.bat { position: fixed; left: 0; top: 0; z-index: 4; pointer-events: none; visibility: hidden; will-change: transform; }
-.bat.is-flying { visibility: visible; }
-.bat svg { display: block; width: 100%; height: auto; overflow: visible; }
-.bat-membrane { fill: #070506; stroke: var(--orange); stroke-width: .7; stroke-linejoin: round; }
-.bat-bone { fill: none; stroke: var(--orange); stroke-opacity: .7; stroke-width: .55; stroke-linecap: round; }
-.bat-body { fill: #070506; stroke: var(--orange); stroke-width: .7; stroke-linejoin: round; }
-.bat-far { opacity: .8; }
-
-/* The ravens: one full-window canvas, drawn in js/crawl.js, present only
-   while a flock is crossing. Same layer as the bat. */
-.ravens { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; }
-
 /* ---------- the starfield ----------
    The real sky over Kansas City, drawn in js/crawl.js each minute and fixed
    behind everything. z-index -1 paints it
@@ -965,7 +915,6 @@ body::after {
   .cta, .social, .date-link, .cta-ig .cta-icon { transition: none; }
   .cta:hover, .cta:focus-visible { transform: none; }
   .wheel-rotor { transition: none; }
-  .ghost-run, .bat, .ravens { display: none; }
   .fog-bank i { animation: none; opacity: .7; }
   .stars-twinkle i { animation: none; opacity: .18; }
   .moon.is-gliding { transition: opacity 2s ease; }

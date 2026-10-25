@@ -39,11 +39,11 @@
  *                 dependencies: renders every list from data/crawl.js (so the
  *                 client edits one plain file and never touches markup), runs
  *                 the Fall Crawl Roulette wheel and check-in, and draws the
- *                 night scene (header procession, real moon and weather, bat,
- *                 ravens, real star field). Sections, in file order:
+ *                 night scene (header fog, real moon and weather,
+ *                 real star field). Sections, in file order:
  *                 helpers, basics, countdown and calendar, lists, header,
- *                 roulette, check-in, spot card, 21+ check, header scene,
- *                 moon and weather, bat, ravens, stars, init().
+ *                 roulette, check-in, spot card, 21+ check, header sky,
+ *                 moon and weather, stars, init().
  *   @load         Loaded deferred as js/crawl.min.js?v=<hash> on every page
  *                 at the site root (tools/build.sh), after data/crawl.js?m=
  *                 <minute>. Every renderer checks for its own container: the
@@ -64,8 +64,8 @@
  *                 and must not be able to inject markup. innerHTML carries
  *                 only this script's own SVG and numbers it computed.
  *   @motion       Every animation is off under prefers-reduced-motion: the
- *                 bat and ravens never start, the wheel lands without
- *                 spinning, and CSS stills the header and the stars.
+ *                 wheel lands without spinning, and CSS stills the header
+ *                 and the stars.
  *
  * ============================================================================
  *   Fall Crawl v1.10.0  ·  js/crawl.js  ·  mediaBrilliance
@@ -854,112 +854,18 @@
     openModal(d);
   }
 
-  /* ---- night procession across the header -----------------------------
-     Decorative and slow: translucent ghosts drift through the bar and the
-     odd goblin or monster trudges along its bottom edge. Each figure draws
-     its own pace, pause, height and direction on page load. Injected here
-     so every page gets it from one place. Hidden from assistive tech,
-     never takes clicks, and off under prefers-reduced-motion (in CSS). */
-  var uid = 0;
-
-  // A sheet ghost: a soft dome fading out through a ragged hem, blurred at
-  // the edges, with hollow eyes. Its hem sways on its own (CSS).
-  function ghostSVG() {
-    var n = ++uid;
-    return '<svg class="fig ghost" viewBox="0 0 60 84" aria-hidden="true" focusable="false">' +
-      '<defs>' +
-        '<linearGradient id="gb' + n + '" x1="0" y1="0" x2="0" y2="1">' +
-          '<stop offset="0" stop-color="#fff" stop-opacity=".75"/>' +
-          '<stop offset=".55" stop-color="#e8ecf2" stop-opacity=".42"/>' +
-          '<stop offset="1" stop-color="#dfe6ee" stop-opacity="0"/></linearGradient>' +
-        '<filter id="gf' + n + '" x="-30%" y="-30%" width="160%" height="160%">' +
-          '<feGaussianBlur stdDeviation="1.1"/></filter>' +
-        '<filter id="gg' + n + '" x="-50%" y="-50%" width="200%" height="200%">' +
-          '<feGaussianBlur stdDeviation="4"/></filter>' +
-      '</defs>' +
-      '<ellipse cx="30" cy="30" rx="24" ry="26" fill="#cfe0ff" opacity=".14" filter="url(#gg' + n + ')"/>' +
-      '<g filter="url(#gf' + n + ')">' +
-        '<path class="ghost-sheet" d="M30 4C15 4 8 16 8 30v22c0 6-3 12-5 18 4-2 7-6 9-3 2 4 1 10 3 14 2-5 5-10 8-8 3 2 3 8 6 9 2-4 3-10 7-10 3 0 4 6 7 7 1-5 1-11 4-13 3-1 5 4 8 5-2-6-4-13-4-19V30C53 16 45 4 30 4z" fill="url(#gb' + n + ')"/>' +
-      '</g>' +
-      '<ellipse cx="22.5" cy="28" rx="3.6" ry="5" fill="#0a0a0f" opacity=".8"/>' +
-      '<ellipse cx="37.5" cy="28" rx="3.6" ry="5" fill="#0a0a0f" opacity=".8"/>' +
-      '<ellipse cx="30" cy="41" rx="3" ry="4.4" fill="#0a0a0f" opacity=".55"/>' +
-    '</svg>';
-  }
-
-  // A hunched goblin walking: big ears, long nose, lantern-green eyes.
-  function goblinSVG() {
-    return '<svg class="fig goblin" viewBox="0 0 48 52" aria-hidden="true" focusable="false">' +
-      '<g fill="#26301f">' +
-        '<path d="M8 16l-7-5 9 1zM40 16l7-5-9 1z"/>' +                       // ears
-        '<ellipse cx="24" cy="17" rx="13" ry="11"/>' +                       // head
-        '<path d="M34 19l9 3-9 1z"/>' +                                       // nose
-        '<path d="M14 26q10-4 18 0l4 14q-12 4-24 0z"/>' +                     // hunched body
-        '<rect class="leg leg-a" x="16" y="38" width="5" height="13" rx="2"/>' +
-        '<rect class="leg leg-b" x="26" y="38" width="5" height="13" rx="2"/>' +
-        '<path d="M33 28l9 8-2 2-9-7z"/>' +                                   // arm
-      '</g>' +
-      '<circle cx="21" cy="15" r="2" fill="#b9ff4a"/><circle cx="29" cy="15" r="2" fill="#b9ff4a"/>' +
-      '<circle cx="21" cy="15" r="4" fill="#b9ff4a" opacity=".18"/><circle cx="29" cy="15" r="4" fill="#b9ff4a" opacity=".18"/>' +
-    '</svg>';
-  }
-
-  // A shaggy horned monster: one big ember eye, stubby legs.
-  function monsterSVG() {
-    return '<svg class="fig monster" viewBox="0 0 56 52" aria-hidden="true" focusable="false">' +
-      '<g fill="#2c2029">' +
-        '<path d="M15 12l-4-10 9 7zM41 12l4-10-9 7z"/>' +                     // horns
-        '<path d="M8 26c0-11 9-18 20-18s20 7 20 18v10c0 3-2 5-3 7l-3-3-3 4-3-4-3 4-3-4-3 4-3-4-3 4-3-4-3 3c-1-2-3-4-3-7z"/>' +
-        '<rect class="leg leg-a" x="17" y="40" width="7" height="11" rx="3"/>' +
-        '<rect class="leg leg-b" x="32" y="40" width="7" height="11" rx="3"/>' +
-      '</g>' +
-      '<circle cx="28" cy="24" r="6.5" fill="#1a1016"/>' +
-      '<circle cx="28" cy="24" r="3.4" fill="#e0561c"/>' +
-      '<circle cx="28" cy="24" r="9" fill="#e0561c" opacity=".12"/>' +
-    '</svg>';
-  }
-
+  /* ---- the header sky: fog and the moon -------------------------------
+     Low fog behind the title and the real moon over Kansas City, injected
+     here so every page gets them from one place. Hidden from assistive
+     tech and never takes clicks. */
   function rnd(a, b) { return a + Math.random() * (b - a); }
 
-  // One knob for the header's tempo: every duration below is multiplied by it.
-  var PACE = 1.2;
-
-  function ghosts() {
+  function headerSky() {
     var bar = document.querySelector('.site-header');
-    if (!bar || bar.querySelector('.ghost-run')) return;
-    var run = document.createElement('div');
-    run.className = 'ghost-run';
-    run.setAttribute('aria-hidden', 'true');
-
-    // A phone's header is a third as wide, so it gets fewer figures.
-    var cast = window.innerWidth < 768
-      ? ['ghost', 'ghost', 'goblin']
-      : ['ghost', 'ghost', 'ghost', 'goblin', 'monster'];
-    // Size and speed go together: tiny ones dart across, normal ones walk
-    // or drift at a medium pace, huge ones lumber. Each figure picks a size
-    // class, then a size and a crossing time inside it, on every page load.
-    var SIZES = [
-      { scale: [0.45, 0.65], cross: [4, 7]   },   // tiny, fast
-      { scale: [0.85, 1.1],  cross: [9, 14]  },   // normal, medium
-      { scale: [1.5, 1.85],  cross: [18, 26] }    // huge, slow
-    ];
-    run.innerHTML = cast.map(function (kind, k) {
-      var walker = kind !== 'ghost';
-      var sz = SIZES[Math.floor(Math.random() * SIZES.length)];
-      var scale = rnd(sz.scale[0], sz.scale[1]);
-      var cross = rnd(sz.cross[0], sz.cross[1]);        // seconds on screen
-      var loop = (cross / 0.6 + rnd(0, 8)) * PACE;      // plus an offscreen pause
-      var dir = Math.random() < 0.5 ? 1 : -1;           // 1 = right to left
-      var art = kind === 'ghost' ? ghostSVG() : kind === 'goblin' ? goblinSVG() : monsterSVG();
-      return '<span class="fig-lane ' + (walker ? 'walker' : 'floater') + (dir < 0 ? ' rev' : '') +
-        '" style="--dur:' + loop.toFixed(1) + 's;--delay:' + ((k * rnd(1, 3) + rnd(0, 4)) * PACE).toFixed(1) + 's;' +
-        '--y:' + (walker ? 0 : rnd(-0.25, 0.2)).toFixed(2) + 'rem;--scale:' + scale.toFixed(2) +
-        ';--bob:' + (rnd(1.6, 2.6) * scale * PACE).toFixed(2) + 's;--step:' + (0.9 * scale * PACE).toFixed(2) + 's">' + art + '</span>';
-    }).join('');
-    bar.insertBefore(run, bar.firstChild);
+    if (!bar || bar.querySelector('.moon')) return;
 
     // Low fog behind the title: a few blurred puffs drifting and breathing
-    // out of step. It sits under the figures and the text, and under
+    // out of step. It sits under the text, and under
     // reduced motion it stays as still mist rather than disappearing.
     var fog = document.createElement('div');
     fog.className = 'fog-bank';
@@ -973,7 +879,7 @@
       var strength = Math.max(0.18, 1 - Math.pow(Math.abs(t), 1.6) * 0.85);
       return '<i style="--fx:' + (x + rnd(-2, 2)).toFixed(1) + '%;--fy:' + rnd(-15, 15).toFixed(0) + '%;' +
         '--fa:' + strength.toFixed(2) + ';' +
-        '--fw:' + rnd(9, 15).toFixed(1) + 'rem;--fd:' + (rnd(14, 24) * PACE).toFixed(1) + 's;' +
+        '--fw:' + rnd(9, 15).toFixed(1) + 'rem;--fd:' + rnd(16.8, 28.8).toFixed(1) + 's;' +
         '--fdl:-' + rnd(0, 20).toFixed(1) + 's"></i>';
     }).join('');
     bar.insertBefore(fog, bar.firstChild);
@@ -1123,275 +1029,6 @@
     });
   }
 
-  /* ---- the bat ------------------------------------------------------------
-     A large bat crosses the page window (not the header) about once a
-     minute. It is drawn fresh every frame from a small 3D model seen from
-     below and a little to the side, the way bats are seen overhead: each
-     wing is a membrane stretched over four finger bones, it flaps about the
-     shoulder with a fast downstroke and a slower upstroke that half-folds
-     the wing, and the far wing sits behind the body, a little darker. The
-     path is a bat's, not a glide: steady headway, a quick jink up or down
-     every half second or so, and the
-     body banks into each climb and dive. Black with orange line work, like
-     the logo. Fixed, click-through, under the header, off under reduced
-     motion. */
-
-  // The wing in its own plane: u runs forward along the body, v out along
-  // the span. Shoulder, wrist, four fingertips (leading to trailing), hip.
-  // Span is about three body lengths, as on a real bat.
-  var WING = { shoulder: [0, 0], wrist: [10, 30], tips: [[22, 58], [4, 62], [-12, 53], [-21, 36]], hip: [-15, 6] };
-  var TILT = 80 * RAD;                                  // seen mostly from below, the way bats are
-
-  // Project a wing point for flap angle th (radians, + is up) and span fold f.
-  function wingPt(p, th, f, near) {
-    var u = p[0], v = p[1] * f;
-    var y = v * Math.sin(th), z = v * Math.cos(th) * (near ? -1 : 1);
-    return [u, -(y * Math.cos(TILT) - z * Math.sin(TILT))];
-  }
-
-  function wingPath(th, f, near) {
-    var P = function (p) { return wingPt(p, th, f, near); };
-    var s = P(WING.shoulder), w = P(WING.wrist), h = P(WING.hip);
-    var t = WING.tips.map(P);
-    var pt = function (q) { return q[0].toFixed(1) + ' ' + q[1].toFixed(1); };
-    // Scalloped trailing edge: each span of membrane sags toward the wrist.
-    var sag = function (a, b) {
-      return [(a[0] + b[0]) / 2 * 0.72 + w[0] * 0.28, (a[1] + b[1]) / 2 * 0.72 + w[1] * 0.28];
-    };
-    var d = 'M' + pt(s) + 'L' + pt(w) + 'L' + pt(t[0]);
-    var edge = t.concat([h]);
-    for (var i = 1; i < edge.length; i++) d += 'Q' + pt(sag(edge[i - 1], edge[i])) + ' ' + pt(edge[i]);
-    d += 'Z';
-    var bones = 'M' + pt(s) + 'L' + pt(w) + t.map(function (q) { return 'M' + pt(w) + 'L' + pt(q); }).join('');
-    return { membrane: d, bones: bones };
-  }
-
-  // Flap cycle, c in [0, 1): 0-0.42 downstroke (fast), then the upstroke,
-  // wing half-folded at its middle. Returns [angle, fold].
-  function flap(c) {
-    if (c < 0.42) {
-      var k = c / 0.42, e = 0.5 - 0.5 * Math.cos(Math.PI * k);
-      return [(55 - 95 * e) * RAD, 1];
-    }
-    var k2 = (c - 0.42) / 0.58, e2 = 0.5 - 0.5 * Math.cos(Math.PI * k2);
-    return [(-40 + 95 * e2) * RAD, 1 - 0.32 * Math.sin(Math.PI * k2)];
-  }
-
-  // From below: a furry teardrop, ears splayed at the head, tail membrane.
-  var BODY = 'M-14 0C-12 -5 2 -6 9 -4.5C12 -4 13 -3 13 0C13 3 12 4 9 4.5C2 6 -12 5 -14 0Z' +       // furry body
-             'M12 0a4.6 4.2 0 1 0 9.2 0a4.6 4.2 0 1 0 -9.2 0Z' +                                    // round head
-             'M16 -3.2L19.5 -8.5L19.8 -2.6ZM16 3.2L19.5 8.5L19.8 2.6Z' +                          // ears
-             'M-13 -2.2Q-19 -6 -22 -5Q-20 0 -22 5Q-19 6 -13 2.2Z';                                // tail membrane
-
-  var STILL = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // One bat added to the page, and a function that poses it for a frame:
-  // centre (x, y) in px, drawn size, heading (1 = left to right), wingbeat
-  // phase and climb rate.
-  function makeBat() {
-    var el = document.createElement('div');
-    el.className = 'bat';
-    el.setAttribute('aria-hidden', 'true');
-    el.innerHTML = '<svg viewBox="-75 -75 150 150" aria-hidden="true" focusable="false"><g class="bat-frame">' +
-      '<g class="bat-far"><path class="bat-membrane"/><path class="bat-bone"/></g>' +
-      '<path class="bat-body" d="' + BODY + '"/>' +
-      '<g class="bat-near"><path class="bat-membrane"/><path class="bat-bone"/></g>' +
-      '</g></svg>';
-    document.body.appendChild(el);
-    var frame = el.querySelector('.bat-frame');
-    var far = el.querySelectorAll('.bat-far path'), near = el.querySelectorAll('.bat-near path');
-    var drawn = 0;
-    return {
-      el: el,
-      pose: function (x, y, size, dir, cyc, vy) {
-        if (size !== drawn) { drawn = size; el.style.width = size + 'px'; }
-        var fl = flap(cyc);
-        var bob = -Math.sin(fl[0]) * 2.2;                   // the body rides opposite the wings
-        var bank = Math.max(-22, Math.min(22, -vy * 2.6)) * dir;
-        el.style.transform = 'translate(' + (x - size / 2).toFixed(1) + 'px,' + (y - size / 2).toFixed(1) + 'px)';
-        frame.setAttribute('transform', (dir < 0 ? 'scale(-1 1) ' : '') + 'rotate(' + (-bank).toFixed(1) + ') translate(0 ' + bob.toFixed(1) + ')');
-        var nw = wingPath(fl[0], fl[1], true), fw = wingPath(fl[0] * 0.92, fl[1] * 0.9, false);
-        near[0].setAttribute('d', nw.membrane); near[1].setAttribute('d', nw.bones);
-        far[0].setAttribute('d', fw.membrane); far[1].setAttribute('d', fw.bones);
-      }
-    };
-  }
-
-  function bat() {
-    if (STILL) return;
-    var b = makeBat();
-
-    function fly() {
-      var W = window.innerWidth, H = window.innerHeight;
-      var dir = Math.random() < 0.5 ? 1 : -1;
-      var size = Math.min(Math.max(W * 0.3, 170), 420);     // px, the drawn box
-      var secs = rnd(5.5, 8) * PACE;
-      var y = rnd(0.2, 0.7) * H, targetY = y, vy = 0, nextJink = 0;
-      var beat = rnd(0.2, 0.26);                            // seconds per wingbeat
-      var t0 = null;
-      b.el.classList.add('is-flying');
-
-      function step(ts) {
-        if (t0 === null) t0 = ts;
-        var t = (ts - t0) / 1000, p = t / secs;
-        if (p >= 1) { b.el.classList.remove('is-flying'); setTimeout(fly, (rnd(45, 75)) * 1000); return; }
-        // Headway with a little surge on each downstroke.
-        var cyc = (t / beat) % 1;
-        var x = dir > 0 ? -size + p * (W + 2 * size) : W + size - p * (W + 2 * size);
-        x += dir * 6 * Math.sin(cyc * 2 * Math.PI);
-        // Jinks: a new target height every 0.35-0.9s, chased with damping.
-        if (t >= nextJink) { targetY = Math.min(H * 0.85, Math.max(H * 0.12, y + rnd(-0.14, 0.14) * H)); nextJink = t + rnd(0.35, 0.9); }
-        vy += (targetY - y) * 0.012 - vy * 0.12;
-        y += vy;
-        b.pose(x, y, size, dir, cyc, vy);
-        requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
-    setTimeout(fly, rnd(12, 30) * 1000);
-  }
-
-  /* ---- the ravens -------------------------------------------------------
-     A thousand ravens pour across the page window: the first within a
-     minute of arriving, then again at random, never less than five minutes
-     apart. They stream in over three seconds along a wandering line, and the
-     flock stretches and turns as it goes, the way a murmuration does. Each
-     bird is the same projected wing model as the bat, reshaped as a raven:
-     fingered primaries, a heavy bill, a wedge tail. Black with orange line
-     work, like the logo; nearer birds bigger, farther ones dimmer.
-
-     Drawn on one canvas that exists only for the pass. The wingbeat is
-     prebuilt as 24 poses, so a bird costs one fill and one stroke a frame. */
-
-  var RAVEN_TILT = 25 * RAD;                            // mostly side-on: wings beat up and down in the crow V and M
-  // Wing plane, u forward and v out along the span: shoulder, wrist, five
-  // primary tips (leading to trailing), the secondaries, the body.
-  var RAVEN_WING = { shoulder: [4, 0], wrist: [6, 20], tips: [[-4, 46], [-6.5, 46.5], [-8.5, 45], [-10, 42.5], [-11, 39.5]],
-                     trail: [-8, 19], root: [-6, 0] };
-  // Body side-on: wedge tail, a deep chest, heavy head and bill.
-  var RAVEN_BODY = [[-25, 0], [-19, -5.5], [-11, -3], [-5, -5.5], [3, -5.5], [9, -4], [13, -3.5], [17, -3], [22, -1],
-                    [22, 1], [17, 2.2], [13, 3], [8, 5.5], [0, 6.5], [-8, 4.5], [-12, 3], [-19, 5.5]];
-  var RAVEN_POSES = 24;
-
-  // The hand beats further than the arm and pivots at the wrist, which
-  // bends the wing into the raven's M rather than a flat paddle.
-  function ravenWing(th, f, near) {
-    var vw = RAVEN_WING.wrist[1], th2 = th * 1.45 + 0.12;
-    var P = function (p) {
-      var arm = Math.min(p[1], vw) * f, hand = Math.max(0, p[1] - vw) * f;
-      var y = arm * Math.sin(th) + hand * Math.sin(th2);
-      var z = (arm * Math.cos(th) + hand * Math.cos(th2)) * (near ? -1 : 1);
-      return [p[0], -(y * Math.cos(RAVEN_TILT) - z * Math.sin(RAVEN_TILT))];
-    };
-    var w = P(RAVEN_WING.wrist), tips = RAVEN_WING.tips.map(P);
-    var pts = [P(RAVEN_WING.shoulder), w, tips[0]];
-    // A shallow notch between each primary gives the fingered raven wingtip.
-    for (var i = 1; i < tips.length; i++) {
-      var a = tips[i - 1], b = tips[i];
-      pts.push([(a[0] + b[0]) / 2 * 0.9 + w[0] * 0.1, (a[1] + b[1]) / 2 * 0.9 + w[1] * 0.1], b);
-    }
-    pts.push(P(RAVEN_WING.trail), P(RAVEN_WING.root));
-    return pts;
-  }
-
-  function ravenPoses() {
-    var poses = [];
-    for (var k = 0; k < RAVEN_POSES; k++) {
-      var fl = flap(k / RAVEN_POSES), path = new Path2D();
-      [ravenWing(fl[0] * 0.92, fl[1] * 0.9, false), RAVEN_BODY, ravenWing(fl[0], fl[1], true)].forEach(function (pts) {
-        path.moveTo(pts[0][0], pts[0][1]);
-        for (var i = 1; i < pts.length; i++) path.lineTo(pts[i][0], pts[i][1]);
-        path.closePath();
-      });
-      poses.push(path);
-    }
-    return poses;
-  }
-
-  function ravens() {
-    if (STILL || !window.Path2D) return;
-    var poses = null, N = 1000;
-
-    function gauss() { return Math.max(-2.5, Math.min(2.5, (Math.random() + Math.random() + Math.random() - 1.5) * 2)); }
-
-    function pass() {
-      poses = poses || ravenPoses();
-      var W = window.innerWidth, H = window.innerHeight, dpr = Math.min(window.devicePixelRatio || 1, 2);
-      var cv = document.createElement('canvas');
-      cv.className = 'ravens';
-      cv.setAttribute('aria-hidden', 'true');
-      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
-      document.body.appendChild(cv);
-      var ctx = cv.getContext('2d');
-      var orange = getComputedStyle(document.documentElement).getPropertyValue('--orange').trim() || '#c8430f';
-
-      var dir = Math.random() < 0.5 ? 1 : -1;
-      var R = Math.min(W, H) * 0.14;                     // flock radius
-      var unit = Math.min(W, H) / 1400;                  // px per model unit for the nearest birds
-      var M = R * 4 + 60;                                // margin, so the whole flock starts and ends offscreen
-      var secs = rnd(8, 10) * PACE;
-      var y0 = rnd(0.3, 0.6), slope = rnd(-0.3, 0.3), f1 = rnd(0.5, 1), f2 = rnd(1.5, 2.5), a1 = rnd(0, 6.3), a2 = rnd(0, 6.3);
-      var flockPhase = rnd(0, 6.3);
-
-      // Centre of the flock at progress p along its line.
-      function centre(p) {
-        return [dir > 0 ? -M + p * (W + 2 * M) : W + M - p * (W + 2 * M),
-                H * (y0 + slope * (p - 0.5) + 0.16 * Math.sin(2 * Math.PI * f1 * p + a1) + 0.06 * Math.sin(2 * Math.PI * f2 * p + a2))];
-      }
-      // A bird's place at time t: its point on the line plus its slot in a
-      // flock that stretches and turns over time.
-      function place(b, t) {
-        var c = centre((t - b.lag) / secs);
-        var st = 1 + 0.5 * Math.sin(t * 0.8 + flockPhase), turn = 0.6 * Math.sin(t * 0.45 + flockPhase);
-        var ox = b.ox * R * st, oy = b.oy * R / st;
-        return [c[0] + ox * Math.cos(turn) - oy * Math.sin(turn) + 3 * Math.sin(t * b.ww + b.wp),
-                c[1] + ox * Math.sin(turn) + oy * Math.cos(turn) + 3 * Math.cos(t * b.ww * 1.3 + b.wp)];
-      }
-
-      var birds = [];
-      for (var i = 0; i < N; i++) {
-        var depth = Math.pow(Math.random(), 1.6);         // most birds far, a few close
-        birds.push({ depth: depth, s: unit * (0.35 + 0.65 * depth), alpha: 0.45 + 0.55 * depth,
-                     lag: rnd(0, 3), ox: gauss() * 1.4, oy: gauss() * 0.7,
-                     beat: rnd(0.28, 0.4) * PACE, ph: Math.random(), ww: rnd(1, 2.5), wp: rnd(0, 6.3) });
-      }
-      birds.sort(function (a, b) { return a.depth - b.depth; });  // far first, near paint over them
-
-      var t0 = null;
-      function frame(ts) {
-        if (t0 === null) t0 = ts;
-        var t = (ts - t0) / 1000;
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.clearRect(0, 0, cv.width, cv.height);
-        ctx.fillStyle = '#070506'; ctx.strokeStyle = orange; ctx.lineJoin = 'round';
-        var live = false;
-        for (var i = 0; i < birds.length; i++) {
-          var b = birds[i], p = (t - b.lag) / secs;
-          if (p < 0) { live = true; continue; }
-          if (p > 1) continue;
-          live = true;
-          var q = place(b, t), q0 = place(b, t - 0.05);
-          var vx = q[0] - q0[0], vy = q[1] - q0[1];
-          var sx = vx < 0 ? -1 : 1;
-          var ang = Math.max(-0.6, Math.min(0.6, Math.atan2(vy, Math.abs(vx) || 1e-6)));
-          var s = b.s * 2 * dpr, co = Math.cos(ang), si = Math.sin(ang);
-          ctx.setTransform(sx * s * co, s * si, -sx * s * si, s * co, q[0] * dpr, q[1] * dpr);
-          ctx.globalAlpha = b.alpha;
-          ctx.lineWidth = 0.9 * dpr / s;                  // under a pixel of orange at any size
-          var pose = poses[Math.floor(((t / b.beat + b.ph) % 1) * RAVEN_POSES)];
-          ctx.fill(pose); ctx.stroke(pose);
-        }
-        if (live) { requestAnimationFrame(frame); return; }
-        cv.remove();
-        next(false);
-      }
-      requestAnimationFrame(frame);
-    }
-
-    function next(first) { setTimeout(pass, (first ? rnd(20, 60) : rnd(300, 600)) * 1000); }
-    next(true);
-  }
-
   /* ---- the starfield: the real sky over Kansas City ------------------------
      STARS holds every star of magnitude 3.5 and brighter, about what a
      downtown sky lets through (d3-celestial's catalog, after Hipparcos), as
@@ -1459,7 +1096,7 @@
     stars(); basics(); title(); countdown(); calendar(); headline(); expect(); soon();
     venues(); routes(); partners(); spinWindow();
     nav(); socials(); menu();
-    wheel(); ageGate(); ghosts(); bat(); ravens();
+    wheel(); ageGate(); headerSky();
   }
 
   if (document.readyState === 'loading') {
