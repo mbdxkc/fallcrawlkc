@@ -39,6 +39,9 @@
       @behavior     The countdown and add-to-calendar date switch themselves
                     off after the event date, and check-in after 4 a.m. on
                     Oct. 25. The wheel still spins.
+      @sky          The moon and stars stay as they were at 10 p.m. on crawl
+                    night, under that hour's recorded 27% cloud cover, so
+                    this page makes no weather request.
 
     ============================================================================
     -->
@@ -343,6 +346,6 @@
          deferred page script; the file is same-origin, which browsers do not
          intervene on. -->
     <script src="crawl-data.js"></script>
-    <script src="crawl.min.js" defer></script>
+    <script src="crawl.min.js?v=912b4415" defer></script>
   </body>
 </html>

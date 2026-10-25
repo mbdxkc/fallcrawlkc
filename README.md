@@ -33,7 +33,9 @@ Since Oct. 25, 2026, the site has two parts:
   its own frozen copies of the stylesheet, the page script and the data file. Editing
   the live files for a future crawl cannot change it, and `tools/build.sh` leaves it
   alone. Images and fonts are shared from the root. The countdown, calendar date and
-  check-in switch themselves off after the date; the wheel still spins.
+  check-in switch themselves off after the date; the wheel still spins. Its moon and
+  stars stay as they were at 10 p.m. on crawl night, under that hour's recorded 27%
+  cloud cover, so it makes no weather request.
 
 The live `style.css` and `js/crawl.js` still carry the event page's parts (wheel,
 check-in, spot lists) so the next crawl's page can be built on them; only the bat,
@@ -59,7 +61,8 @@ which is what `2026/` holds and what a future crawl's page will start from.
   header; a bat drawn from a 3D wing model crosses about once a minute; now and then
   a flock of 1,000 ravens pours through. All of it was removed from the live script
   on Oct. 25, 2026, and survives in `2026/crawl.min.js` and git history. The moon,
-  fog and stars stay on every page.
+  fog and stars stay on every page: live on the root pages, fixed at crawl night on
+  the 2026 page.
 - **The practical bits.** A countdown, an add-to-calendar date, a 21+ check, the
   map, and a text-a-pedicab link on every card.
 
