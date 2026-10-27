@@ -35,7 +35,8 @@ Since Oct. 25, 2026, the site has two parts:
   alone. Images and fonts are shared from the root. The countdown, calendar date and
   check-in switch themselves off after the date; the wheel still spins. Its moon and
   stars stay as they were at 10 p.m. on crawl night, under that hour's recorded 27%
-  cloud cover, so it makes no weather request.
+  cloud cover, so it makes no weather request. The one edit since freezing: its Home link
+  goes up to the site root (`../`) rather than back to itself (Oct. 27, 2026).
 
 The live `style.css` and `js/crawl.js` still carry the event page's parts (wheel,
 check-in, spot lists) so the next crawl's page can be built on them; only the bat,
