@@ -10,8 +10,8 @@
  *
  *   @project      fallcrawlkc
  *   @file         js/crawl.js
- *   @version      1.10.0
- *   @updated      2026-10-25
+ *   @version      1.11.0
+ *   @updated      2026-11-17
  *   @client       East Crossroads Fall Crawl, Kansas City, MO
  *   @url          https://fallcrawlkc.com/
  *   @repository   https://github.com/mbdxkc/fallcrawlkc
@@ -43,7 +43,7 @@
  *                 real star field). Sections, in file order:
  *                 helpers, basics, countdown and calendar, lists, header,
  *                 roulette, check-in, spot card, 21+ check, header sky,
- *                 moon and weather, stars, init().
+ *                 moon and weather, stars, link clicks, init().
  *   @load         Loaded deferred as js/crawl.min.js?v=<hash> on every page
  *                 at the site root (tools/build.sh), after data/crawl.js?m=
  *                 <minute>. Every renderer checks for its own container: the
@@ -52,7 +52,9 @@
  *   @privacy      Outside requests: Open-Meteo for Kansas City's weather
  *                 (fixed coordinates, cached 30 minutes per tab). Analytics
  *                 events go through the gtag() the page defines: check_in
- *                 and spin, each with a spot's name only. A check-in's coordinates never
+ *                 and spin, each with a spot's name only; venue_click (a
+ *                 thank-you link, with the spot's name), pedicab_click and
+ *                 credit_click, each once per link per page view. A check-in's coordinates never
  *                 leave the device.
  *   @a11y         Header links are built after the sections render, so a
  *                 section that removed itself cannot leave a dead anchor.
@@ -1092,11 +1094,34 @@
     window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(draw, 200); });
   }
 
+  /**
+   * Name the links people follow out of the site, so reports read by place
+   * instead of by URL: a thank-you venue (venue_click, with its name in Spot,
+   * the parameter check_in and spin use), the pedicab service and the studio
+   * credit. One event per link per page view; nothing about the visitor.
+   */
+  function linkClicks() {
+    var sent = {};
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a || !window.gtag) return;
+      var name, params;
+      if (a.closest('.thanks-list')) { name = 'venue_click'; params = { Spot: a.textContent.trim() }; }
+      else if (/ezpedicabs\.com/.test(a.href)) { name = 'pedicab_click'; params = {}; }
+      else if (a.closest('.credit')) { name = 'credit_click'; params = {}; }
+      else return;
+      var key = name + '|' + a.href;
+      if (sent[key]) return;
+      sent[key] = true;
+      gtag('event', name, params);
+    }, true);
+  }
+
   function init() {
     stars(); basics(); title(); countdown(); calendar(); headline(); expect(); soon();
     venues(); routes(); partners(); spinWindow();
     nav(); socials(); menu();
-    wheel(); ageGate(); headerSky();
+    wheel(); ageGate(); headerSky(); linkClicks();
   }
 
   if (document.readyState === 'loading') {
