@@ -192,6 +192,11 @@ cropped or converted by hand:
   and accents only; body copy is `#F8F8F8`.
 - **Analytics:** Google Analytics 4 loads after the page has finished and gone
   idle, so it never competes with the first screen.
+- **Link events (Nov. 17, 2026):** `js/crawl.js` names the links people follow out
+  of the site. `venue_click` for a thank-you link, with the spot's name in `Spot`
+  (the parameter `check_in` and `spin` use); `pedicab_click`; and `credit_click` for
+  the studio credit on every page. Once per link per page view, none of them a key
+  event. privacy.html says so in the Visit counts section; change both together
 
 ---
 
